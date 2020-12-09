@@ -1,0 +1,1 @@
+192.168.11.7 ansible_ssh_pass=cantero ansible_ssh_user=ivan

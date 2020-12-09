@@ -1,0 +1,1 @@
+192.168.22.12 ansible_ssh_pass=1234 ansible_ssh_user=nrmadelo-tip

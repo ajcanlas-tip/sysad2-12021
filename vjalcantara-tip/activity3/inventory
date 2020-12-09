@@ -1,0 +1,4 @@
+192.168.3.127 ansible_ssh_pass=alcantara ansible_ssh_user=alcantara
+
+
+

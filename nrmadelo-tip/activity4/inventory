@@ -1,0 +1,4 @@
+[ubuntu]
+192.168.22.12 ansible_ssh_pass=1234 ansible_ssh_user=nrmadelo-tip ansible_sudo_pass=1234
+[centos]
+192.168.22.14 ansible_ssh_pass=1234 ansible_ssh_user=nrmadelo-tip ansible_sudo_pass=1234

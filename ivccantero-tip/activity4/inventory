@@ -1,0 +1,4 @@
+[ubuntu]
+192.168.11.7 ansible_ssh_pass=cantero11 ansible_ssh_user=ivan ansible_sudo_pass=cantero11
+[centos]
+192.168.11.9 ansible_ssh_pass=cantero ansible_ssh_user=icantero ansible_sudo_pass=cantero

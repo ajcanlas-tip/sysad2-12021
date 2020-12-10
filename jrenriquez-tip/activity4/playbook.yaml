@@ -1,0 +1,31 @@
+---
+  - name: Install Packages for Ubuntu
+    hosts: Ubuntu
+
+    tasks:
+    - name: Install Java
+      apt:
+        name: default-jre
+        state: latest
+        update_cache: yes
+
+  - name: Install Packages for CentOS
+    hosts: CentOS
+
+    tasks:
+    - name: Installing Java
+      yum:
+        name: Java-1.8.0-openjdk
+        state: latest
+        update_cache: yes
+
+    - name: Install for (1)Ubuntu (2)CentOS
+      hosts: all
+
+    tasks:
+    - name: Installing (1)boto (2)ansible (3)openstacl
+      pip:
+        name:
+           - boto
+           - ansible
+           - python-openstackclient

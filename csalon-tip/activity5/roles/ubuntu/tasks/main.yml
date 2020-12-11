@@ -1,0 +1,14 @@
+---
+# tasks file for roles/ubuntu
+- name: installing in ubuntu
+  apt:
+    name: default-jre
+    state: latest
+
+- name: package installing
+  pip:
+   name:
+     - boto
+     - ansible
+     - python-openstackclient
+

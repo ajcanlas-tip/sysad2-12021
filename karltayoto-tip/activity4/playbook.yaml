@@ -1,0 +1,33 @@
+---
+  - name: Install packages for Ubuntu
+    hosts: ubuntu
+
+    tasks:
+      - name: Install java
+        apt:
+          name: default-jre
+          state: present
+          update_cache: yes
+
+
+  - name: Install packages for CentOS
+    hosts: centos
+
+    tasks:
+      - name: Install java
+        yum:
+          name: java-1.8.0-openjdk
+          state: present
+          update_cache: yes
+
+  - name: Install pip
+    hosts: all
+
+    tasks:
+      - name: Install ansible, boto, and openstack via pop
+        pip:
+
+          name:
+            - ansible
+            - boto
+            - python-openstackclient

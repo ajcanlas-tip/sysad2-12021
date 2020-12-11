@@ -1,0 +1,10 @@
+---
+# tasks file for pipinstall
+- name: Install ansible,boto and openstack via pip
+  pip:
+    name:
+      - ansible
+      - boto
+      - python-openstackclient
+
+

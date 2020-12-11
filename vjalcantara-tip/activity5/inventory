@@ -1,0 +1,4 @@
+[ubuntu]
+192.168.3.127 ansible_ssh_user=alcantara
+[centos]
+192.168.3.129 ansible_ssh_user=valcantara ansible_sudo_pass=

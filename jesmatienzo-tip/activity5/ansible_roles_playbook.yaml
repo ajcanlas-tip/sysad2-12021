@@ -1,0 +1,11 @@
+---
+  - name: Ubuntu Installation
+    hosts: ubuntu
+    roles:
+      - UbuntuInstallation
+
+
+  - name: Centos Installation
+    hosts: centos
+    roles:
+      - CentosInstallation

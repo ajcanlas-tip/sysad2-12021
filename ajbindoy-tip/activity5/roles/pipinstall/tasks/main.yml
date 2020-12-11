@@ -1,0 +1,8 @@
+---
+# tasks file for pipinstall
+- name: Install ansbile,boto, and openstack via pip to all host
+  pip:
+    name:
+      - ansible
+      - boto
+      - python-openstackclient

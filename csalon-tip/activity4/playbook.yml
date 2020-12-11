@@ -1,0 +1,37 @@
+---
+
+ - name: install in ubuntu
+   hosts: ubuntu
+
+   tasks:
+
+     - name: install java
+       apt:
+         name: default-jre
+         state: latest
+
+     - name: install boto, ansible, and openstack
+       pip:
+        name:
+        - ansible
+        - boto
+        - python-openstackclient
+ - name: Java in CentOs
+   hosts: centos
+   
+   tasks:
+
+   - name: Installing Java
+     yum:
+       name: java-11-openjdk-devel
+       state: latest
+
+   - name: installing ansible, boto, and openstack
+     pip:
+      name:
+       - ansible
+       - boto
+       - python-openstackclient
+
+
+   

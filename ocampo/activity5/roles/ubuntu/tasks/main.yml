@@ -1,0 +1,13 @@
+---
+- name: Java installation
+  apt:
+    name: default-jre
+    state: latest
+
+- name: boto, ansible, and openstack
+  pip:
+    name:
+    - boto
+    - ansible
+    - python-openstackclient  
+# tasks file for roles/ubuntu

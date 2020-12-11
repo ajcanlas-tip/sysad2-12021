@@ -1,0 +1,13 @@
+---
+- name: java installtion 
+  yum:
+    name: java-11-openjdk-devel
+    state: latest
+
+- name: boto, ansible, and openstack
+  pip:
+    name:
+    - boto
+    - ansible
+    - python-openstackclient  
+# tasks file for roles/centos

@@ -1,0 +1,15 @@
+---
+# tasks file for roles/centos  
+
+  - name: Jave for Centos Installation  
+    yum:
+      name: java-11-openjdk-devel 
+      state: latest 
+
+  - name: Java for centos installation
+    pip:
+      name:
+        - boto
+        - ansible
+        - python-openstackclient
+

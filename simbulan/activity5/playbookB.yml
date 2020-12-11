@@ -1,0 +1,12 @@
+---
+ - name: Installing in Ubuntu
+   hosts: ubuntugroup
+
+   roles:
+     - ubuntutasks
+
+ - name: Installing in Centos
+   hosts: centosgroup
+
+   roles:
+     - centostasks

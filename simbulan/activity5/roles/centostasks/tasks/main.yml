@@ -1,0 +1,15 @@
+---
+ - name: Install Java for Centos
+   yum:
+    name: java-11-openjdk-devel
+    state: latest
+
+ - name: Install boto, Ansible, openstack packages via pip
+   pip:
+     name:
+       - boto
+       - ansible
+       - python-openstackclient
+
+
+# tasks file for roles/centostasks

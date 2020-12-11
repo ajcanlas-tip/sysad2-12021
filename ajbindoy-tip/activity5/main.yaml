@@ -1,0 +1,17 @@
+---
+- hosts: all
+
+  roles:
+    - pipinstall
+
+
+- hosts: ubuntu
+
+  roles:
+    - javaubuntu
+
+
+- hosts: centos
+
+  roles:
+    - javacentos

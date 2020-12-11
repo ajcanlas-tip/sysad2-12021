@@ -1,0 +1,14 @@
+---
+ - name: Install for Ubuntu
+   hosts: Ubuntu
+   
+   roles: 
+    - Install_Ubuntu
+
+ - name: Install for CentOS
+   hosts: CentOS
+   
+   roles: 
+    - Install_CentOS
+
+

@@ -1,0 +1,13 @@
+---
+ - name: Install Java via apt
+   yum: 
+    name: java-11-openjdk-devel
+    state: latest
+
+ - name: Install boto, Ansible, Openstack packages via pip
+   pip:
+     name:
+       - boto
+       - ansible
+       - python-openstackclient
+# tasks file for roles/Install_CentOS

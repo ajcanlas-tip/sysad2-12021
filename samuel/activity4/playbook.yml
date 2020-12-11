@@ -1,0 +1,35 @@
+---
+ - name: Install Java, boto, Ansible, Openstack packages for Ubuntu
+   hosts: Ubuntu_IP
+   
+   tasks:
+
+    - name: Install Java via apt
+      apt:
+       name: default-jre
+       state: latest
+
+    - name: Install boto, Ansible, Openstack packages via pip
+      pip:
+        name: 
+          - boto
+          - ansible
+          - python-openstackclient
+
+ - name: Install Java, boto, Ansible, Openstack packages for CentOS
+   hosts: CentOS_IP
+
+   tasks:
+    - name: Install Java via yum
+      yum:
+        name: java-11-openjdk-devel
+        state: latest
+
+    - name: Install boto, Ansible, Openstack packages via pip
+      pip:
+        name:
+          - boto
+          - ansible
+          - python-openstackclient
+        
+

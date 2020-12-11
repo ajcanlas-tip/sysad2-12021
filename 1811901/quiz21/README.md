@@ -1,4 +1,4 @@
-# How to Create an Ansible Connfiguration
+# How to Create an Ansible Configuration
 
 1. First, check if your machine has ansible installed by using the command `ansible --version`.
 1. Use the command `apk add ansible`, if ansible is not installed in your machine.

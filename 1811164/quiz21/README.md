@@ -1,5 +1,5 @@
 ---
-# HOW TO CRETE an Ansible Configuration
+# HOW TO CREATE an Ansible Configuration
 1. Check if your current computer has Ansible with the command "Ansible --version"
 2. If not use the command apk add ansible to install the ansible
 3. Create a .CFG file [Configuration File] Name " ansible.cfg" using the command vim

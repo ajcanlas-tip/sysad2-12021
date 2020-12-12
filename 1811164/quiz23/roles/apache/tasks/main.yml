@@ -1,0 +1,28 @@
+---
+# tasks file for Apache
+- name: Install Apache
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: Install Apache_index
+  copy:
+    content: "Hello Philippines and Hello World :))"
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: Apache_index
+- name: start apache2 service
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: Apache_index.changed
+- name: whitelist apache2 in ufw
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+

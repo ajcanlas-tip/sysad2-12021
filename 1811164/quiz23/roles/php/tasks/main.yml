@@ -1,0 +1,17 @@
+---
+# tasks file for php
+- name: install PHPH
+  apt:
+    name:
+      - php
+      - php-mysql
+      - libapache2-mod-php
+    state: latest
+    update_cache: yes
+- name: Php_index
+  copy:
+    content: "Oh tingin tingin mo jan,Gusto mo,Luh asa ka"
+    dest: /var/www/html/inde2.html
+    owner: root
+    group: root
+    mode: '0644'

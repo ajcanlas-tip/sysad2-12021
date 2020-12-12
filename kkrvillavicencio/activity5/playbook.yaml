@@ -1,0 +1,12 @@
+---
+  - name: Installation Java Default [Ubuntu]
+    hosts: ubuntu
+
+    roles:
+      - Installing_Package_Ubuntu
+
+  - name: Installing Java Default [CentOS]
+    hosts: centos
+
+    roles:
+      - Installing_Package_CentOS

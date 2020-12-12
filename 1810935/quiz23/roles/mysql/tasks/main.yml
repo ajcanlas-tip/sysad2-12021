@@ -1,0 +1,25 @@
+---
+# tasks file for mysql
+- name: Installing mysql-server
+  apt:
+    name: mysql-server
+    state: latest
+    update_cache: yes
+
+
+- name: mysql_index
+  copy:
+    content: "Alcantara"
+    dest: /var/www/html/index1.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: mysql_index
+
+
+- name: Start Mysql service
+  service:
+    name: mysql
+    state: restarted
+    enabled: yes
+  when: mysql_index.changed

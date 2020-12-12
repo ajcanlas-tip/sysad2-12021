@@ -1,0 +1,92 @@
+---
+- name: Instalation of Apache and configuring new users and packages
+  hosts: all
+
+  tasks:
+    - name: Installing Apache
+      apt:
+        name: apache2
+        state: latest
+        update_cache: yes
+
+    - name: Apache host index
+      copy:
+        content: "GIOSUS IN THE HAUS"
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: '0644'
+      register: apache_index
+
+    - name: Start apache2 service
+      service:
+        name: apache2
+        state: restarted
+        enabled: yes
+      when: apache_index.changed
+
+    - name: Whitelist apache2 to ufw
+      ufw:
+        rule: allow
+        port: '80'
+        proto: tcp
+    - name: enable ufw
+      ufw:
+        state: disabled
+
+
+- name: Check Web Service
+  hosts: localhost
+  connection: local
+  become: no
+
+  tasks:
+    - name: Check Web service if up
+      uri:
+        url: http://www.example.com/
+
+
+- name: Configure and Install MySQL
+  hosts: all
+
+  tasks:
+    - name: Mysql-server
+      apt:
+        name: mysql-server
+        state: latest
+        update_cache: yes
+    - name: Mysql host index
+      copy:
+        content: "Giosus is back"
+        dest: /var/www/html/index1.html
+        owner: root
+        group: root
+        mode: '0644'
+      register: mysql_index
+    - name: Starting Mysql-server
+      service:
+        name: mysql
+        state: restarted
+        enabled: yes
+      when: mysql_index.changed
+
+
+- name: Install and Configure PHP
+  hosts: all
+
+  tasks:
+    - name: Installing PHP
+      apt:
+        name:
+          - php
+          - php-mysql
+          - libapache2-mod-php
+        state: latest
+        update_cache: yes
+    - name: Php host index
+      copy:
+        content: "Giosus is real"
+        dest: /var/www/html/index2.html
+        owner: root
+        group: root
+        mode: '0644'

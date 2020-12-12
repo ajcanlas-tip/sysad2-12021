@@ -1,0 +1,88 @@
+---
+- name: Install and configure Apache
+  hosts: all
+  tasks:
+    - name: Installing the apache
+      apt:
+        name: apache2
+        state: latest
+        update_cache: yes
+
+    - name: Apache_index
+      copy:
+        content: "This is an ansible managed node"
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: '0664'
+      register: apache_index
+
+    - name: Starting apache2 service
+      service:
+        name: apache2
+        state: restarted
+        enabled: yes
+      when: apache_index.changed
+
+    - name: Whitelist apache2 in ufw
+      ufw:
+        rule: allow
+        port: '80'
+        proto: tcp
+
+- name: check web service if up
+  hosts: localhost
+  connection: local
+  become: no
+
+  tasks:
+    - name: check webservice if up
+      uri:
+        url: http://www.example.com
+
+- name: Install and configure MySQL
+  hosts: all
+  tasks:
+      - name: Installing MySQL
+        apt:
+          name: mysql-server
+          state: latest
+          update_cache: yes
+      - name: mysql_index
+        copy:
+          content: "Ansible managed node"
+          dest: /var/www/html/index1.html
+          owner: root
+          group: root
+          mode: '0644'
+        register: mysql_index
+
+      - name: Starting MySQL service
+        service: 
+          name: mysql
+          state: restarted
+          enabled: yes
+        when: mysql_index.changed
+
+- name: Install and configure PHP
+  hosts: all
+  tasks:
+    - name: Installing PHP
+      apt:
+        name:
+          - php
+          - php-mysql
+          - libapache2-mod-php
+        state: latest
+        update_cache: yes
+    - name: PHP Index
+      copy:
+        content: "Hello World"
+        dest: /var/www/html/index2.html
+        owner: root
+        group: root
+        mode: '0644'
+
+
+
+

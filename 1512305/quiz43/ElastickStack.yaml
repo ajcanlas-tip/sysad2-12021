@@ -1,0 +1,46 @@
+--- 
+
+  hosts: ubuntu
+  roles: 
+    - ubuntu
+
+  hosts: centos
+  roles:
+    - centos
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

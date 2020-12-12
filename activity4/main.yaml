@@ -1,0 +1,31 @@
+---
+- name: INSTALLATION VIA PIP
+  hosts: all
+
+  tasks:
+  - name: Install boto, ansible, openstack via pip 
+    pip:
+      name: 
+        - boto
+        - ansible
+        - python-openstackclient
+
+- name: JAVA INSTALLATION IN CENTOS
+  hosts: centos
+
+  tasks:
+    - name: Installjava
+      yum:
+        name: java-1.8.0-openjdk
+        state: latest
+        update_cache: yes
+
+- name: JAVA INSTALLATION IN UBUNTU
+  hosts: ubuntu
+
+  tasks:
+    - name: Install java
+      apt:
+        name: default-jre
+        state: latest
+        update_cache: yes

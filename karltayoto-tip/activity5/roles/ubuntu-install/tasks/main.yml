@@ -1,0 +1,16 @@
+---
+# tasks file for roles/ubuntu-install
+- name: Install java
+  apt:
+      
+    name: default-jre
+    state: present
+    update_cache: yes
+
+- name: Install ansible, boto, and openstack via pop
+  pip:
+
+    name:
+      - ansible
+      - boto
+      - python-openstackclient

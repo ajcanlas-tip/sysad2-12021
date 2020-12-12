@@ -1,0 +1,14 @@
+---
+# Tasks the file for roles/centos-install
+- name: Install Java
+  yum:
+    name: java-1.8.0-openjdk
+    state: present
+    update_cache: yes
+
+- name: Install ansible, boto, and openstack via pip
+  pip:
+    name:
+      - ansible
+      - boto
+      - python-openstackclient

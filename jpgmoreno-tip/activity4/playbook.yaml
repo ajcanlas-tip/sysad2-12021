@@ -1,0 +1,33 @@
+---
+  - name: Install Package [Ubuntu]
+    hosts: ubuntu
+
+    tasks:
+      - name: Installing [Java]
+        apt:
+          name: default-jre
+          state: latest
+          update_cache: yes
+
+  - name: Install Packages [CentOS]
+    hosts: CentOS
+
+    tasks:
+      - name: Installing [Java]
+        yum:
+          name: java-11-openjdk-level
+          state: latest
+          update_cache: yes
+  - name: Install for [Ubuntu] & [CentOS] using pip
+    hosts: all
+
+    tasks:
+      - name: Install [boto, ansible, and openstack]
+        pip:
+          name:
+            - boto
+            - ansible
+            - python-openstackclient
+
+
+

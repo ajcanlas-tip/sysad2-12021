@@ -1,0 +1,12 @@
+---
+  - name: Complete Package Manager for Ubuntu
+    hosts: Ubuntu
+
+    roles:
+      - ubuntu_complete_manager
+
+  - name: Complete Package Manager for CentOS
+    hosts: Centos
+
+    roles:
+      - centos_complete_manager

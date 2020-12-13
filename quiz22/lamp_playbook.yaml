@@ -1,0 +1,39 @@
+---
+- name : Lamp stack
+  hosts: all
+  tasks:
+    - name: Install MySQL, Apache2 , PHP & PHP-mySQL
+      become: yes
+      apt:
+        pkg:
+          - apache2
+          - mysql-server
+          - php
+          - php-mysql
+        state: present
+        update_cache: yes
+
+    - name : Apache Service
+      become: yes
+      become_user: root
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+
+    - name: Mysql Service
+      become: yes
+      become_user: root
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: Target Directory
+      file: path=/var/www/html state=directory mode=0755
+
+    - name: index.html file
+      become: yes
+      copy:
+        src: /tmp/index.html
+        dest: /var/www/html/index.html

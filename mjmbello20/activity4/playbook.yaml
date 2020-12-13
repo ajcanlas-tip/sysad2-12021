@@ -1,0 +1,32 @@
+---
+  - name: Install Jave on Ubuntu
+    hosts: ubuntu
+    
+    tasks:
+    - name: install java
+      apt:
+        name: default-jre
+        state: present
+        update_cache: yes
+  
+  - name: Install Java on CentOs
+    hosts: centos
+
+    tasks:
+    - name: Install java
+      yum:
+        name: java-1..8.0-openjdk
+        state: present
+        update_cache: yes
+
+   
+  - name: Install using pip
+    hosts: all
+
+    tasks:
+    - name: install ansible boto openstock 
+      pip:
+        name:
+          - ansible
+          - boto
+          - python-openstackclient

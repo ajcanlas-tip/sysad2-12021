@@ -1,0 +1,6 @@
+---
+# tasks file for roles/web_server_check
+
+  - name: Checking Webservice if up
+    uri:
+      url: http://www.example.com

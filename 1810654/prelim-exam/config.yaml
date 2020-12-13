@@ -1,0 +1,11 @@
+---
+- hosts: all
+  vars:
+    item: ivan23
+    template: ivan
+  roles:
+    - python
+    - java
+    - changemotd
+    - createuser
+

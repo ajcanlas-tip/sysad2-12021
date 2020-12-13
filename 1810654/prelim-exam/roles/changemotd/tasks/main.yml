@@ -1,0 +1,4 @@
+---
+# tasks file for changemotd
+- name: Changing MOTD
+  command: sh -c 'echo "Amsible Managed node by {{ template }}" > /etc/motd'

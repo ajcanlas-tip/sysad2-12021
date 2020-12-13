@@ -1,0 +1,89 @@
+---
+  - name: Ubuntu Installation
+    hosts: ubuntu
+
+    tasks:
+      - name: Install apache2
+        apt:
+          name: apache2
+          state: latest
+          update_cache: no
+
+      - name: create Apache host index.html
+        copy:
+          content: "acelindro"
+          dest: /var/www/html/index.html
+          owner: root
+          group: root
+          mode: "0644"
+        register: apache_index
+
+      - name: Apache2 service
+        service:
+          name: apache2
+          state: restarted
+          enabled: yes
+        when: apache_index.changed
+
+      - name: enable ufw
+        ufw:
+          state: disabled
+      
+  - name: Check web service if up
+    hosts: localhost
+    connection: local
+    become: no
+
+    tasks:
+     - name: Check web service if up
+       uri:
+         url: http://10.0.2.4/
+
+  - name: Install and Configure MySQL on ubuntu
+    hosts: ubuntu
+
+    tasks:
+      - name: Install Mysql-server
+        apt:
+         name: mysql-server
+         state: latest
+         update_cache: no
+
+      - name: Creating MySQL
+        copy:
+          content: "acelindro"
+          dest: /var/www/html/index.html
+          owner: root
+          group: root
+          mode: "0644"
+        register: mysql_index
+
+      - name: Start MySQL-server
+        service:
+          name: mysql
+          state: restarted
+          enabled: yes
+        when: mysql_index.changed
+
+  - name: Install and Configure PHP
+    hosts: ubuntu
+     
+
+    tasks:
+     - name: Install PHP
+       apt: 
+        name:
+           - php
+           - libapache2-mode-php
+           - php-mysql
+        state: latest
+        update_cache: no
+
+     - name: Creating PHP
+       copy:
+         content: "acelindro"
+         dest: /var/www/html/index.html
+         owner: root
+         group: root
+         mode: "0644"
+

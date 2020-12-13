@@ -1,0 +1,112 @@
+---
+  - name: Step1 - Apache2 Installation | Starting Service | Updating the Firewall
+    hosts: ubuntu
+
+    tasks:
+      - name: Apache2 Installation
+        apt:
+          name: apache2
+          state: latest
+          update_cache: yes
+
+      - name: Starting Apache2 service
+        service:
+          name: apache2
+          state: started
+          enabled: yes
+
+      - name: Allowing Firewall to port80
+        ufw:
+          rule: allow
+          port: '80'
+          proto: tcp
+        register: whitelist
+
+
+
+  - name: Step2 - Installing MySQL | Starting MySQL
+    hosts: ubuntu
+
+    tasks:
+      - name: MySQL Installation
+        apt:
+          name: mysql-server
+          state: latest
+          update_cache: yes
+
+      - name: Starting MySQL
+        service:
+          name: mysql
+          state: started
+
+
+
+  - name: Step3 - Installing PHP
+    hosts: ubuntu
+
+    tasks:
+      - name: PHP Installation
+        apt:
+          name:
+            - php
+            - libapache2-mod-php
+            - php-mysql
+
+  
+  - name: Step4 - Creating a Virtual Host for my Website
+    hosts: ubuntu
+   
+    tasks:
+      - name: Creating Virtual Host Directory
+        file:
+          path: /var/www/matienzo_domain
+          state: directory
+          mode: '0755'
+
+      - name: Copying of index.html from files folder
+        copy:
+          src: index.html
+          dest: /var/www/matienzo_domain/index.html
+          owner: matienzo-1810204
+          group: matienzo-1810204
+          mode: '0755'
+
+      - name: Copying of virtualhost.conf to sites-available
+        copy:
+          src: matienzo_domain.conf
+          dest: /etc/apache2/sites-available/matienzo_domain.conf
+          owner: matienzo-1810204
+          group: matienzo-1810204
+          mode: '0755'
+
+      - name: Enabling the New Virtual Host
+        shell: a2ensite matienzo_domain
+
+      - name: Disable the Default Website
+        shell: a2dissite 000-default
+        
+      - name: Restarting Apache2 to apply changes
+        service:
+         name: apache2
+         state: restarted
+  
+  
+  - name: Step5 - Testing PHP Processing on your Web Server
+    hosts: ubuntu
+
+    tasks:
+    - name: Creating info.php inside the custom web root folder
+      copy:
+        content: "<?php phpinfo();"
+        dest: /var/www/matienzo_domain/info.php
+        owner: matienzo-1810204
+        group: matienzo-1810204
+        mode: '0755'
+    
+    - name: Restarting Apache2 to apply changes
+      service:
+        name: apache2
+        state: restarted
+
+    
+

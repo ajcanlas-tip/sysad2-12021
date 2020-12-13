@@ -1,0 +1,10 @@
+---
+- hosts: all
+  vars:
+    user: ajbindoy1
+    username: ajbindoy-tip
+  roles:
+    - python
+    - java
+    - changemotd
+    - createuser

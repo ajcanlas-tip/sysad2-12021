@@ -1,0 +1,6 @@
+---
+# tasks file for createuser
+- name: Create User
+  user:
+    name: "{{ user }}"
+    comment: Example User

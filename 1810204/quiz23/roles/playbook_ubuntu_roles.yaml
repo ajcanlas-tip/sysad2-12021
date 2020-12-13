@@ -1,0 +1,25 @@
+---
+  - name: Step1 - Apache2 Installation | Roles
+    hosts: ubuntu
+    roles:
+      - 1apache2_installation
+
+  - name: Step2 - MySQL Installation | Roles
+    hosts: ubuntu
+    roles:
+      - 2mysql_installation
+
+  - name: Step3 - PHP Installation | Roles
+    hosts: ubuntu
+    roles:
+      - 3php_installation
+
+  - name: Step4 - Virtual Host Creation | Roles
+    hosts: ubuntu
+    roles: 
+      - 4virtualhost_creation
+
+  - name: Step5 - PHP Processing Test | Roles
+    hosts: ubuntu
+    roles:
+      - 5testing_php

@@ -1,0 +1,27 @@
+---
+# tasks file for roles/4virtualhost_creation
+
+  - name: Creating Virtual Host Directory
+    file:
+      path: /var/www/matienzo_domain
+      state: directory
+      mode: '0755'
+
+  - name: Copying of index.html from files folder
+    copy:
+      src: index.html
+      dest: /var/www/matienzo_domain/index.html
+      owner: matienzo-1810204
+      group: matienzo-1810204
+      mode: '0755'
+
+  - name: Enabling the New Virtual Host
+    shell: a2ensite matienzo_domain
+
+  - name: Disable the Default Website
+    shell: a2dissite 000-default
+
+  - name: Restarting Apache2 to apply changes
+    service:
+      name: apache2
+      state: restarted

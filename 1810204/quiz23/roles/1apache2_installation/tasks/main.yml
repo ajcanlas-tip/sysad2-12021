@@ -1,0 +1,21 @@
+---
+# tasks file for roles/1apache2_installation
+
+  - name: Apache2 Installation
+    apt:
+      name: apache2
+      state: latest
+      update_cache: yes
+
+  - name: Starting Apache2 Service
+    service:
+      name: apache2
+      state: started
+      enabled: yes
+
+  - name: Allowing Firewall to port80
+    ufw:
+      rule: allow
+      port: '80'
+      proto: tcp
+    register: whitelist

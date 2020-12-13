@@ -1,0 +1,15 @@
+---
+# tasks file for roles/5testing_php
+
+  - name: Creating info.php inside the custom web root folder
+    copy:
+      content: "<?php phpinfo();"
+      dest: /var/www/matienzo_domain/info.php
+      owner: matienzo-1810204
+      group: matienzo-1810204
+      mode: '0755'
+
+  - name: Restarting Apache2 to apply changes
+    service:
+      name: apache2
+      state: restarted

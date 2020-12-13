@@ -1,0 +1,17 @@
+---
+  - name: Installation Java Default [Ubuntu]
+    hosts: ubuntu
+
+    roles:
+      - Installing_Package_Ubuntu
+
+  - name: Check web service if up
+    hosts: localhost
+    connection: local
+    become: no
+
+  - name: Install and Configure MySQL on ubuntu
+    hosts: ubuntu
+
+  - name: Install and Configure PHP
+    hosts: ubuntu

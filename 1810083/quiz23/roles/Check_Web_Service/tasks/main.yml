@@ -1,0 +1,7 @@
+---
+# tasks file for roles/Check_Web_Service
+
+- name: Check web service if up
+  uri:
+    url: http://10.0.2.5/
+

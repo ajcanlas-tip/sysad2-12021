@@ -1,0 +1,18 @@
+---
+  - name: Installation of Apache, MySQL, and PHP stack
+    hosts: ubuntu
+
+    roles:
+      - Installation_for_Apache
+      - Installation_for_MySQL
+      - Installation_for_PHP
+
+  - name: Check web service if up
+    hosts: localhost
+    connection: local
+    become: no
+
+    roles:
+      - Check_Web_Service
+      
+

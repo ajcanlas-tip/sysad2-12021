@@ -1,0 +1,20 @@
+---
+# tasks file for roles/Installation_for_PHP
+
+- name: Install PHP
+  apt:
+    name:
+      - php
+      - libapache2-mod-php
+      - php-mysql
+    state: latest
+    update_cache: no
+
+- name: Creating PHP
+  copy:
+    content: "BAKA REJAY TO"
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: "0644"
+

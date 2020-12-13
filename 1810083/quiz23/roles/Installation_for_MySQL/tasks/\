@@ -1,0 +1,26 @@
+---
+# tasks file for roles/Installation_for_MySQL
+
+- name: Install Mysql-server
+  apt:
+    name: mysql-server
+    state: latest
+    update_cache: no
+
+- name: Creating MySQL
+  copy:
+    content: "BAKA REJAY TO"
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: "0644"
+  register: mysql_index
+
+- name: Start MySQL-server
+  service:
+    name: mysql
+    state: restarted
+    enabled: yes
+  when: mysql_index.changed
+
+

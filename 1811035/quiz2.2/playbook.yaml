@@ -1,0 +1,70 @@
+---
+  - name: Installing Apache2, MySQL and PHP Packages
+    hosts: ubuntu
+
+    tasks:
+
+        - name: Installing Apache
+          apt:
+            name: apache2
+            state: latest
+            update_cache: yes
+
+        - name: Allowing HTTP Traffic
+          ufw:
+            rule: allow
+            direction: in
+            name: Apache
+
+        - name: Install MySQL Server
+          apt:
+            name: mysql-server
+            state: latest
+        
+        - name: MySQL service
+          service:
+            name: mysql
+            state: started
+            enabled: yes
+            
+        - name: Installing PHP Packages
+          apt:
+            name:
+              - php
+              - libapache2-mod-php
+              - php-mysql
+        
+        - name: Allow all access to TCP port 80
+          ufw:
+            rule: allow
+            port: '80'
+            proto: tcp
+
+        - name: Enabled Firewall
+          ufw:
+            state: enabled
+  - name: Creating Virtual Host
+    hosts: ubuntu
+    tasks:
+
+      - name: create html.html
+        copy:
+          content: "<h3>Hello My Friend!</h3><br>And this is my <strong>html.html site</strong>"
+          dest: /var/www/html/html.html
+          owner: root
+          group: root
+          mode: '0644'
+
+      - name: starting webservice
+        service:
+          name: apache2
+          state: restarted
+
+      - name: Testing PHP
+        copy:
+          src: ./html.html
+          dest: /var/www/html/info.php
+          owner: root
+          group: root
+          mode: '0644'
+  

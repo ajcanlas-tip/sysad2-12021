@@ -1,0 +1,11 @@
+---
+-
+- name: lamp installation on Ubuntu
+  hosts: all
+  roles:
+    - install_lamp
+
+- name: deploy and run the lamp
+  hosts: all
+  roles:
+    - ubuntu_lamp

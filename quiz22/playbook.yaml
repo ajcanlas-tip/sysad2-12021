@@ -1,0 +1,94 @@
+---
+  - name: Installation of Ubuntu
+    hosts: Ubuntu
+
+    tasks:
+
+      - name: Install apache2
+        apt:
+          name: apache2
+          state: latest
+          update_cache: no
+
+      - name: Create Apache host index.html
+        copy:
+          content: "Rada"
+          dest: /var/www/html.html
+          owner: root
+          group: root
+          mode: "0644"
+        register: apache_index
+
+      - name: apache2 service
+        service:
+          name: apache2
+          state: restarted
+          enabled: yes
+        when: apache_index.changed
+
+      - name: whitelist apache2
+        ufw:
+          rule: allow
+          port: '80'
+          protocol: tcp
+
+      - name: enable ufw
+        ufw:
+          state: disabled
+
+  - name: Check web service if up
+    hosts: localhost
+    connection: local
+    become: no
+
+    tasks:
+      - name: Check web service if up
+        uri:
+          url: http://10.0.2.4/
+
+  - name: Install and Configure MySQL on ubuntu
+    hosts: Ubuntu
+
+    tasks:
+      - name: Install Mysql-serverf
+        apt:
+          name: mysql-server
+          state: latest
+          update_cache: no
+
+      - name: Creating MySQL
+        copy:
+          content: "Rada"
+          dest: /var/www/html/index.html
+          owner: root
+          group: root
+          mode: "0644"
+        register: mysql_index
+
+      - name: Start MySQL-server
+        service:
+          name: mysql
+          state: restarted
+          enabled: yes
+        when: mysql_index.changed
+
+  - name: Install and Configure PHP
+    hosts: Ubuntu
+
+    tasks:
+      - name: Install PHP
+        apt:
+          name:
+            - php
+            - libapache2-mod-php
+            - php-mysql
+          state: latest
+          update_cache: no
+
+      - name: Creating PHP
+        copy:
+          content: "Rada"
+          dest: /var/www/html/index.html
+          owner: root
+          group: root
+          mode: "0644"

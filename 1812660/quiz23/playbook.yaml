@@ -1,0 +1,30 @@
+---
+  - name: Install Apache and Update the Firewall
+    hosts: ubuntu
+    roles:
+      - step1_role
+
+
+  - name: Installing MySQL
+    hosts: ubuntu
+    roles:
+      - step2_role
+
+
+  - name: Install PHP
+    hosts: ubuntu
+    roles:
+      - step3_role
+
+
+  - name: Creating a Virtual Host for your Website
+    hosts: ubuntu
+    roles:
+      - step4_role
+
+
+  - name: Testing PHP Process on Web Server
+    hosts: ubuntu
+    roles:
+      - step5_role
+

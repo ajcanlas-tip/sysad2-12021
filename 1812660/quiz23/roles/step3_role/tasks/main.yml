@@ -1,0 +1,9 @@
+---
+# tasks file for roles/step3_role
+
+- name: PHP Installation
+  apt:
+    name:
+      - php
+      - libapache2-mod-php
+      - php-mysql

@@ -1,0 +1,19 @@
+---
+# tasks file for roles/step1_role
+
+- name: install apache2
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: start apache2 service
+  service:
+    name: apache2
+    state: started
+
+- name: whitelist apache in ufw
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp

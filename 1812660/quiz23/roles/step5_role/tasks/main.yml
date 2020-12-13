@@ -1,0 +1,15 @@
+---
+# tasks file for roles/step5_role
+
+- name: Create info.php
+  copy:
+    content: "<?php phpinfo();"
+    dest: /var/www/lucana_domain/info.php
+    owner: rlucana-tip
+    group: qrlucana-tip
+    mode: "0755"
+
+- name: Restart Apache2
+  service:
+    name: apache2
+    state: restarted

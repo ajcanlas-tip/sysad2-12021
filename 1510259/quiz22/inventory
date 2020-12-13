@@ -1,0 +1,2 @@
+[Ubuntu]
+10.0.2.4 ansible_ssh_pass:josephapril23 ansible_ssh_user:jalopez ansible_sudo_pass:josephapril23

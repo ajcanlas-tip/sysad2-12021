@@ -1,0 +1,16 @@
+---
+- name: ubuntupaj
+  hosts: ubuntu
+
+
+  roles:
+  - ubuntupaj
+
+- name: centospaj
+  hosts: centos
+
+
+  roles:
+  - centospaj
+
+

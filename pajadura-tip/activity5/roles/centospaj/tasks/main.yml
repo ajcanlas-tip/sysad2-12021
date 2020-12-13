@@ -1,0 +1,14 @@
+---
+# tasks file for roles/centospaj
+
+- name: InstallsCent
+  yum:
+    name: java-11-openjdk-devel
+    state: latest
+
+- name: InstallsCentos
+  pip:
+    name:
+      - boto
+      - ansible
+      - python-openstackclient

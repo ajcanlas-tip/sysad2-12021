@@ -1,0 +1,102 @@
+---
+ - name: Ubuntu Installation
+   hosts: ubuntu
+
+
+   tasks:
+
+     - name: Install apache2
+       apt:
+          name: apache2
+          state: latest
+          update_cache: no 
+
+
+     - name: Create Apache host index.html 
+       copy:
+          content: "jeremy"
+          dest: /var/www/html.html
+          owner: root
+          group: root
+          mode: "0644"
+        register: apache_index
+
+
+     - name: Apache2 service
+       service: 
+          name: apache2
+          state: restarted
+          enabled: yes
+         when: apache_index.changed
+
+     - name: whitelist apache2
+       ufw:
+         rule: allow
+         port: '80'
+         protocol: tcp
+
+     - name: enable ufw
+       ufw:
+         state: disabled
+
+
+ - name: Check web services
+   hosts: localhost
+   connection: local 
+   becomes: no 
+
+   tasks: 
+
+    - name: Check web services
+      url: 
+        url: http://10.0.2.15
+
+
+ - name: Install MySQL on Ubuntu 
+   hosts: Ubuntu 
+
+
+   tasks:
+     - name: Install MySql-Server
+       apt: 
+         name: mysql-server
+         state: latest
+         update_cache: no 
+
+     - name: Creating MySQL 
+       copy:
+          content: "jeremy"
+          dest: var/www/html/index.html
+          owner: root
+          mode: "0644"
+        register: mysql_index
+
+
+     - name: Start MySql-server
+       service: 
+           name: mysql
+           state: restarted
+           enabled: yes
+         when: mysql_index.changed
+
+ - name: Install and configure PHP 
+   hosts: Ubuntu 
+
+   tasks:
+      - name: 
+	  - php
+	  - libapache2-mod-php
+          - php-mysql
+        state: latest
+        update_cache: no 
+
+
+
+      - name: Creating PHP 
+        copy: 
+           content: "jeremy" 
+           dest: /var/www/html/index.html
+           owner: root
+           mode: "0644"
+
+

@@ -1,0 +1,58 @@
+---
+# tasks file for roles/server-installation
+  - name: Install apache
+    apt:
+      name: apache2
+      state: latest
+      update_cache: yes
+
+  - name: start apache2 service in ubuntu
+    service:
+      name: apache2
+      state: restarted
+      enabled: yes
+
+  - name: allow UFW in apache2
+    ufw:
+      rule: allow
+      port: '80'
+      proto: tcp
+      state: enabled
+
+  - name: Installing mysql server
+    apt:
+      name: mysql-server
+      state: latest
+
+  - name: Starting the mysql server
+    become: yes
+    become_user: root
+    service:
+      name: mysql
+      state: started
+      enabled: yes
+
+  - name: Installing PHP Packages
+    apt:
+      name:
+        - php
+        - php-mysql
+        - libapache2-mod-php
+
+  - name: creating index.html
+    copy:
+      content: "<h1> Test 2 </h1> <br> Created index.html"
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: Test PHP
+    copy:
+      src: ./edit.html
+      dest: /var/www/html/info.php
+      owner: root
+      group: root
+      mode: '0644'
+
+  

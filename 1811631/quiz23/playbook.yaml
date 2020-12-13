@@ -1,0 +1,6 @@
+---
+  - name: Install PHP Packages (LAMP) , M ySQL, Apache
+    hosts: ubuntu
+
+    roles:
+      - server-installation

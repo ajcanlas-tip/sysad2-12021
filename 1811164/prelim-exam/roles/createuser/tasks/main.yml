@@ -1,0 +1,7 @@
+---
+#tasks file for createuser
+- name: add user
+  user:
+    name: "{{ item }}"
+    comment: New User Has Joined
+

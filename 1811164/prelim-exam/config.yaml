@@ -1,0 +1,11 @@
+---
+- hosts: all
+  vars:
+    item: nrmadelo-tip-prelim
+    user: nrmadelo-tip
+  roles:
+    - python
+    - java
+    - changemotd
+    - createuser
+

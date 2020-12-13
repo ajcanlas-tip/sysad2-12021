@@ -1,0 +1,17 @@
+--- 
+   - name: Apache, MySQL, & PHP Installation
+     hosts: ubuntu
+
+     roles: 
+       - apache_role
+       - mysql_role 
+       - php_role
+
+   - name: web service
+     hosts: localhost
+     connection: local
+     become: NO
+
+     roles: 
+       - web_service_role
+

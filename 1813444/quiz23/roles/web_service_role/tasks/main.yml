@@ -1,0 +1,5 @@
+--- 
+# task file for roles/web_service_role 
+  - name: web service
+    uri: 
+      url: http://10.0.2.5

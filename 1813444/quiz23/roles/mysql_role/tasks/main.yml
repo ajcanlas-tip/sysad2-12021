@@ -1,0 +1,23 @@
+---
+# task file for roles/mysql_role
+   - name: Installation of MySQL
+     apt:
+        name: mysql-server
+        state: latest
+        update_cache: NO
+
+   - name: Creating MySQL
+     copy: 
+       content: "itsmepam"
+       dest: /var/www/html/index.html
+       owner: root
+       group: root
+       mode: "0664"
+     register: mysql_index
+
+   - name: start MySQL-server
+     service: 
+       name: mysql 
+       state: restarted
+       enabled: YES
+     when: mysql_index.changed

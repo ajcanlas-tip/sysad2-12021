@@ -1,0 +1,33 @@
+---
+# tasks file for roles/apache_role 
+   - name: apache2 installation
+     apt: 
+       name: apache2
+       state: latest 
+       update_cache: NO
+
+   - name: create apache host index.html 
+     copy: 
+       content: "itsmepam" 
+       dest: /var/www/html.html
+       owner: root
+       group: root
+       mode: "0664" 
+     register: apache_index 
+
+   - name: service of apache2
+     service:
+       name: apache2
+       state: restarted 
+       enabled: YES
+     when: apache_index.changed
+
+   - name: apache whitelist
+     ufw:
+       rule: allow
+       port: '80'
+       protocol: tcp
+
+   - name: enable ufw 
+     ufw: 
+        state: disabled  

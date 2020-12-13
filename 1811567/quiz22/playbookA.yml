@@ -1,0 +1,101 @@
+---
+ - name: Installing apache and updates
+   hosts: Ubuntu
+   vars_files:
+   - group_vars/varA
+
+   tasks:
+  
+   - name: Updating Ubuntu packages
+     apt:
+      update_cache: yes
+
+   - name: Installing apache
+     apt:
+      name: apache2
+      state: latest
+
+   - name: checking apache version
+     shell: apache2 -v
+     register: apachev
+     
+   - name: Show output
+     debug:
+       msg: "{{ apachev.stdout }}"
+    
+   - name: allow HTTP
+     ufw: 
+      rule: allow
+      direction: in
+      name: Apache
+
+ - name: Installing MySQL packages
+   hosts: Ubuntu
+
+   vars_files:
+   - group_vars/varA
+   
+   tasks:
+
+   - name: Installing MySQL
+     apt:
+      name: mysql-server
+      state: latest
+
+   - name: Installing MySQL-Python
+     apt:
+      name: python3-mysqldb
+      state: latest
+
+   - name: Starting MySQL
+     service:
+      name: mysql
+      state: started
+      enabled: true
+
+
+   - name: Implementing Secure Installation - Removes anonymous user account for localhost
+     mysql_user:
+      login_user: 'root'
+      login_password: '{{ VarCar }}'
+      name: ''
+      host: localhost
+      state: absent
+
+   - name: Implementing Secure Installation - Remove MySQL test database
+     mysql_db:
+      login_user: 'root'
+      login_password: '{{ VarCar }}'
+      name: test
+      state: absent
+
+   - name: Checking MySQL version
+     shell: mysql --version
+     register: mysqlv
+
+   - name: Show output
+     debug:
+       msg: "{{ mysqlv.stdout }}"
+     
+ - name: Installing PHP packages
+   hosts: Ubuntu
+
+   vars_files:
+   - group_vars/varA
+  
+   tasks:
+
+   - name: Installing PHP
+     apt:
+      name:
+       - php
+       - libapache2-mod-php
+       - php-mysql
+
+   - name: Checking PHP version
+     shell: php -v
+     register: phpv
+    
+   - name: Show output
+     debug:
+       msg: "{{ phpv.stdout }}"

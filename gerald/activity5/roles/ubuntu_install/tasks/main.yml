@@ -1,0 +1,14 @@
+---
+# tasks file for roles/ubuntu_install
+    - name: installing [Java]
+      apt:
+         name: default-jre
+         state: present
+         update_cache: yes
+
+    - name: Install for [Ubuntu] using pip
+      pip:
+         name:
+            - ansible
+            - boto
+            - python-openstackclient

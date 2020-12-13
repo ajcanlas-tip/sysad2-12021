@@ -1,0 +1,16 @@
+---
+  - name: Installing Apache, MySQL, and PHP stack
+    hosts: all
+
+    roles:
+      - apache
+      - mysql
+      - php
+
+  - name: Check wer services up
+    hosts: localhost
+    connection: local
+    become: no
+
+    roles:
+      - web_server_check

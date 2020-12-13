@@ -1,0 +1,2 @@
+[ubuntu]
+192.168.254.101 ansible_ssh_user=gerald ansible_ssh_password=123 ansible_sudo_pass=123

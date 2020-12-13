@@ -1,0 +1,105 @@
+---
+  - name: Step1 - Install Apache and Updating the Firewall
+    hosts: ubuntu
+
+    tasks:
+        - name: install apache2
+          apt:
+            name: apache2
+            state: latest
+            update_cache: yes
+
+        - name: start apache2 service
+          service:
+            name: apache2
+            state: started
+
+        - name: whitelist apache2 in ufw
+          ufw:
+            rule: allow
+            port: '80'
+            proto: tcp
+
+
+  - name: Step2 - Installing MySQL
+    hosts: ubuntu
+
+    tasks:
+        - name: install mysql-server
+          apt:
+            name: mysql-server
+            state: latest
+            update_cache: yes
+
+        - name: start mysql service
+          service:
+            name: mysql
+            state: started
+
+
+  - name: Step3 - Installing PHP
+    hosts: ubuntu
+
+    tasks:
+      - name: PHP Installation
+        apt:
+          name:
+            - php
+            - libapache2-mod-php
+            - php-mysql
+
+
+  - name: Step4 - Creating a Virtual Host for you Website
+    hosts: ubuntu
+
+    tasks:
+      - name: Creating Virtual Host Directory
+        file:
+          path: /var/www/lucana_domain
+          state: directory
+          mode: '0755'
+      
+      - name: Copy index.html from files folder
+        copy:
+          src: index.html
+          dest: /var/www/lucana_domain/index.html
+          owner: rlucana-tip
+          group: qrlucana-tip
+          mode: '0755'
+
+      - name: Copy lucana_domain.conf to sites-available
+        copy:
+          src: lucana_domain.conf
+          dest: /etc/apache2/sites-available/lucana_domain.conf
+          owner: rlucana-tip
+          group: qrlucana-tip
+          mode: '0755'
+
+      - name: Enable New Virtual Host
+        shell: a2ensite lucana_domain
+
+      - name: Disable Default Website
+        shell: a2dissite 000-default
+
+      - name: Restart Apache2
+        service:
+          name: apache2
+          state: restarted
+
+
+  - name: Step5 - Testing PHP Process on Web Server
+    hosts: ubuntu
+
+    tasks:
+      - name: Create info.php
+        copy:
+          content: "<?php phpinfo();"
+          dest: /var/www/lucana_domain/info.php
+          owner: rlucana-tip
+          group: qrlucana-tip
+          mode: "0755"
+          
+      - name: Restart Apache2
+        service:
+          name: apache2
+          state: restarted

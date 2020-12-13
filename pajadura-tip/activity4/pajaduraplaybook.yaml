@@ -1,0 +1,34 @@
+---
+- name: ans
+  hosts: all
+
+  tasks:
+  - name: ansi
+    pip:
+      name:
+        - ansible
+        - boto
+        - python-openstackclient
+
+- name: ansib
+  hosts: centos
+
+  tasks:
+  - name: ansibl 
+    become: yes
+    yum:
+      name: java-1.8.0-openjdk
+      state: present
+      update_cache: yes
+
+- name: ansible
+  hosts: ubuntu
+  
+
+  tasks:
+    - name: ansibles
+      become: yes
+      apt:
+        name: default-jre  
+        state: present
+        update_cache: yes

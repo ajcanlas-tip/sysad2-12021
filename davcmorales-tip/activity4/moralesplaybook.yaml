@@ -1,0 +1,36 @@
+---
+- name: systems
+  hosts: all
+
+
+  tasks:
+    - name: admin
+      pip:
+        name:
+          - ansible
+          - boto
+          - python-openstackclient
+
+- name: sys
+  hosts: centos
+
+
+  tasks:
+    - name: stems
+      become: yes
+      yum:
+        name: java-1.8.0-openjdk
+        state: present
+        update_cache: yes
+        
+- name: server
+  hosts: ubuntu
+
+
+  tasks:
+    - name: ansible
+      become: yes
+      apt:
+        name: default-jre
+        state: present
+        update_cache: yes

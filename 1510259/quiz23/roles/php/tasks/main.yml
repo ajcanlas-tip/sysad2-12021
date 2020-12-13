@@ -1,0 +1,18 @@
+ ---
+ # tasks file for roles/php
+ 
+ - name: Installing PHP [PHP]
+   apt:
+     name:
+       - php
+       - php-mysql
+       - libapache2-mod-php
+     state: latest
+     update_cache: yes
+
+ - name: PHP [Indes]
+   copy:
+     content: "jalopez"
+     owner: root
+     group: root
+     mode: '0644'

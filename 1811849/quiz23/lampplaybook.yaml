@@ -1,0 +1,10 @@
+---
+- name: Install LAMP
+  hosts: all
+  roles:
+    - lampinstallroles
+
+- name: Run and deploy
+  hosts: all
+  roles:
+    - lampquiz23roles

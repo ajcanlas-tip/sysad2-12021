@@ -1,0 +1,10 @@
+---
+# tasks file for roles/ubuntu_lamp
+
+- name: LAMP Installation
+  apt:
+    name:
+      - apache2
+      - mysql-server
+      - php
+      - php-mysql

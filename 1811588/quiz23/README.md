@@ -1,0 +1,24 @@
+### Directory Summary
++ roles
+  - install_lamp
+    * defaults
+    * handlers
+    * meta
+    * tasks
+    * tests
+    * vars
+    * .travis.yml
+    * README.md
+  - ubuntu_lamp
+    * defaults
+    * handlers
+    * meta
+    * tasks
+    * tests
+    * vars
+    * .travis.yml
+    * README.md
++ .quiz23Inventory.swp
++ ansible.cfg
++ quiz23Inventory
++ quiz23Playbook.yaml

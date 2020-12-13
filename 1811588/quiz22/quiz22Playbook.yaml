@@ -1,0 +1,32 @@
+---
+#LAMP Stack on Ubuntu Server Installation
+- hosts: webservers
+  tasks:
+    - name: LAMP Stack Installation
+      become: yes
+      apt:
+        pkg:
+          - apache2
+          - mysql-server
+          - php
+          - php-mysql
+        state: present
+        update_cache: yes
+
+    - name: Apache Service
+      because: yes
+      become_user: root
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+
+    - name: Target Directory 
+      file: path=/var//www/html state=directory mode=0755
+
+    - name: deploy index.html
+      become: yes
+      become_user: root
+      copy:
+        src: /tmp/index.html
+        dest: /var/www/html/index/html

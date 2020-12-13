@@ -1,0 +1,110 @@
+---
+ - name: Installing apache 
+   hosts: ubuntu
+   vars_files:
+   - group_vars/vars
+
+   tasks:
+
+   - name: Updating Ubuntu 
+     apt:
+      update_cache: yes
+
+   - name: Installing apache
+     apt:
+      name: apache2
+      state: latest
+
+   - name: checking apache version
+     shell: apache2 -v
+     register: apachev
+
+   - name: Show output
+     debug:
+       msg: "{{ apachev.stdout }}"
+
+   - name: allow HTTP
+     ufw: 
+      rule: allow
+      direction: in
+      name: Apache
+
+ - name: MYSQL Installtion
+   hosts: ubuntu
+
+   vars_files:
+   - group_vars/vars
+
+   tasks:
+
+   - name: MySQL Installation
+     apt:
+      name: mysql-server
+      state: latest
+
+   - name: MySQL-Python installtion
+     apt:
+      name: python3-mysqldb
+      state: latest
+
+   - name: Starting MySQL
+     service:
+      name: mysql
+      state: started
+      enabled: true
+
+   - name: Executing the secure Installation, Setting MySQL root pass
+     mysql_user:
+      login_host: 'localhost'
+      login_user: 'root'
+      login_password: ''
+      name: 'root'
+      password: '{{ variableone }}'
+      state: present
+
+
+   - name: Secure Installation to avoid localhost anonymous login error  
+     mysql_user:
+      login_user: 'root'
+      login_password: '{{ variableone }}'
+      name: ''
+      host: localhost
+      state: absent
+
+   - name: Secure Installation for removing MySQL test database
+     mysql_db:
+      login_user: 'root'
+      login_password: '{{ variableone }}'
+      name: test
+      state: absent
+
+   - name: Checking MySQL version
+     shell: mysql --version
+     register: mysqlv
+
+   - name: Show output
+     debug:
+       msg: "{{ mysqlv.stdout }}"
+
+ - name: PHP installation 
+   hosts: ubuntu
+
+   vars_files:
+   - group_vars/vars
+
+   tasks:
+
+   - name: PHP installtion
+     apt:
+      name:
+       - php
+       - libapache2-mod-php
+       - php-mysql
+
+   - name: Checking PHP version
+     shell: php -v
+     register: phpv
+
+   - name: Show output
+     debug:
+       msg: "{{ phpv.stdout }}"

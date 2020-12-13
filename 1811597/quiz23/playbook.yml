@@ -1,0 +1,23 @@
+- name: Apache
+  hosts: Ubuntu
+  vars_files:
+   - group_vars/variable
+
+  roles:
+   - apache_role
+
+- name: Mysql
+  hosts: Ubuntu
+  vars_files:
+   - group_vars/variable
+
+  roles:
+   - mysql_role
+
+- name: PHP
+  hosts: Ubuntu
+  vars_files:
+   - group_vars/variable
+
+  roles: 
+   - php_role

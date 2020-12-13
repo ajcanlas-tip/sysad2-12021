@@ -1,0 +1,21 @@
+---
+  - name: Install Java Default Package [Ubuntu]
+    hosts: ubuntu
+
+    task:
+    - name: Installing [Java]
+      apt:
+         name: default-jre
+         state: latest
+         update_cache: yes
+
+    - name: Install for [Ubuntu] using pip
+      host: ubuntu
+
+      tasks:
+       - name: Installing [boto,ansible, and openstack]
+         pip:
+            name:
+               - boto
+               - ansible
+               - python-openstackclient

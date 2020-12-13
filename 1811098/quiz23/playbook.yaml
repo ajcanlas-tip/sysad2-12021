@@ -1,0 +1,7 @@
+---
+- name: Installing Apache, MySQL, and PHP stack
+  hosts: ubuntu
+
+  roles:
+    - ubuntu-install
+

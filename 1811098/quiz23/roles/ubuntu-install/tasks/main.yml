@@ -1,0 +1,65 @@
+---
+# tasks file for roles/ubuntu-install
+  - name: Updating ubuntu packages
+    apt:
+      update_cache: yes
+
+  - name: Installing apache2
+    apt:
+      name: apache2
+      state: present
+
+  - name: start apache2 service
+    service:
+      name: apache2
+      state: started
+      enabled: yes
+
+  - name: Allow all access to tcp port 80
+    ufw:
+      rule: allow
+      port: '80'
+      proto: tcp
+
+  - name: Enable firewall
+    ufw:
+      state: enabled
+
+  - name: Installing mysql
+    apt:
+      name: mysql-server
+      state: present
+
+  - name: Starting mysql server
+    service:
+      name: mysql
+      state: started
+
+  - name: Installing php, library, and php-mysql
+    apt:
+      name:
+        - php
+        - libapache2-mod-php
+        - php-mysql
+
+  - name: Create index.html
+    copy:
+      content: "<h1>Hello World!</h1><br>This is the <strong>index.html site</strong>"
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: Allow access to tcp port 80
+    ufw:
+      rule: allow
+      port: '80'
+      proto: tcp
+
+  - name: Testing PHP
+    copy:
+      src: ./edit.html
+      dest: /var/www/html/info.php
+      owner: root
+      group: root
+      mode: '0644'

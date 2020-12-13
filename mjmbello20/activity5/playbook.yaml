@@ -1,0 +1,26 @@
+---
+  - name: Install Java for Ubuntu
+    hosts: ubuntu
+
+    tasks:
+    - name: Install java for ubuntu using Installjavaubuntu role
+      include_role:
+        name: installjavaubuntu
+
+  
+  - name: Install Java for CentOs
+    hosts: centos
+    
+    tasks:
+    - name: Install Java for CentOS using  install javacentos role
+      include_role:
+        name: installjavacentos
+
+  
+  - name: Install using Pip all
+    hosts: all
+    
+    tasks:
+    - name: Install packages using pipinstall role
+      include_role:
+        name: pipinstall

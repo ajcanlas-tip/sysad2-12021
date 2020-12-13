@@ -1,0 +1,25 @@
+---
+- name: Updating Ubuntu packages
+  apt:
+   update_cache: yes
+
+- name: Installing apache
+  apt:
+   name: apache2
+   state: latest
+
+- name: checking apache version
+  shell: apache2 -v
+  register: apachev
+
+- name: Show output
+  debug:
+   msg: "{{ apachev.stdout }}"
+
+- name: allow HTTP
+  ufw: 
+   rule: allow
+   direction: in
+   name: Apache
+
+# tasks file for roles/apache_role

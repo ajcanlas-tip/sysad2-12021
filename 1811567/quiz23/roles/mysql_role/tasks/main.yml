@@ -1,0 +1,51 @@
+---
+
+- name: Installing MySQL
+  apt:
+   name: mysql-server
+   state: latest
+
+- name: Installing MySQL-Python
+  apt:
+   name: python3-mysqldb
+   state: latest
+
+- name: Starting MySQL
+  service:
+   name: mysql
+   state: started
+   enabled: true
+
+- name: Implementing Secure Installation - Set MySQL root Password
+  mysql_user:
+   login_host: 'localhost'
+   login_user: 'root'
+   login_password: ''
+   name: 'root'
+   password: '{{ VarCar }}'
+   state: present
+
+- name: Implementing Secure Installation - Removes anonymous user account for localhost
+  mysql_user:
+   login_user: 'root'
+   login_password: '{{ VarCar }}'
+   name: ''
+   host: localhost
+   state: absent
+
+- name: Implementing Secure Installation - Remove MySQL test database
+  mysql_db:
+   login_user: 'root'
+   login_password: '{{ VarCar }}'
+   name: test
+   state: absent
+
+- name: Checking MySQL version
+  shell: mysql --version
+  register: mysqlv
+
+- name: Show output
+  debug:
+    msg: "{{ mysqlv.stdout }}"
+
+# tasks file for roles/mysql_role

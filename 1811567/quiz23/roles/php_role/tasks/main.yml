@@ -1,0 +1,17 @@
+---
+- name: Installing PHP
+  apt:
+   name:
+   - php
+   - libapache2-mod-php
+   - php-mysql
+
+- name: Checking PHP version
+  shell: php -v
+  register: phpv
+
+- name: Show output
+  debug:
+    msg: "{{ phpv.stdout }}"
+
+# tasks file for roles/php_role

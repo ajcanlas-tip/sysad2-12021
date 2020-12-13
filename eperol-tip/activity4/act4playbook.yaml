@@ -1,0 +1,34 @@
+---
+- name: Install Java, Boto, Ansible and Openstack
+  hosts: all
+
+  tasks:
+    - name: Install Ansible, Boto, and Openstack
+      become: yes
+      pip:
+        name:
+          - ansible
+          - boto
+          - python-openstackclient
+
+  - name: Install in centOS
+    hosts: centos
+
+    tasks:
+      - name: Install Java
+        become: yes
+        yum:
+          name: java-1.8.0-openjdk
+          state: present
+          update_cache: yes
+
+  - name: Install in Ubuntu
+    hosts: ubuntu
+
+    tasks:
+      - name: Install
+        become: yes
+        apt:
+          name: default-jre
+          state: present
+          updat_cache: yes

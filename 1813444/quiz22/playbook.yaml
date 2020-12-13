@@ -1,0 +1,109 @@
+---
+- name: ubuntu installation
+  hosts: ubuntu
+
+  tasks:
+    - name: apache2 installation
+      apt: 
+        name: apache2
+        state: latest
+        update_cache: NO
+
+    - name: create apache host index.html 
+      copy: 
+        content: "itsmepam"
+        dest: /var/www/html.html
+        owner: root
+        group: root
+        mode: "0664"
+      register: apache_index
+     
+    - name: service of apache2
+      service: 
+        name: apache2
+        state: restarted
+        enabled: YES 
+      when: apache_index.changed
+
+    - name: apache whitelist
+      ufw: 
+         rule: allow
+         port: '80' 
+         protocol: tcp
+
+    - name: enable ufw
+      ufw: 
+         state: disabled
+
+- name: web service 
+  hosts: localhost
+  connection: local
+  become: no
+
+  tasks: 
+    - name: web service
+      uri: 
+        url: http://10.0.2.5/
+
+- name: Installation of MySQL 
+  hosts: ubuntu
+
+  tasks:
+    - name: Installation of MySQL
+      apt: 
+        name: mysql-server
+        state: latest
+        update_cache: NO
+ 
+    - name: Creating MySQL
+      copy: 
+        content: "itsmepam"
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: "0664"
+      register: mysql_index
+    
+    - name: start MySQL-server 
+      service: 
+        name: mysql
+        state: restarted
+        enabled: YES
+      when: mysql_index.changed
+
+- name: Installation of PHP
+  hosts: ubuntu
+
+  tasks: 
+    - name: Install PHP 
+      apt: 
+        name: 
+          - php
+          - libapache2-mod-php
+          - php-mysql 
+        state: latest
+        update_cache: NO
+
+    - name: Creating PHP 
+      copy: 
+        content: "itsmepam"
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: "0664"
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,10 @@
+---
+- name: Installing Lamp
+  hosts: all
+  roles:
+    - quiz23lampinstall
+
+- name: Run Roles
+  hosts: all
+  roles:
+    - quiz23roles

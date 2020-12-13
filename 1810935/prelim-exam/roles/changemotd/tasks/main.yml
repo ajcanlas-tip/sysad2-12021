@@ -1,0 +1,4 @@
+---
+# tasks file for changemotd
+- name: Changing MOTD
+  command: sh -c 'echo "Ansible Managed node by {{ Alcantara }}" > /etc/motd'

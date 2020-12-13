@@ -1,0 +1,9 @@
+---
+# tasks file for roles/createuser
+
+  - name: Create or add new user
+    become: yes
+    user:
+      name: "{{ user }}"
+      comment: New user "{[ user }}"
+      shell: /bin/bash

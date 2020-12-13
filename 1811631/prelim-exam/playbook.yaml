@@ -1,0 +1,29 @@
+---
+  - name: Prelim examination
+    hosts: all
+    
+    tasks:
+      - name: Include config
+        include_vars:
+          file: config.yaml
+
+  - name: Install python3 , pip3 and set them as default pip and python.
+    hosts: ubuntu
+    roles:
+      - python-pip
+
+
+  - name: Install java open-jdk
+    hosts: ubuntu
+    roles:
+      - java
+
+  - name: Change motd
+    hosts: ubuntu
+    roles:
+      - changemotd
+
+  - name: Create user
+    hosts: ubuntu
+    roles:
+      - createuser

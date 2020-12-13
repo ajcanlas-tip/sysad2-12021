@@ -1,0 +1,27 @@
+---
+# tasks file for roles/install_lamp
+- name: apache2
+  become: yes
+  become_user: root
+  service:
+    name: apache2
+    state: started
+    enabled: yes
+
+- name: mysql
+  become: yes
+  become_user: root
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+
+- name: directory
+  file: path=/var/www/html state=directory mode=0755
+
+- name: html
+  become: yes
+  become_user: root
+  copy:
+    src: /tmp/index.html
+    dest: /var/www/html/index.html

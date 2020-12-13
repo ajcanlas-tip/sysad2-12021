@@ -1,0 +1,6 @@
+---
+- name: Installing Apache, MySQL and PHP Packages
+  hosts: ubuntu
+
+  roles:
+    - lamp-installation

@@ -1,0 +1,12 @@
+---
+  - name: Installing Centos
+    hosts: centos
+
+    roles:
+       - centos_install
+
+  - name: Installing Ubuntu
+    host: ubuntu
+
+    roles:
+       - ubuntu_install

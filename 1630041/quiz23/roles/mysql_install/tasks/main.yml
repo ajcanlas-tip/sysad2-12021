@@ -1,0 +1,14 @@
+---
+# tasks file for roles/mysql_install
+  - name: Installing MySQL server
+    apt:
+       name: mysql-server
+       state: latest
+
+  - name: Starting the MySQL server
+    become: yes
+    become_user: root
+    service:
+            name: mysql
+            state: started
+            enabled: yes

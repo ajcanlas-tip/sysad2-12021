@@ -1,0 +1,11 @@
+---
+# tasks file for roles/php_install
+  - name: Installing PHP Packages
+    apt:
+      name:
+            - php
+            - php-mysql
+            - libapache2-mod-php
+
+        state: latest
+        update_cache: yes

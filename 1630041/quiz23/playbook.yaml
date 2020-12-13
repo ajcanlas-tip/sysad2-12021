@@ -1,0 +1,7 @@
+---
+  - name: Installing Apache, MySQL and PHP [AMP]
+    hosts: all
+    roles:
+        - apache_install
+        - mysql_install
+        - php_install

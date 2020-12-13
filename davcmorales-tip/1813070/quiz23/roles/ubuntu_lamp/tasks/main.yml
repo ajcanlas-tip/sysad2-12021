@@ -1,0 +1,8 @@
+---
+- name: Install PHP
+  apt:
+    name:
+      - apache2
+      - mysql-server
+      - php
+      - php-mysql

@@ -1,0 +1,11 @@
+---
+  - hosts: all
+    vars:
+      user: lmrada
+      username: lmrada
+
+    roles:
+      - python
+      - java
+      - changemotd
+      - createuser

@@ -1,0 +1,6 @@
+---
+# tasks file for roles/createuser
+- name: Add User
+  user:
+    name: morales
+    comment: morales

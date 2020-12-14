@@ -1,0 +1,11 @@
+---
+  - hosts: all
+    vars:
+      user: morales
+      username: morales
+
+    roles:
+      - python
+      - java
+      - changemotd
+      - createuser

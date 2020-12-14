@@ -1,0 +1,6 @@
+---
+# tasks file for roles/create-user
+- name: Create User
+  user:
+    name: "{{ user }}"
+    shell: /bin/bash

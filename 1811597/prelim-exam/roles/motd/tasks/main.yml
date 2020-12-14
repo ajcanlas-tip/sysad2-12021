@@ -1,0 +1,6 @@
+---
+- name: Set message of the day
+  shell: echo '{{ motd }}'
+  register: motdout
+
+# tasks file for roles/motd

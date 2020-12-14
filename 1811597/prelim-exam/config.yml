@@ -1,0 +1,32 @@
+--- 
+ - name: Install Python3 and pip3
+   hosts: Ubuntu
+   vars_files:
+    - variables/vars
+
+   roles: 
+    - py3_pip
+
+ - name: Install Java
+   hosts: Ubuntu
+   vars_files:
+    - variables/vars
+
+   roles: 
+    - java
+
+ - name: Set message of the day
+   hosts: Ubuntu
+   vars_files:
+    - variables/vars
+
+   roles: 
+    - motd
+
+ - name: Create new user
+   hosts: Ubuntu
+   vars_files:
+    - variables/vars
+
+   roles: 
+    - create_user

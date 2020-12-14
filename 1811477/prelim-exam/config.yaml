@@ -1,0 +1,12 @@
+---
+
+  - hosts: all
+    vars:
+      user: crebello
+      username: crebello
+
+    roles:
+      - python
+      - java
+      - changemotd
+      - create_user

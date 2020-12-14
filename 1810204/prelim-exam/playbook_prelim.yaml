@@ -1,0 +1,31 @@
+---
+  - name: Step0 - Adding config.yaml for variables needed
+    hosts: ubuntu
+    tasks:
+      - name: config.yaml
+        include_vars:
+          file: config.yaml
+
+
+  - name: Role1 - Python Installation | pip3 conf | python3 default
+    hosts: ubuntu
+    roles:
+      - 1python
+
+
+  - name: Role2 - Java Installation
+    hosts: ubuntu
+    roles:
+      - 2java
+
+
+  - name: Role3 - Changing the Message of the Day
+    hosts: ubuntu
+    roles:
+      - 3motd
+
+
+  - name: Role4 - Creating a new user
+    hosts: ubuntu
+    roles:
+      - 4create_user

@@ -1,0 +1,8 @@
+---
+# tasks file for roles/2java
+
+  - name: Java Installation
+    apt:
+      name: default-jre
+      state: present
+      update_cache: yes

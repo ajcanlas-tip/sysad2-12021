@@ -1,0 +1,8 @@
+---
+# tasks file for roles/4create_user
+
+  - name: Creating a new user with the input in config.yaml
+    user:
+      name: "{{ user }}"
+      comment: "{{ comment }}"
+      shell: /bin/bash

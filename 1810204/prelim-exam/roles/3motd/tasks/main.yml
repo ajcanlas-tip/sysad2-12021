@@ -1,0 +1,10 @@
+---
+# tasks file for roles/3motd
+
+  - name: Changing the Message of the Day
+    copy:
+      content: "Welcome {{ user }} to Ubuntu! May God bless you!"
+      dest: /etc/motd
+
+  - name: Disabling the default motd
+    shell: "chmod -x /etc/update-motd.d/*"

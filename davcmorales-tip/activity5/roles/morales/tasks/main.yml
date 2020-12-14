@@ -1,0 +1,23 @@
+---
+  - name: Insgtalling Java for Ubuntu
+    apt:
+      name: default-jre
+      state: latest
+
+  - name: Install boto, ansible, and openstack packages
+    pip:
+      name:
+        - boto
+        - ansible
+        -python-openstackclient
+
+  - name: Install Java for Centos
+    yum:
+      name: java-11-openjdk-devel
+      state: latest
+
+  - name: Install boto, ansible, and openstack packages
+    pip:
+      name:
+        
+# tasks file for roles/morales

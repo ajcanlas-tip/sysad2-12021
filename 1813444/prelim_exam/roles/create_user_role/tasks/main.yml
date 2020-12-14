@@ -1,0 +1,7 @@
+---
+# tasks file for roles/create_user_role
+
+- name: add user
+  user:
+    name: pamela
+    comment: you have successfully added a new user!

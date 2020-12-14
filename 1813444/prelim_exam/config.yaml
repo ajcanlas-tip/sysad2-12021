@@ -1,0 +1,12 @@
+---
+   - name: Installation for prelim-exam
+     hosts: all
+     vars:
+       user: pamela
+       username: pamela
+
+     roles:
+       - python_role
+       - java_role
+       - change_motd_role
+       - create_user_role

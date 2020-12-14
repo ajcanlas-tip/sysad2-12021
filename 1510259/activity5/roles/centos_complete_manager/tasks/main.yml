@@ -1,0 +1,14 @@
+---
+# tasks file for roles/centos_complete_manager
+  - name: Installing Java
+    apt:
+      name: openjdk-8-jre-headless
+      state: latest
+      update_cache: yes
+
+  - name: Installing boto,ansible, and openstack
+     pip:
+       name:
+         - boto
+         - ansible
+         - python-openstackclient 

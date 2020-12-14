@@ -1,0 +1,6 @@
+---
+ - name: MOTD
+   shell: echo '{{motd}}'
+   register: motdout
+
+# tasks file for roles/motd

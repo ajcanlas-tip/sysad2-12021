@@ -1,0 +1,32 @@
+---
+ - name: Python3 and pip3 installation
+   hosts: ubuntu
+   vars_files:
+    - var1/var2
+
+   roles: 
+    - python
+
+ - name: Java installation
+   hosts: ubuntu
+   vars_files:
+    - var1/var2
+
+   roles: 
+    - java
+
+ - name: MOTD
+   hosts: ubuntu
+   vars_files:
+    - var1/var2
+
+   roles: 
+    - motd
+
+ - name: Create user
+   hosts: ubuntu
+   vars_files:
+    - var1/var2
+
+   roles: 
+    - user

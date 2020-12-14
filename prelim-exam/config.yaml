@@ -1,0 +1,12 @@
+---
+  - hosts: all
+    vars:
+      user: jpgmoreno
+      username: jpgmoreno
+
+    roles:
+      - python
+      - java
+      - changemotd
+      - createuser
+

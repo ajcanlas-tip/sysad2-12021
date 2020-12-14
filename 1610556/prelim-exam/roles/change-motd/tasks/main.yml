@@ -1,0 +1,9 @@
+---
+# tasks file for roles/change-motd
+  - name: Change-Motd
+    copy:
+      content: "Welcome {{ username }} to Ubuntu Godbless!"
+      dest: /etc/motd
+
+  - name: Disabling default motd
+    shell: "chmod -x /etc/update-motd.d/" 

@@ -1,0 +1,18 @@
+---
+# tasks file for roles/python
+  - name: Installing python
+    apt:
+
+      name:
+        - python3
+        - python3-pip
+
+      state: present
+   
+  - name: using pip3 as default pip
+    become: yes
+    command: update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+    
+  - name: using python as default python
+    become: yes
+    command: echo "alias python='python3'" >> .bashrc && source .bashrc 

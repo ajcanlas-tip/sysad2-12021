@@ -1,0 +1,6 @@
+---
+# tasks file for roles/java
+  - name: Java Installion
+    apt: 
+      name: default-jre
+      state: latest

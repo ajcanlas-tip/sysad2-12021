@@ -1,0 +1,11 @@
+---
+  - hosts: all
+    vars:
+      user: eliekareyes
+      username: eliekareyes
+
+    roles:
+       - python
+       - java
+       - changemotd
+       - create_user

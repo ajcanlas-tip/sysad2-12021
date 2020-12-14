@@ -1,0 +1,23 @@
+
+---
+
+# tasks file for roles/Python
+
+- name: Install the latest phyton3 and pip3
+  apt:
+    name:
+      - python3
+      - python3-pip
+    
+    state: latest
+    #update_cache: yes
+
+
+
+- name: Use pip3 as default pip
+  shell: update-alternatives --install /usr/bin/pip pip /user/bin/pip3 1
+
+
+- name: Use Python3 as default python
+  shell: update-alternatives --install /usr/bin/python python /user/bin/python3 2
+

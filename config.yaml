@@ -1,0 +1,19 @@
+---
+
+
+- name: Prelim Exam
+  host: Ubuntu
+
+
+
+  vars:
+    username: "justineflores"
+    myname: "justine_newuser"
+
+
+    roles:
+      - python
+      - java
+      - Change-motd
+      - Create-user
+      

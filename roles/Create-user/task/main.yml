@@ -1,0 +1,8 @@
+___
+# task file for roles/Create-user
+
+
+- name: Create user
+  user:
+    name: "{{ myname }}"
+

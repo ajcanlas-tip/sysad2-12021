@@ -1,0 +1,11 @@
+---
+- hosts: all
+  vars:
+    item: kevin
+    motd: kevin
+  roles:
+    - python
+    - java
+    - changemotd
+    - createuser
+

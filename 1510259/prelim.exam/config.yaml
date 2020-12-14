@@ -1,0 +1,13 @@
+---
+
+- hosts: all
+  vars:
+    user: jalopez
+    username: jalopez
+
+  roles:
+    - python
+    - java
+    - changemotd
+    - create_user
+

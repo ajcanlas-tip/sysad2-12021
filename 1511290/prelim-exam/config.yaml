@@ -1,0 +1,13 @@
+---
+
+- hosts: all
+  vars: 
+    user: acelindro
+    username: acelindro
+
+  roles:
+     - python
+     - java
+     - changemotd
+     - create_user
+

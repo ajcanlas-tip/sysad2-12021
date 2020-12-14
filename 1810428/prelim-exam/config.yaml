@@ -1,0 +1,12 @@
+---
+
+- hosts: all
+  vars:
+    user: brenda1
+    username: brenda1
+
+  roles:
+    - python
+    - java
+    - changemotd
+    - create_user

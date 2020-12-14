@@ -1,0 +1,9 @@
+---
+# tasks file for roles/createuser
+
+### Role 4 (create user):
+
+- name: User
+  user: 
+    name: "{{ username }}"
+    shell: /bin/bash

@@ -1,0 +1,16 @@
+---
+- name: Prelim Exam Playbook
+  hosts: all
+
+  tasks:
+    - name: Variable
+      include_vars:
+        file: config.yaml
+
+- name: Ansible Roles
+  hosts: ubuntu
+  roles:
+    - installpy
+    - installjava
+    - changemotd
+    - createuser

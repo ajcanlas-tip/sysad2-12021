@@ -1,0 +1,17 @@
+---
+- name: Prelim 
+  hosts: all
+
+
+  tasks:
+    - name: config.yaml
+      include_vars:  
+        file: config.yaml
+
+- name: Added roles
+  hosts: ubuntu
+  roles:
+    - python_install
+    - java_install
+    - motd
+    - usr

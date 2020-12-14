@@ -1,0 +1,6 @@
+---
+- name: MOTD
+  become: yes
+  command: sh -c 'echo "Welcome to {{ username }} server" > /etc/motd'
+  
+# tasks file for roles/motd

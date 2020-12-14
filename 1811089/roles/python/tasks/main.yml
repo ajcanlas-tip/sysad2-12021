@@ -1,0 +1,19 @@
+---
+ - name: Python Installtion
+   apt:
+    name: python3
+    state: latest
+
+ - name: Python3-pip Installtion
+   apt:
+    name: python3-pip
+    state: latest
+
+ - name: Python3 as default
+   become: yes
+   command: update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+
+ - name: Python3-pip as default
+   become: yes
+   command: update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10
+# tasks file for roles/python

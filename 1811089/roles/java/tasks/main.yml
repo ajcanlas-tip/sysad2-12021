@@ -1,0 +1,6 @@
+---
+ - name: Java Installtion
+   apt:
+    name: openjdk-8-jdk
+    state: latest
+# tasks file for roles/java

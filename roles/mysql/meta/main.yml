@@ -1,0 +1,51 @@
+galaxy_info:
+  authors: your name
+  description: your role destination
+  company : optional
+
+
+
+  # if the issue tracker for your roles is not on github, uncomment hte nextline and provide a value issue_tracker_url: https://example.com/issue/tracker
+
+
+  #Choose a valide license From:
+  #https://spdx.org
+
+
+  license: license (GPL-2.0-or-later, MIT , etc)
+
+  min_ansible_version: 2.9
+
+  #if this container enabled role, provide the minimum asinble container version
+  # min_ansible_container_version:
+
+
+  #provide a list of supported platforms, and for eact platform a list fo versions.
+  #if you dont whish to enumerate all version please use 'all'
+  #to view available platforms visits:
+  #https://galaxy.ansible.com/api/v1/platforms/
+
+  # platforms:
+   - name: fedora
+     version:
+      - all
+      - 25
+     name: Someplatform
+     versions:
+       - all
+       - 1.0
+       - 7
+       - 99.99
+
+    galaxy_tags: []
+    #;list tags for your role here, one per line
+    # remove "[]" above. if you add tags to this list.
+    
+    # Note: a tag is limited to a single word comprised of alphanumeric characters.
+    # max of 20 tags per role.
+
+
+
+  dependencies: []
+  #Be sure to remove the '[]' above 
+  #if you add dependecies to this list.

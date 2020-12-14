@@ -1,0 +1,7 @@
+---
+# tasks file for role/web_server_check
+
+
+- name: checking web service if you
+  url:
+    url: https://www.example.com

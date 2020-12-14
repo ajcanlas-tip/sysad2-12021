@@ -1,0 +1,20 @@
+---
+- name: Installing apache, mysql and php stac
+  host: all
+
+
+  roles:
+    - apache
+    - mysql
+    - php
+
+
+- name : check web service if up
+  hosts: localhost
+  connection: local
+  become: no
+
+
+
+  roles:
+    - web_server_check

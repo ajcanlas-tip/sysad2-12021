@@ -1,0 +1,21 @@
+---
+
+# tasks file for roles/php
+
+- name : intalling php [php]
+  apt:
+    name:
+      - php
+      - php-mysql
+      -libapache2-mod-php
+    state: latest
+    update_cache: yes
+
+- name: php [Indes]
+  copy:
+    content: "brenda1"
+    dest: /var/www/html/index.html
+
+    owner: root
+    group: root
+    mode: '0644'

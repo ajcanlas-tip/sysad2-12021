@@ -1,0 +1,25 @@
+---
+# task file for roles/mysql
+
+- name: Installing mysql [mysql]
+  apt :
+    name : mysql-server
+    state: latest
+    update_cache: yes
+
+- name: Mysql [index]
+  copy:
+    content: "justine1"
+    dest: /var/www/html/indexone/html
+    owner: root
+    group: root
+    mode: '0644'
+    register: mysqlservice_index
+
+
+- name: starting [mysql service]
+  service:
+  name: mysql
+  state: restarted
+  enabled: yes
+  when: mysqlservice_index.changed

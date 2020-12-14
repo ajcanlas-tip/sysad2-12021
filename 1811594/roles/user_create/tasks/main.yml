@@ -1,0 +1,6 @@
+---
+ - name: Create user
+   user:
+     name: '{{user_name}}'
+
+# tasks file for roles/user_create

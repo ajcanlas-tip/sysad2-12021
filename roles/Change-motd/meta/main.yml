@@ -1,0 +1,61 @@
+galaxy_info:
+  author: your name
+  description: your role description
+  comapany: your company (optional)
+
+
+  # if the issue tracker for your role ise not on github, uncommen the next line and proide a value issue_tracker_url: https://example.com/issue/tracker
+
+
+  #Choose a valid license ID from https://spdx.org - some suggested liceses:
+   
+   - BSD-3-Clause (default)
+   - MIT
+   - GPL-2.0-or-later
+   - GPL-3.0-only
+   - Apache-2.0
+   - CC-BY-4.0
+
+
+  license: license (GPL-2.0-orlater, MIT, etc)
+
+  min_ansible_version: 2.9
+
+  # If this a Container Enabled role, provide the minimum Ansible Container Version.
+  # min_ansible_container_version:
+
+
+
+  # Provide a list of supported platforms, and for each platform a list of versions.
+  # If you don't wish to enumeral all version for a particular platforms, use 'all'
+  # To view available platform and verssion, visits: https://galaxy.ansible.com/api/v1/platforms/
+
+  # plantforms:
+
+    - name : fedora
+
+     versions:
+     - all
+     - 25
+   - name: Someplatform
+     versions:
+     - all
+     - 1.0
+     - 7
+     - 99.99
+
+
+galaxy_tag: []
+  # List tags for your role here, one per line. A tag is a keyword that describes and categorizes the role. User find roles by searching for tags. Be sure to remove the '[]' above, if you add tags to this list.
+
+
+  # NOTE: a tag is a limited to a single word comprised of alphanumeric charaters.
+  #        Maximum 20 tags per roles.
+
+
+
+
+dependencies: []
+
+ # List your role Dependencies here, one per line, be sure to remove the '[]' ababove, if you add dependencies to this list.
+

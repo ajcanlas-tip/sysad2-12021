@@ -1,0 +1,6 @@
+---
+  - name: Installing Apache, MySQL, and PHP Package
+    hosts: ubuntu
+
+    roles:
+      - install-ubuntu

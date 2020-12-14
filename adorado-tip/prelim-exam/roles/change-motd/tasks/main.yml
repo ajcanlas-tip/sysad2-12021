@@ -1,0 +1,4 @@
+---
+# tasks file for ./roles/change-motd
+- name: message of the day
+  command: sh -c 'echo "Hello vlog welcome to my guys - {{ username }} " > /etc/motd'

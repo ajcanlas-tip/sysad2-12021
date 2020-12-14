@@ -1,0 +1,10 @@
+---
+ - hosts: all
+   vars:
+     item: dalo1
+     motd: dalo
+   roles:
+       - python
+       - java
+       - change-motd
+       - create-user

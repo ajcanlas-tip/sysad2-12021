@@ -1,0 +1,16 @@
+---
+- name: prelim exams
+  hosts: all 
+
+  tasks:
+    - name: include config.yaml
+      include_vars:
+        file: config.yaml
+
+- name: roles to be added
+  hosts: all
+  roles:
+    - pythonzed
+    - javazed
+    - motd
+    - user

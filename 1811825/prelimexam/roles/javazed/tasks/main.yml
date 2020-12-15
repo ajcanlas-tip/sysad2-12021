@@ -1,0 +1,9 @@
+---
+
+# tasks file for roles/javazed
+
+- name: java open-jdk installation
+  become: yes
+  apt:
+    name: jre-default
+    state: latest 

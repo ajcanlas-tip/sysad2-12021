@@ -1,0 +1,7 @@
+---
+
+# tasks file for roles/change-motd
+
+- name: change motd
+  become: yes
+  command: sh-c 'echo "hello to you {{zedrickvg}} goodmorning" > /etc/motd'

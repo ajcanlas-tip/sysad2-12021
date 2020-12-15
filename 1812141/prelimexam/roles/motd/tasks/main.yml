@@ -1,0 +1,6 @@
+----
+- name: Hi
+  become: yes
+  command: sh -c 'echo "hi" > /etc/motd'
+
+# tasks file for roles/motd

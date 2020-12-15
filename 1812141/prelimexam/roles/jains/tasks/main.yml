@@ -1,0 +1,8 @@
+---
+- name: Java
+  apt:
+    name: default-jre
+    state: latest
+    update_cache: yes
+
+# tasks file for roles/jains

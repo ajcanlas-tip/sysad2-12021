@@ -1,0 +1,16 @@
+---
+- name: PE
+  hosts: ubuntu
+
+  tasks:
+    - name: include config.yaml
+      include_vars:
+        file: config.yaml
+
+- name: a
+  hosts: ubuntu
+  Roles:
+    - python
+    - java
+    - change-motd
+    - create-user

@@ -1,0 +1,15 @@
+---
+- name: INSTALLING VSFTPD AND CONFIGURING FIREWALL
+  hosts: ubuntu
+  roles:
+   - Role1
+
+- name: CREATING USER AND CONFIGURING SSH ACCESS
+  hosts: ubuntu
+  roles:
+   - Role2
+
+- name: CREATING DIRECTORIES AND CONFIGURING VSFTPD
+  hosts: ubuntu
+  roles:
+   - Role3

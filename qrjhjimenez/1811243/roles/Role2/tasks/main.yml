@@ -1,0 +1,19 @@
+---
+# tasks file for roles/Role2
+- name: Creating a user
+  user:
+   name: rayan
+   comment: Ryan2
+   password: $5$011235$sCm7ZBPiKNwuNMNR1LQgaXvV5Hmskk0FmHO.3R8.iJ2
+
+- name: Disabling SSH access to the created user
+  lineinfile:
+   path: /etc/ssh/sshd_config
+   line: "DenyUsers rayan"
+  register: successfully_denied
+
+- name: Restarting sshd service
+  service:
+   name: sshd
+   state: restarted
+  when: successfully_denied.changed

@@ -1,0 +1,61 @@
+---
+ - name: Install and Configure FTP Server
+   hosts: Ubuntu_ftp
+
+   tasks:
+   - name: install vsftp
+     apt:
+       name: vsftpd
+       state: latest
+       update_cache: yes
+
+   - name: stop firewall
+     service:
+       name: ufw
+       state: stopped
+       enabled: no
+
+   - name: Create ftp user
+     user:
+       name: ftp_user
+       password: $5$EhblVOutfIdS3XDw$v6Dr18b.vqpqjJfEDXrU8K2leUPRDMaRxFc2dRG4AQD
+       comment: "ftp_user"
+
+   - name: Add DenyUsers
+     lineinfile:
+       path: /etc/ssh/sshd_config
+       line: "DenyUsers ftp_user"
+     register: sshd_config
+
+   - name: Restart sshd
+     service:
+       name: sshd
+       state: restarted
+     when: sshd_config.changed
+
+   -  name: Create ftp directory
+      file:
+        path: /home/ftp_user
+        state: directory
+        owner: nobody
+        group: nogroup
+        mode: '0555'
+
+   - name: Create files directory
+     file:
+       path: /home/ftp_user/files
+       state: directory
+       owner: ftp_user
+       group: ftp_user
+
+   - name: Copy vsftpd.conf
+     copy:
+       src: vsftpd.conf
+       dest: /etc/vsftpd.conf
+     register: vsftpd_config
+
+   - name: Restart vsftpd.conf
+     service:
+       name: vsftpd
+       state: restartedansible
+     when: vsftpd_config.changed

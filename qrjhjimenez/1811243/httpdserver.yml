@@ -1,0 +1,15 @@
+---
+- name: Installing Apache and Configuring firewall
+  hosts: ubuntu
+  roles:
+   - Role1
+
+- name: Creating Directory for Sample Website
+  hosts: ubuntu
+  roles:
+   - Role2
+
+- name: Configuring and Starting httpd
+  hosts: ubuntu
+  roles:
+   - Role3

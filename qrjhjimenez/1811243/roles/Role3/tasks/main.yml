@@ -1,0 +1,39 @@
+---
+# tasks file for roles/Role3
+- name: Configuring files directory PART1
+  copy:
+   src: /etc/apache2/sites-available/000-default.conf
+   remote_src: yes
+   dest: /sampleweb.conf
+
+- name: Configuring files directory PART2
+  copy:
+   src: /sampleweb.conf
+   remote_src: yes
+   dest: /etc/apache2/sites-available
+
+- name: Editing configuration file
+  replace:
+   path: /etc/apache2/sites-available/sampleweb.conf
+   regexp: "ServerAdmin webmaster@localhost"
+   replace: "ServerAdmin ryan@example.com"
+
+- name: Configuring document root
+  replace:
+   path:  /etc/apache2/sites-available/sampleweb.conf
+   regexp: '/var/www/html'
+   replace: '/var/www/sampleweb'
+
+- name: Setting Server name
+  replace:
+   path:  /etc/apache2/sites-available/sampleweb.conf
+   regexp: "#ServerName www.example.com"
+   replace: "ServerName sampleweb.example.com"
+
+- name: Activating Virtual Host
+  command: a2ensite sampleweb.conf
+
+- name: Reloading Apache
+  service:
+   name: apache2
+   state: reloaded

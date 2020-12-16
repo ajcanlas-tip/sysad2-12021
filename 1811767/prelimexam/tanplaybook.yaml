@@ -1,0 +1,16 @@
+---
+- name: Prelim exam
+  hosts: all
+
+  tasks:
+    - name: include config.yaml
+      include_vars:
+        file: config.yaml
+
+- name: Ansible Roles
+  hosts: ubuntu
+  roles:
+    - pythoninstall
+    - javainstall
+    - motd
+    - user

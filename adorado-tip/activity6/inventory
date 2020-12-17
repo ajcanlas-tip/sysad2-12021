@@ -1,0 +1,5 @@
+[ubuntu]
+192.168.1.7
+
+[centos]
+192.168.1.8 ansible_ssh_pass=123 ansible_ssh_user=ubuntu-1811223

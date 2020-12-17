@@ -1,0 +1,16 @@
+---
+ - name: vsftp installer and firewall down
+   hosts: ubuntu
+   roles:
+     - vsftpd_install
+
+ - name: create user and access ssh
+   hosts: ubuntu
+   roles:
+     - make_user
+
+ - name: file folder
+   hosts: ubuntu
+   roles:
+     - eftp
+

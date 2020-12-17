@@ -1,0 +1,56 @@
+---
+# tasks file for ubuntu
+- name: Install vsftpd
+  apt:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: Stop firewall
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+- name: Create ftpuser
+  user:
+    name: nrmadelo-quiz32
+    password: $5$f .2mwGfSBFbChUy9$eKVcauz/WH88kmcGyRn4yufhXvL.Zr6box8pY76WBq/
+    comment: "NEW FTP USER CREATED"
+- name: add DenyUsers in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers nrmadelo-quiz32"
+  register: sshd_config
+
+- name: restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Create ftp directory
+  file:
+    path: /home/nrmadelo-quiz32/ftp
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: '0555'
+
+- name: Create files directory
+  file:
+    path: /home/nrmadelo-quiz32/ftp/files
+    state: directory
+    owner: nrmadelo-quiz32
+    group: nrmadelo-quiz32
+
+- name: Copy vsftpd.conf in /etc/vsftpd.conf
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_config
+
+- name: Restart vsftpd.conf
+  service:
+    name: vsftpd
+    state: restarted
+  when: vsftpd_config.changed

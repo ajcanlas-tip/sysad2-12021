@@ -1,0 +1,7 @@
+---
+# tasks file for ./roles/ubuntu
+
+- name: Installing VSFTPD
+  apt:
+    name: vsftpd
+    state: latest

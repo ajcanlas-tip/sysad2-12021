@@ -1,0 +1,16 @@
+---
+ - name: install core
+   host: ubuntu
+   roles:
+     - nagios_core
+
+ - name: install plugins
+   host: ubuntu
+   roles:
+     - nagios_plugins
+
+ - name: install package
+   host: ubuntu
+   roles:
+     - package_est
+

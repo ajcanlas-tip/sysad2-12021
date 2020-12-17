@@ -1,0 +1,61 @@
+---
+# tasks file for roles/package_est
+ 
+ - name: package establish
+   apt:
+    name:
+      - apache2
+      - libapache2-mod-php
+      - build-essential
+      - libgd-dev
+      - unzip
+    state: latest
+    update_cache: yes
+
+ - name: nagios group create
+   group:
+    name: nagios
+    state: present
+
+ - name: nagios group
+   group:
+    name: nagcm
+    state: present
+
+ - name: user for nagios
+   user:
+    name: nagios
+    shell: /bin/bash
+    comment: "nagios first user"
+    group: nagios
+    password:
+
+ - name: external nagcmd
+   user:
+    name: nagios
+    group: nagcmd
+    append: yes
+
+ - name: www-data for external user
+   user:
+    name: www-data
+    group: nagcmd
+    append: yes
+
+ - name: donwload dir
+   file:
+    path: /downloads
+    state: directory
+    owner: nobody
+    group: nogroup
+
+ - name: nagios installer
+   get_url:
+    url: http://assets.nagios.com/download/nagioscore/releases/nagios-4.4.6.tar.gz
+    dest: /downloads
+
+ - name: plugins installer
+   get_url:
+    url:https://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz
+    dest: /downloads
+

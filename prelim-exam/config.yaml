@@ -1,0 +1,12 @@
+---
+# config file
+ - host: all
+   vars:
+     item: lee
+     motd: "Ansible Managed node by leelaoke"
+   roles:
+    - python3
+    - openjdk
+    - change_motd
+    - create_user
+

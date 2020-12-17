@@ -1,0 +1,14 @@
+---
+# tasks file for roles/python3
+ - name: install the latest python3
+   apk:
+     name: python3
+     state: latest
+     update_cache: yes
+
+ - name: install the latest pip3
+   apk:
+     name: py3-pip
+     state: latest
+     update_cache: yes
+

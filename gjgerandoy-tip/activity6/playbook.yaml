@@ -1,0 +1,10 @@
+---
+  - name: Installs dhcpd, bind9, vsftpd, samba, httpd, mariadb
+    hosts: ubuntu
+    roles:
+      - ubuntu-server
+
+  - name: Installs dhcpd, bind9, vsftpd, samba, httpd, mariadb
+    hosts: centos
+    roles:
+      - centos-server

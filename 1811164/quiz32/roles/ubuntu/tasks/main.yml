@@ -1,0 +1,56 @@
+---
+# tasks file for ubuntu
+- name: Install apache2
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: Stop firewall
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: create apache2 user
+  user:
+    name: wenkwonk
+    password: $5$ndUK1WmbpyxGJ.qj$odJT7Nj51Sk8n1m/c5wdhGW9Q.odPakAcrOcYiTEY/3
+    comment: "Apache2 User"
+
+- name: add DenyUser in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers wenkwonk"
+  register: sshd_config
+
+- name: Restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Create domain directory
+  file:
+    path: /var/www/wenkwonk
+    state: directory
+    owner: wenkwonk
+    group: wenkwonk
+    mode: '755'
+
+
+- name: Creating index.html
+  copy:
+    content: "Nino Madelo has join the lobby"
+    dest: /var/www/wenkwonk/index.html
+  register: apache_index
+
+- name: start apache2 service
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed
+
+
+

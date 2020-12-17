@@ -1,0 +1,15 @@
+---
+- name: Install Java
+  yum:
+    name: java-1.8.0-openjdk
+    state: present
+    update_cache: yes
+
+- name: Install Ansible, Boto, Openstack
+  pip:
+    name:
+       - ansible
+       - boto
+       - python-openstackclient
+
+# tasks file for roles/install_centos

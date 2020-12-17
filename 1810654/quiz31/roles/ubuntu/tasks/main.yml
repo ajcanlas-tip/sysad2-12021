@@ -1,0 +1,59 @@
+---
+# tasks file for ubuntu
+- name: Install vsftpd
+  apt:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: Stop Firewall
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: Create ftp user
+  user:
+    name: ivan24
+    password: $5$21RgAE71qzhkXFd0$judr.IHYYIadKLfOrPTLZuYu1C4ViPgKVKLUyCJevF7
+    comment: "FTP User"
+
+- name: add DenyUser in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "Deny Users ivan24"
+  register: ssh_config
+
+- name: restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: ssh_config.changed
+
+- name: Create ftp directory
+  file:
+    path: /home/ivan24/ftp
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: '0555'
+
+- name: Create files directory
+  file:
+    path: /home/ivan24/ftp/files
+    state: directory
+    owner: ivan24
+    group: ivan24
+
+- name: copy vsftpd.conf
+  copy:
+    src: vsftpd.conf
+    dest: /etc/usftpd.conf
+  register: vsftpd_config
+
+- name: restart vsftpd.conf
+  service:
+    name: vsftpd
+    state: restarted
+  when: vsftpd_config.changed
+

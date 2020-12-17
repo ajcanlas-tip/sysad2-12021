@@ -1,0 +1,52 @@
+---
+# tasks file for centos
+- name: Install httpd
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: Stop firewall
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: Create apache2 user
+  user:
+    name: ivan26
+    password: $5$phOu5xiQpDvMKmX9$TSv2yHOaCKMtN/uP0/QF/GouvQQIKo2Vhe3guDgd25D
+    comment: "httpd User"
+
+- name: Add DenyUser in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers ivan26"
+  register: sshd_config
+
+- name: Restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Create domain directory
+  file:
+    path: /var/www/ivan26
+    state: directory
+    owner: ivan26
+    group: ivan26
+    mode: '755'
+
+- name: Create index.html
+  copy:
+    content: "Vincent Ivan"
+    dest: /var/www/ivan26/index.html
+  register: apache_index
+
+- name: Start apache2 service
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

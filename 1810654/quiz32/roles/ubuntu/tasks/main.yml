@@ -1,0 +1,54 @@
+---
+# tasks file for ubuntu
+- name: Install apache2
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: Stop firewall
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: Create apache2 user
+  user:
+    name: ivan26
+    password: $5$il0vlG2lpMrhAbi6$k5Tr3sc9Qq2.zcZOGWKjODVUqikayNVwaasIaWZ4UB7
+    comment: "Apache2 User"
+
+- name: Add DenyUser in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers ivan26"
+  register: sshd_config
+
+- name: Restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Create domain directory
+  file:
+    path: /var/www/ivan26
+    state: directory
+    owner: ivan26
+    group: ivan26
+    mode: '755'
+
+
+- name: Create a index.html
+  copy:
+    content: "Ivan Cantero"
+    dest: /var/www/ivan26/index.html
+  register: apache_index
+
+- name: Start Apache service
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed
+

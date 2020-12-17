@@ -1,0 +1,57 @@
+---
+# tasks file for centos
+- name: Install vsftpd
+  yum:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: stop firewall
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+- name: Create ftp user
+  user:
+    name: nrmadelo-quiz32
+    password: $5$dPqTVHB.3fFu.4mW$5GEr49EkwJrTjmReM7QArrxI6dJFAf/VhY0DIvyjwG8
+    comment: "New Ftp User Has Joined"
+
+- name: Add DenyUser in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers nrmadelo-quiz32"
+  register: sshd_config
+
+- name: Restard sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Create ftp directory
+  file:
+    path: /home/nrmadelo-quiz32/ftp
+    state: directory
+    owner: nrmadelo-quiz32
+    group: nrmadelo-quiz32
+    mode: '550'
+
+- name: Create files directory
+  file:
+    path: /home/nrmadelo-quiz32/files
+    state: directory
+    owner: nrmadelo-quiz32
+    group: nrmadelo-quiz32
+
+- name: copy vsftpd.conf
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_config
+
+- name: Restart vsftpd.conf
+  service:
+    name: vsftpd
+    state: restart
+  when: vsftpd_config.changed

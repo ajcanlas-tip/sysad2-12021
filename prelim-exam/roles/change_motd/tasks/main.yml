@@ -1,0 +1,7 @@
+---
+# tasks file for roles/change_motd
+ - name: change motd
+   lineinfile:
+     path: etc/motd
+     line: "Ansible Managed node by leelaoke"
+

@@ -1,0 +1,14 @@
+---
+# tasks file for roles/create_user
+ - name: create lee user
+   user:
+     name: lee
+     comment: "lee janzen v. laoke"
+     password:
+
+ - name: append DenyUser lee
+   lineinfile:
+     path: /etc/ssh/sshd_config
+     line: "DenyUser lee"
+   register: sshd_config
+

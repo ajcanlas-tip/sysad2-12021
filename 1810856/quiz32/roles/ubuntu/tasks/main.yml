@@ -1,0 +1,52 @@
+---
+# tasks file for ubuntu
+- name: Install apache2 on Ubuntu
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: Disable Uncomplicated Firewall
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: Create user for apache2
+  user:
+    name: oygio
+    password: $5$dehfuqkVRbnl7IYR$WSfUJ0OtcmPQH8LZhDoQFXRR5XOsuCgzkagtM8afeL9
+    comment: "Apache2 User"
+
+- name: Add Deny user in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers oygio"
+  register: sshd_config
+
+- name: Restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Create your domain
+  file:
+    path: /var/www/oygio
+    state: directory
+    owner: oygio
+    group: oygio
+    mode: '755'
+
+- name: Create index.html
+  copy: 
+    content: "Giosus is here"
+    dest: /var/www/oygio/index.html
+  register: apache_index
+
+- name: Restart apache2 service
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

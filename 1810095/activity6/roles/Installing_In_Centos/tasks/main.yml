@@ -1,5 +1,6 @@
 ---
-# tasks file for roles/Installing_In_Centos
+# taasks file for roles/Installing_In_Centos
+
 - name: Installing for dhcpd
   yum:
     name: dhcp-server
@@ -40,4 +41,3 @@
     name: mariadb-server
     state: latest
     update_cache: yes
-

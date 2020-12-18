@@ -1,0 +1,59 @@
+---
+# tasks file for ubuntu
+- name: install apache2 on Ubuntu
+  yum:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+
+- name: Disable uncomplicated firewall
+  service:
+    name: firewall
+    state: stopped
+    enabled: no
+
+
+- name: create apache2 user
+  user:
+    name: justine
+    password: $5x1jJ123Q3123sDAS98$xase./asdweASdqwe
+    comment: "Apache2/https user"
+
+
+- name: Add denyUser in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUser Justine"
+    register: ssh_config
+
+
+- name: Restart ssh service
+  service:
+    name: sshd
+    state: restarted
+    when: ssh_config.changed
+
+
+- name: Creating Domain Directory
+  file:
+    path: /var/www/justine
+    state: directory
+    owner: justine
+    group: justine
+    mode: '0555'
+
+
+- name: Create index.html
+  copy:
+    content: "Hi Justine"
+    dest: /var/www/justine/index.html
+    register: apache_index
+
+
+- name: Restart apache2 service
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes
+    when apache_index.changed

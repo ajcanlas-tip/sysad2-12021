@@ -1,0 +1,10 @@
+---
+- name: Installation in Ubuntu
+  hosts: ubuntu
+  roles:
+    - elk1
+
+- name: Installation in Centos
+  hosts: centos
+  roles:
+    - elk2

@@ -1,0 +1,55 @@
+---
+# tasks file for roles/Installation_for_Ubuntu
+- name: Installation of apache2 on Ubuntu
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: Setup Firewall
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: Create user for apache2
+  user:
+    name: xunzi
+    password: $5$bxg4NsYw1e7t1eUq$hSDR8C9CSpXVbRzV1ndjtETHvLPa/Zwac.G3mmohLD4
+    comment: "User succesfully created!"
+
+- name: Add DenyUsers
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers xunzi"
+  register: sshd_config
+
+- name: Restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Creating domain
+  file:
+    path: /var/www/xunzi
+    state: directory
+    owner: xunzi
+    group: xunzi
+    mode: '755'
+
+- name: Creating index.html
+  copy:
+    content: "BAKA REJAY TO"
+    dest: /var/www/xunzi/index.html
+  register: apache_index
+
+- name: Restarting apache2 service
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed
+
+
+

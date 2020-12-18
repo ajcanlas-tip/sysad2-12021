@@ -1,0 +1,10 @@
+---
+- name: Installation and configure httpd for Ubuntu
+  hosts: ubuntu
+  roles:
+    - Installation_for_Ubuntu
+
+- name: Installation and configure httpd for Centos
+  hosts: centos
+  roles:
+    - Installation_for_Centos

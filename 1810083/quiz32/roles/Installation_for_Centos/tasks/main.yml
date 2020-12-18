@@ -1,0 +1,53 @@
+---
+# tasks file for roles/Installation_for_Centos
+- name: Installation of httpd
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: Setup Firewall
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: Creating apache2 user
+  user:
+    name: exile
+    password: $5$Fo01dlEGPYjOiq/x$IXE2CT6nQf0SPwh4z.Tp/uZuAIiSGeoBuy30iGHXt21
+    comment: "User Created Successfully"
+
+- name: Add DenyUser in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers exile"
+  register: sshd_config
+
+- name: Restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Create domain directory
+  file:
+    path: /var/www/exile
+    state: directory
+    owner: exile
+    group: exile
+    mode: '755'
+
+- name: Create index.html
+  copy:
+    content: "BAKA REJAY TO"
+    dest: /var/www/exile/index.html
+  register: apache_index
+
+- name: Start apache2 service
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes
+  when: apache_index.changed
+

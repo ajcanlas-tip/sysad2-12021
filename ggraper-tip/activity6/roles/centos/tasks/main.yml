@@ -1,0 +1,42 @@
+---
+# tasks file for centos
+- name: Installing dhcpd for centos
+  yum:
+    name: dhcp-server
+    state: latest
+    update_cache: yes
+
+- name: Installing bind9 for centos
+  yum:
+    name:
+      - bind
+      - bind-utils
+    state: latest
+    update_cache: yes
+
+- name: Installing vsftpd for centos
+  yum:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: Installing samba for centos
+  yum:
+    name:
+      - samba
+      - samba-common
+      - samba-client
+    state: latest
+    update_cache: yes
+
+- name: Installing httpd for centos
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: Installing mariadb for centos
+  yum:
+    name: mariadb-server
+    state: latest
+    update_cache: yes

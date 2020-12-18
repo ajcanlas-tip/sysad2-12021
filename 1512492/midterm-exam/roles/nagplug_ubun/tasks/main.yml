@@ -1,0 +1,28 @@
+---
+# tasks file for roles/nagplug_ubun
+ - name: install nagios plugin
+   unarchive:
+    src: https://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+ - name: configure nagios plugin
+   command: ./configure --with-nagios-user=nagios --with-nagios-group=nagcmd
+   args:
+    chdir: /tmp/nagios-plugins-2.3.3
+
+ - name: configure 'make'
+   make:
+    chdir: /tmp/nagios-plugins-2.3.3
+
+ - name: configure 'make' in 'install'
+   make:
+    target: install
+    chdir: /tmp/nagios-plugins-2.3.3
+
+ - name: start nagios
+   service:
+    name: nagios
+    state: started
+    enabled: yes
+

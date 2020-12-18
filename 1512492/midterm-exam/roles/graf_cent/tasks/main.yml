@@ -1,0 +1,51 @@
+---
+# tasks file for roles/graf_cent
+ - name: install grafana rep
+   copy:
+    src: grafana.repo
+    dest: /etc/yum.repos.d/
+
+ - name: install grafana
+   yum:
+    name: grafana
+    state: latest
+    update_cache: yes
+
+ - name: start grafana
+   service:
+    name: grafana-server
+    state: started
+
+ - name: install prometheus rep
+   copy:
+    src: prometheus.repo
+    dest: /etc/yum.repos.d/
+
+ - name: install prometheus
+   yum:
+    name: prometheus2
+    state: lastest
+    update_cache: yes
+
+ - name: start prometheus
+   service:
+    name: prometheus
+    state: started
+
+ - name: install influxdb rep
+   copy:
+    src: influxdb.repo
+    dest: /etc/yum.repos.d/
+
+ - name: install influxdb
+   yum:
+    name: influxdb
+    state: latest
+    update_cache: yes
+
+ - name: start influxdb
+   service:
+    name: influxdb
+    state: started
+
+

@@ -1,0 +1,68 @@
+---
+# tasks file for roles/apa_ubun
+ - name: install apache
+   apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+ - name: copy apache index
+   copy:
+    content: "laokee"
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+   register: apache_index
+
+ - name: start apache
+   service:
+    name: apache2
+    state: started
+    enabled: yes
+   when: apache_index.changed
+
+ - name: allow apache in firewall
+   ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+
+ - name: install mysql server
+   apt:
+    name: mysql-server
+    staate: latest
+    update_cache: yes
+
+ - name: copy mysql index
+   copy:
+    content: "hellolaoke'
+    dest: /var/www/html/index_1.html
+    owner: root
+    group: root
+    mode: '0644'
+   register: mysql_index
+
+ - name: start mysql
+   service:
+    name: mysql
+    state: started
+    enabled: yes
+   when: mysql_index.changed
+
+ - name: install php
+   apt:
+    name:
+     - php
+     - php-mysql
+     - libapache2-mod-php
+    state: latest
+    update_cache: yes
+
+ - name: copy php index
+   copy:
+    content: 'laoke'
+    dest: /var/www/html/index_2.html
+    owner: root
+    groupt: root
+    mode: '0644'
+

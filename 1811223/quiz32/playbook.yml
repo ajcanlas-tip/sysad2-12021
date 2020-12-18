@@ -1,0 +1,61 @@
+---
+- name: Installation and Configuration of HTTP Server
+  hosts: ubuntu
+
+  tasks:
+
+    - name: Installing Apache2
+      apt:
+        name: apache2
+        state: latest
+
+
+    - name: Creating directory for the website
+      file:
+        path: /var/www/quiz32
+        state: directory
+        owner: nobody
+        group: nogroup
+
+    - name: Including index.html
+      copy:
+        src: index.html
+        dest: /var/www/quiz32
+
+    - name: Copying configuration file
+      copy:
+        src: /etc/apache2/sites-available/000-default.conf
+        remote_src: yes
+        dest: /quiz32.conf
+
+    - name: Adding the configuration file
+      copy:
+        src: /quiz32.conf
+        remote_src: yes
+        dest: /etc/apache2/sites-available
+
+    - name: Editing configuration directory
+      replace:
+        path: /etc/apache2/sites-available/quiz32.conf
+        regexp: '/var/www/html'
+        replace: '/var/www/quiz32'
+
+    - name: Editing Server Name
+      replace:
+        path: /etc/apache2/sites-available/quiz32.conf
+        regexp: "#ServerName www.example.com"
+        replace: "ServerName www.quiz32.com"
+
+    - name: Editing Server Admin
+      replace:
+        path: /etc/apache2/sites-available/quiz32.conf
+        regexp: "ServerAdmin webmaster@localhost"
+        replace: "ServerAdmin quiz32@adorado-tip.com"
+
+    - name: Activating the Virtual Host
+      command: a2ensite quiz32.conf
+
+    - name: Reloading Apache Server
+      service:
+        name: apache2
+        state: reloaded

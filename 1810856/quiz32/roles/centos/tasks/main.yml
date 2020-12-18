@@ -21,7 +21,7 @@
 - name: Add DenyUser in /etc/ssh/sshd_config
   lineinfile:
     path: /etc/ssh/sshd_config
-    line: "DennyUser oygio"
+    line: "DenyUser oygio"
   register: ssh_config
 
 - name: Restart sshd service

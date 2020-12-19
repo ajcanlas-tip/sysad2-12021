@@ -1,0 +1,13 @@
+---
+- name: Installing VSFTPD
+  hosts: ubuntu
+
+  roles:
+    - ubuntu-vsftpd
+
+- name: Installing VSFTPD
+  hosts: centos
+
+  roles:
+    - centos-vsftpd
+

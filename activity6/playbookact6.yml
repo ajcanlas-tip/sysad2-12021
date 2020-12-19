@@ -1,0 +1,12 @@
+---
+ - name: dhcpd, bind9, vsftpd, samba, httpd, mariadb in ubuntu installation
+   hosts: ubuntu
+   
+   roles:
+     - ubuntu
+
+ - name: dhcpd, bind9, vsftpd, samba, httpd, mariadb in centos installation
+   hosts: centos
+
+   roles:
+     - centos

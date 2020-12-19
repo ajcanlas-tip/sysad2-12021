@@ -1,0 +1,67 @@
+---
+ - name: httpd server installation
+   hosts: ubuntu
+
+   tasks:
+   - name: Apache installation
+     apt: 
+        name: apache2
+        state: latest
+        update_cache: yes
+   
+   - name: Allow Installation through Firewall
+     ufw:
+       rule: allow
+       direction: in
+       name: 'Apache'
+
+   - name: Create Directories
+     file: 
+       name: /var/www/quiz32
+       state: directory
+       owner: nobody
+       group: nogroup
+    
+   - name: create html file
+     copy:
+       src: index.html
+       dest: /var/www/quiz32
+   
+   - name: configuring directory
+     copy:
+       src: /etc/apache2/sites-available/000-default.conf
+       remote_src: yes
+       dest: /quiz32.conf
+
+   - name: copy default file
+     copy:
+       src: /quiz32.conf
+       remote_src: yes
+       dest: /etc/apache2/sites-available
+
+   - name: document root
+     replace:
+       path: /etc/apache2/sites-available/quiz32.conf
+       regexp: '/var/www/html'
+       replace: '/var/www/quiz32'
+
+   - name: create editin server admin
+     replace:
+       path: /etc/apache2/sites-available/quiz32.conf
+       regexp: "ServerAdmin webmaster@localhost"
+       replace: "ServerAdmin carangan@carangan"
+
+   - name: Editing server name
+     replace:
+       path: /etc/apache2/sites-available/quiz32.conf
+       regexp: "#ServerName www.example.com"
+       replace: "#ServerName www.quiz32.com"
+
+   - name: Activating Virtualhost
+     command: a2ensite quiz32.conf
+
+   - name: reload Apache2
+     service:
+       name: apache2
+       state: reloaded       
+

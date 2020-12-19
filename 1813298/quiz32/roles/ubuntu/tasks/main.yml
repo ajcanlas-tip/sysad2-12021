@@ -1,0 +1,46 @@
+---
+# tasks file for roles/ubuntu
+- name: Install apache2 on Ubuntu
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: Firewall
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: Create User for Apache2
+  user:
+    name: eliekareyes
+    password: $5$dUHbhnn188R1sffg$i8xDNf6SHjb9oGj6onfRa.C31W4AGa0a2OqV.uKTyv5
+    comment: "Apache2 User"
+
+- name: Add DenyUser in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUser eliekareyes"
+  register: sshd_config
+
+- name: Create Domain Directory
+  file:
+    path: /var/www/eliekareyes
+    state: directory
+    owner: eliekareyes
+    group: eliekareyes
+    mode: '755'
+
+- name: Create an index.html
+  copy:
+    content: "Elieka Reyes"
+    dest: /var/www/eliekareyes/index.html
+  register: apache_index
+
+- name: Start Apache Service
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

@@ -1,0 +1,52 @@
+---
+# tasks file for roles/centos
+- name: Installing httpd on Centos
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: Firewall
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: Create Apache2 User
+  user:
+    name: eliekareyes
+    password: $5$dUHbhnn188R1sffg$i8xDNf6SHjb9o6jb9oGj6onfRa.C31W4AGa0a2OqV.uKTyv5
+    comment: "httpd User"
+
+- name: Add DenyUser in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUser eliekareyes"
+  register: ssh_config
+
+- name: Restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: ssh_config.changed
+
+- name: Creating The Domain Directory
+  file:
+    path: /var/www/eliekareyes
+    state: directory
+    owner: eliekareyes
+    group: eliekareyes
+    mode: '755'
+
+- name: Create index.html
+  copy:
+    content: "Elieka Reyes"
+    dest: /var/www/eliekareyes/imdex.html
+  register: apache_index
+
+- name: Start apache2 service
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

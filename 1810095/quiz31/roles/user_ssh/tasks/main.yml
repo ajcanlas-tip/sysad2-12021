@@ -1,0 +1,22 @@
+---
+# tasks file for roles/user_ssh
+
+- name: creating user
+  user:
+    name: moreno2
+    password: $5$pByNnRO3kzE4rvX0$P89cOrM6gKy4lAn7EwE3dc1bgrXN093ZHdiB0Zavoo3
+    comment: "added new user"
+
+- name: creating deny user
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "denyusers moreno2"
+  register: sshd_config
+
+- name: sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+

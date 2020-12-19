@@ -1,0 +1,35 @@
+---
+
+ - name: Install DHCP Server
+   apt:
+     name: isc-dhcp-server
+     state: latest
+     update_cache: yes
+
+ - name: Install bind9
+   apt:
+     name: bind9
+     state: latest
+     update_cache: yes
+
+ - name: Install VSFTPD
+   apt:
+     name: vsftpd
+     state: latest
+ 
+ - name: Install Samba
+   apt:
+     name: samba
+     state: latest
+ 
+ - name: Install HTTPD
+   apt:
+     name: apache2
+     state: latest
+
+ - name: Install MariaDB
+   apt:
+     name: mariadb-server-10.3
+     state: latest
+
+# tasks file for roles/Ubuntu_Install

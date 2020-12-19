@@ -1,0 +1,13 @@
+---
+ - name: Install DHCPD, bind9, usftpd, samba, HTTPD, and MariaDB for Ubuntu
+   hosts: Ubuntu
+
+   roles:
+     - Ubuntu_Install
+
+ - name: Install DHCPD, bind9, usftpd, samba, HTTPD, and MariaDB for CentOS
+   hosts: CentOS
+
+   roles:
+     - CentOS_Install
+

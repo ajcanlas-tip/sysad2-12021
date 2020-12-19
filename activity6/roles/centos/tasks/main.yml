@@ -1,0 +1,41 @@
+---
+ - name: DHCPD instaltion
+   yum:
+     name: dhcp-server
+     state: latest
+     update_cache: yes
+
+ - name: Bind9 installation
+   yum:
+     name: bind
+     state: latest
+     update_cache: yes
+
+ - name: VSFTPD installtion
+   yum:
+     name: vsftpd
+     state: latest
+     update_cache: yes
+ - name: Samba installation
+   yum:
+     name:
+       - samba
+       - samba-common
+       - samba-client
+     state: latest
+     update_cache: yes
+
+ - name: HTTPD installtion
+   yum:
+     name: httpd
+     state: latest
+     update_cache: yes
+
+ - name: MariaDB installtion
+   yum:
+     name: mariadb-server 
+     state: latest
+     update_cache: yes
+
+
+# tasks file for roles/centos

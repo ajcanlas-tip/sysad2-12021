@@ -1,0 +1,12 @@
+---
+- name: Installing VSFTPD on Ubuntu
+  hosts: ubuntu
+
+  roles:
+    - ubuntu
+
+- name: Installing VSFTPD on CentOS
+  hosts: centos
+
+  roles:
+    - centos

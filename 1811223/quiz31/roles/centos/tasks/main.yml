@@ -1,0 +1,43 @@
+---
+# tasks file for ./roles/centos
+- name: Installing VSFTPD
+  yum:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: Creating FTP user
+  user:
+    name: adi
+    password: $5$VZqmHpQL$pwEU5gpsDxx9LNDQrxFkJjtwffopMylvkCGcfhUNRe3
+
+- name: Denying user
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers adi"
+  register: sshd_config
+
+- name: Restarting SSHD service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Creating FTP directory
+  file:
+    path: /home/adi/ftp
+    state: directory
+    owner: adi
+    group: adi
+
+- name: Copying configuration file
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_config
+
+- name: Restart vsftp.conf
+  service:
+    name: vsftpd
+    state: restarted
+  when: vsftpd_config.changed

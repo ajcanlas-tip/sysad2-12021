@@ -1,0 +1,52 @@
+---
+# tasks file for ubuntu
+- name: INSTALL apache2
+  apt: 
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: STOP FIREWALL
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: CREATE apache2 USER
+  user: 
+    name: galitaa
+    password: $5$0ydqRtscovhmHTlW$KPcAbmtCSEjONqAXYi70pEHMk.mkLIrzoihy5EEQry6
+    comment: "CREATED apache2 USER"
+
+- name: ADD DenyUser in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers galitaa"
+  register: sshd_config
+
+- name: RESTART sshd SERVICE
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: CREATE DOMAIN
+  file:
+    path: /var/www/galitaa
+    state: directory
+    owner: galitaa
+    group: galitaa
+    mode: '755'
+
+- name: CREATE index.html
+  copy:
+    content: "Hi! I am Adrian!"
+    dest: /var/www/galitaa/index.html
+  register: apache_index
+
+- name: RESTART apache2 SERVICE
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

@@ -1,0 +1,52 @@
+---
+# tasks file for centos
+- name: INSTALL httpd
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: STOP FIREWALL
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: CREATE apache2 USER
+  user:
+    name: galitaa
+    password: $5$BJOiL6zGh20Mzpqn$oho/Xr/JeKLJ7dNlvjqGkc7GzLjbTOEvopXPrnAAow6
+    comment: "CREATED httpd USER"
+
+- name: ADD DenyUser IN /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUser galitaa"
+  register: ssh_config
+
+- name: RESTART sshd SERVICE
+  service:
+    name: sshd
+    state: restarted
+  when: ssh_config.changed
+
+- name: CREATING DOMAIN DIRECTORY
+  file:
+    path: /var/www/galitaa
+    state: directory
+    owner: galitaa
+    group: galitaa
+    mode: '0555'
+
+- name: CREATE index.html
+  copy:
+    content: "Hi! I am Adrian"
+    dest: /var/www/galitaa/index.html
+  register: apache_index
+
+- name: RESTART apache2 SERVICE
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

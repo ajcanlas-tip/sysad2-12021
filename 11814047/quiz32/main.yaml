@@ -1,0 +1,12 @@
+---
+- name: INSTALLATION AND CONFIGURATION OF HTTPD FOR UBUNTU
+  hosts: ubuntu
+  roles:
+    - ubuntu
+
+- name: INSTALLATION AND CONFIGURATION OF HTTPD FOR CENTOS
+  hosts: centos
+  roles: 
+    - centos
+
+

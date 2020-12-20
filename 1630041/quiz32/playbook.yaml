@@ -1,0 +1,45 @@
+---
+- name: Install apache2
+  apt: 
+     name: apache2
+     state: latest
+     update_cache: yes
+
+- name: Firewall Status
+  service:
+          name: ufw
+          state: stopped
+          enabled: no
+
+- name: Create User for apache2
+  user:
+          name: gerald
+          passowrd: $5$pHn.U5oQjgv1Dugt$dSCfWhCj8Ww4f4pnMtUgmz5RKenGpcNmz74UXYaX02
+          comment: "User created!"
+
+- name: DenyUser
+  lineinfile:
+          path: /etc/ssh/sshd_config
+          line: "DenyUser gerald"
+          register: sshd_config
+
+- name: Creating Directory
+  file:
+          path: /var/www/gerald
+          state: directory
+          owner: gerald
+          group: gerald
+          mode: '775'
+
+- name: Create index.html
+  copy: 
+      content: "Quiz3.2 Gerald Maranan"
+      dest: /var/www/gerald/index.html
+      register: apache_index
+
+- name: Start Apache Service
+  service:
+          name: apache2
+          state: restarted
+          enabled: yes
+          when: apache_index.changed

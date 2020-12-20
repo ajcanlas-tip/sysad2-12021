@@ -1,0 +1,10 @@
+---
+- name: INSTALLATION OF vsftpd FOR UBUNTU
+  hosts: ubuntu
+  roles:
+    - ubuntu
+
+- name: INSTALLATION OF vsftpd FOR CENTOS
+  hosts: centos
+  roles:
+    - centos

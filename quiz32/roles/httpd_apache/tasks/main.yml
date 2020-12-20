@@ -1,0 +1,18 @@
+---
+# tasks file for roles/httpd_apache
+ - name: install httpd/apache
+   apt:
+     name: apache2
+     state: latest
+     update_cache: yes
+
+ - name: firewall settings
+   ufw:
+     rule: allow
+     direction: in
+     name: 'Apache'
+
+ - name: reload apache
+   service:
+     name: apache2
+     state: reloaded

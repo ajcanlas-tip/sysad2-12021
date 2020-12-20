@@ -1,0 +1,8 @@
+---
+# tasks file for roles/web_dir
+ - name: create website directory
+   file:
+     path: /var/www/website
+     state: directory
+     owner: nobody
+     group: nogroup

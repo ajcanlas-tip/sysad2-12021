@@ -1,0 +1,53 @@
+---
+# tasks file for roles/ubuntu_configure
+
+  - name: Apache2 Installation
+    apt:
+      name: apache2
+      state: latest
+      update_cache: yes
+
+  - name: Starting Apache2 service
+    service:
+      name: apache2
+      state: started
+      enabled: yes
+
+  - name: Stop ufw
+    service:
+      name: ufw
+      state: stopped
+      enabled: no
+
+  - name: Creating Virtual Host Directory
+    file:
+      path: /var/www/matienzo_domain
+      state: directory
+      mode: '0755'
+
+  - name: Copying index.html from files folder
+    copy:
+      src: index.html
+      dest: /var/www/matienzo_domain/index.html
+      owner: "{{ owner }}"
+      group: "{{ owner }}"
+      mode: '0755'
+
+  - name: Copying of conf file to sites-available
+    copy:
+      src: matienzo_domain.conf
+      dest: /etc/apache2/sites-available/matienzo_domain.conf
+      owner: "{{ owner }}"
+      group: "{{ owner }}"
+      mode: '0755'
+
+  - name: Enabling new Virtual Host
+    shell: a2ensite matienzo_domain
+
+  - name: Disable default website
+    shell: a2dissite 000-default
+
+  - name: Restarting Apache2 to apply changes
+    service:
+      name: apache2
+      state: restarted

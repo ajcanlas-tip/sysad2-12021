@@ -1,0 +1,15 @@
+---
+  - name: Ubuntu Configuration
+    hosts: ubuntu
+    roles:
+      - ubuntu_configure
+    vars:
+      owner: matienzo-1810204
+
+
+  - name: Centos Configuration
+    hosts: centos
+    roles:
+      - centos_configure
+    vars:
+      owner: matienzo-1810204

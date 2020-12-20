@@ -1,0 +1,61 @@
+---
+- name: Installation of vstpd service
+  host: ubuntu
+
+  tasks:
+    - name: apt update && apt install vsftpd
+      apt:
+        name: vsftpd
+        state: latest
+        update_cache: yes
+
+    - name: Stop firewall
+      service:
+        name: ufw
+        state: stopped
+        enabled: no
+
+    - name: FTP
+      user:
+        name: alex
+        password: 12345
+        comment: Alexx
+
+    - name: denyuser
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        line: "denyuser"
+        register: sshd_config
+
+    - name: SSHD
+      service:
+        name: sshd
+        state: restarted
+        when: sshd_config.changed
+
+    - name: Creating ftp
+      file:
+        path: /home/alex
+        state: directory
+        owner: nobody
+        group: nogroup
+        mode: '0555'
+
+    - name: Create files
+      file:
+        path: /home/alex/files
+        state: directory
+        owner: alex
+        group: alex
+
+    - name: vsftp.conf
+      copy:
+        src: vsftpd.conf
+        dest: /etc/vsftpd.conf
+        register: vsftpd_config
+
+    - name: restart
+      service:
+        name: vsftpd
+        state: restarted
+        when: vsftpd_config.changed

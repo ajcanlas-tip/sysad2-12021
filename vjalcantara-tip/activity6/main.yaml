@@ -1,0 +1,9 @@
+---
+- hosts: centos
+  roles:
+    - centos
+
+
+- hosts: ubuntu
+  roles:
+    - ubuntu

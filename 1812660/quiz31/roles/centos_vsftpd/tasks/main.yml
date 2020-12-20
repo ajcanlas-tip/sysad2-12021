@@ -1,0 +1,46 @@
+---
+# tasks file for roles/centos_vsftpd
+
+- name: Centos - Install vsftpd
+  yum:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: Centos - Disable Firewall
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: Centos - Start vsftpd
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: Centos - Create FTP User
+  user:
+    name: ftp_user
+    password: $5$OG5a6TJ9FT53n6xT$VZxj3s2bJmoAH1NhcCAHdQmmAkawWIFOvEgbR3uAx42
+    comment: "FTP User"
+
+- name: Centos - FTP Directory
+  file:
+    path: /home/ftp_user/ftp
+    state: directory
+    owner: ftp_user
+    group: ftp_user
+    mode: '0750'
+
+- name: Centos - Copy vsftpd_centos.conf in /etc/vsftpd.conf
+  copy:
+    src: vsftpd_centos.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_config
+
+- name: Centos - Restart vsftpd
+  service:
+    name: vsftpd
+    state: restarted
+  when: vsftpd_config.changed

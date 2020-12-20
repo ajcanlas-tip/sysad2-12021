@@ -1,0 +1,10 @@
+---
+  - name: Install and Configure FTP server in Ubuntu
+    hosts: ubuntu
+    roles:
+      - ubuntu_vsftpd
+
+  - name: Install and Configure FTP server in Centos
+    hosts: centos
+    roles:
+      - centos_vsftpd

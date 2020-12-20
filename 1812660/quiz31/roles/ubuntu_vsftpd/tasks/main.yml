@@ -1,0 +1,59 @@
+---
+# tasks file for roles/ubuntu_vsftpd
+
+- name: Ubuntu - Install vsftpd
+  apt:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: Ubuntu - Disable Firewall
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: Ubuntu - Create FTP User
+  user:
+    name: ftp_user
+    password: $5$3gaVpvoXNcPbqnmh$.y9KMW12SkRVe8NY3Y6ixhaY5Y5fyUE4kU0xC/Mlbs1
+    comment: "FTP User"
+
+- name: Ubuntu - DenyUsers to /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers ftp_user"
+  register: sshd_config
+
+- name: Ubuntu - sshd service restart
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Ubuntu - Create FTP Directory
+  file:
+    path: /home/ftp_user/ftp/
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: "0555"
+
+- name: Create Files Directory
+  file:
+    path: /home/ftp_user/ftp/files
+    state: directory
+    owner: ftp_user
+    group: ftp_user
+
+- name: Ubuntu - Copy vsftpd.conf in /etcc/vsftpd.conf
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_config
+
+- name: Ubuntu - Restart vsftpd.conf
+  service:
+    name: vsftpd
+    state: restarted
+  when: vsftpd_config.changed

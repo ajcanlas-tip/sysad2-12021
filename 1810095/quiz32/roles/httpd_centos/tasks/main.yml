@@ -1,0 +1,56 @@
+---
+# tasks file for roles/httpd_centos
+
+- name: installing httpd in centos
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: firewall service in centos
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: creating apache2 user in centos
+  user:
+    name: moreno2
+    password: $5$IHZO/DpYXSi4.gcF$ye.8IUeJx16ge7JEejstB29b7PfxyedRFfwGtc6HVx2
+    comment: "added new user"
+
+- name: adding denyuser in centos
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers moreno2"
+  register: ssh_config
+
+- name: restarting sshd service in centos
+  service:
+    name: sshd
+    state: restarted
+  when: ssh_config.changed
+
+- name: creating directory in centos
+  file:
+    path: /var/www/moreno2
+    state: directory
+    owner: moreno2
+    group: moreno2
+    mode: '755'
+
+- name: creating index.html in centos
+  copy:
+    content: "moreno2"
+    dest: /var/www/moreno2/index.html
+  register: apache_index
+
+- name: starting apache2 service in centos
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes
+  when: apache_index.changed
+
+
+

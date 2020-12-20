@@ -1,0 +1,43 @@
+---
+# tasks file for roles/install_in_centos
+
+- name: installation in centos of dhcp
+  yum:
+    name: dhcp-server
+    state: latest
+    update_cache: yes
+
+- name: installation in centos of bind9
+  yun:
+    name:
+      - bind
+      - bind-utils
+    state: latest
+    update_cache: yes
+
+- name: installation in centos of vsftpd
+  yum:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: installation in centos of samba
+  yum:
+    name:
+      - samba
+      - samba-client
+      - samba-common
+    state: latest
+    update_cache: yes
+
+- name: installation in centos of httpd
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: installation in centos of mariadb
+  yum:
+    name: mariadb-server
+    state: latest
+    update_cache: yes

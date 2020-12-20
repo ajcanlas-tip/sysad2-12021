@@ -1,0 +1,5 @@
+[ubuntu]
+192.168.100.65 ansible_ssh_pass=lalasatalin425 ansible_ssh_user=karltayoto
+
+[centos]
+192.168.100.63 ansible_ssh_pass=LalaSatalin427 ansible_ssh_user=karltayoto

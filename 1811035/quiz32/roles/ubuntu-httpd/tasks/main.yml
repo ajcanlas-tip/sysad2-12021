@@ -1,0 +1,75 @@
+---
+# tasks file for roles/ubuntu-httpd
+- name: install httpd
+  apt:
+    name: apache2
+    state: present
+    update_cache: yes
+
+- name: disable ufw
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: allow ufw in apache2
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+    state: enabled
+
+- name: create directory for website
+  file:
+    path: /var/www/quiz32
+    state: directory
+    owner: nobody
+    group: nogroup
+
+- name: create web.html
+  copy:
+    content: "<h1> Hello we will install httpd server come and watch </h>"
+    dest: /var/www/quiz32/web.html
+
+- name: config file
+  copy:
+    src: /etc/apache2/sites-available/000-default.conf
+    remote_src: yes
+    dest: /quiz32.conf
+
+- name: add config file
+  copy:
+    src: /quiz32.conf
+    remote_src: yes
+    dest: /etc/apache2/sites-available
+
+- name: edit confi dir
+  replace:
+    path: /etc/apache2/sites-available/quiz32.conf
+    regexp: '/var/www/html'
+    replace: '/var/www/quiz32'
+
+- name: edit server name
+  replace:
+    path: /etc/apache2/sites-available/quiz32.conf
+    regexp: "#ServerName www.example.com"
+    replace: "#ServerName www.quiz32.com"
+
+- name: edit server admin
+  replace:
+    path: /etc/apache2/sites-available/quiz32.conf
+    regexp: "ServerAdmin webmaster@localhost"
+    replace: "ServerAdmin quiz32@karltayoto.com"
+
+- name: activate virtualhost
+  command: a2ensite quiz32.conf
+
+- name: test php
+  copy:
+    content: "<h1> hello and this is my quiz32 </h1>"
+    dest: /var/www/html/info.php
+
+- name: reload apache
+  service:
+    name: apache2
+    state: reloaded

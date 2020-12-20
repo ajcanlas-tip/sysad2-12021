@@ -1,0 +1,22 @@
+---
+
+- name: HTTPD server
+  hosts: ubuntu
+
+  roles:
+    - ubuntu-httpd
+
+- name: Copy File
+  hosts: centos
+  tasks:
+
+    - name: copy file
+      copy:
+        src: quiz32.com.conf
+        dest: /etc/http/sites-available/
+
+
+- name: HTTPD server
+  hosts: centos
+  roles:
+    - centos-httpd

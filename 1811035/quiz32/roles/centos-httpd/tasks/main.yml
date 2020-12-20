@@ -1,0 +1,65 @@
+---
+# tasks file for roles/centos-httpd
+
+- name: install httpd
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: firewall state
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: domain directory
+  become: yes
+  file:
+    path: /var/www/html/quiz32
+    state: directory
+    owner: root
+    group: root
+
+- name: chown quiz32
+  become: yes
+  shell: chown apache:apache -R /var/www/html/quiz32
+
+- name: creating sites-available in httpd
+  file:
+    path: /etc/httpd/sites-available
+    state: directory
+    owner: karltayoto
+    group: karltayoto
+
+- name: change sudo vi conf
+  become: yes
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    remote_src: yes
+    line: 'IncludeOptional sites-enable/*.conf'
+    insertafter: .*conf"
+
+- name: copy file inside in conf
+  become: yes
+  copy:
+    src: /etc/httpd/sites-available/quiz32.com.conf
+    remote_src: yes
+    dest: /etc/httpd/sites-enabled/quiz32.com.conf
+
+- name: create ed.html
+  copy:
+    content: "<h1> Hello welcome to my website </h1>"
+    dest: /var/www/html/quiz32/index.html
+  register: apache_index
+
+- name: PHP
+  copy:
+    content: "<h1> Quiz 3.2 php </h1>"
+    dest: /var/www/html/quiz32/info.php
+
+- name: restart apache2
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes

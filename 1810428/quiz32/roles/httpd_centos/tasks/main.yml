@@ -1,0 +1,53 @@
+---
+# tasks file for roles/httpd_centos
+
+- name: httpd install on CentOS
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: firewall setup
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: create apache2 user
+  user:
+    name: brenda1
+    password: $5$KSPhkY7F01TXbPLa$HlXUuh6ilzpgmWiPh9CbUieGhrFx.mjE6I.8z./ljT/
+    comment: "new user created"
+
+- name: Creaate DenyUser
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUser brenda1"
+  register: ssh_config
+
+- name: sshd service restart
+  service:
+    name: sshd
+    state: restarted
+  when: ssh_config.changed
+
+- name: create domain directory
+  file:
+    path: /var/www/brenda1
+    state: directory
+    owner: brenda1
+    group: brenda1
+    mode: '755'
+
+- name: create index.html
+  copy:
+    content: "brenda cute"
+    dest: /var/www/brenda1/index.html
+  register: apache_index
+
+- name: apache2 service restart
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

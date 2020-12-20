@@ -1,0 +1,48 @@
+---
+# tasks file for roles/httpd_ubuntu
+
+- name: Ubuntu Apache2 installation
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: firewall setup
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: create apache2 user
+  user:
+    name: brenda1
+    password: $5$LEz33TxS08FEk4w1$Nibu/UN8x5izc.ChW8SsZmDERFGRFcVdV611nLKC4Q2
+    comment: "new user created"
+
+- name: Create DenyUser
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUser brenda1"
+  register: sshd_config
+
+- name: create domain directory
+  file:
+    path: /var/www/brenda1
+    state: directory
+    owner: brenda1
+    group: brenda1
+    mode: '755'
+
+- name: create index.html
+  copy:
+    content: "brenda cute"
+    dest: /var/www/brenda1/index.hml
+  register: apache_index
+
+- name: apache service restart
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed
+

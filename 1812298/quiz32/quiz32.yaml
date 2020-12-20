@@ -1,0 +1,42 @@
+---
+- name: Install and Configure httpd
+  hosts: ubuntu
+
+  tasks:
+    - name: Install Apache2
+      apt:
+        name: apache2
+        state: latest
+        update_cache: yes
+
+    - name: Copy html file
+      copy:
+        src: index.html
+        dest: /var/www/html
+
+    - name: Enable apache
+      service:
+        name: apache2
+        enabled: yes
+
+      notify:
+        - restart apache
+        - setup firewalld
+        - reload firewalld
+
+  handlers:
+    - name: Restart apache2
+      service:
+        name: apache2
+        state: restarted
+
+    - name: Setup firewalld
+      service:
+        name: http
+        permanent: true
+        state: enabled
+
+    - name: Reload firewalld
+      service:
+        name: firewalld
+        state: restarted

@@ -1,0 +1,86 @@
+# Summary
+
+## Directory Structure
+
+``` 
+README.md 
+ansible.cfg 
+files/ 
+	index.html 
+	lucana_domain.conf 
+	lucana_domain_centos.conf 
+inventory 
+playbook.yaml 
+roles/ 
+	centos_httpd/ 
+		defaults/ 
+			main.yml 
+		files/ 
+		handlers/ 
+			main.yml 
+		meta/
+			main.yml 
+		tasks/ 
+			main.yml 
+		templates/ 
+		tests/ 
+			inventory 
+			test.yml 
+		vars/ 
+			main.yml 
+		README.MD
+		
+	centos_virtual-host/ 
+		defaults/ 
+			main.yml 
+		files/ 
+		handlers/ 
+			main.yml 
+		meta/ 
+			main.yml 
+		tasks/ 
+			main.yml 
+		templates/ 
+		tests/ 
+			inventory 
+			test.yml 
+		vars/ 
+			main.yml 
+		README.md
+			
+	ubuntu_apache/ 
+		defaults/ 
+			main.yml 
+		files/ 
+		handlers/ 
+			main.yml 
+		meta/ 
+			main.yml 
+		tasks/ 
+			main.yml 
+		templates/ 
+		tests/ 
+			inventory 
+			test.yml 
+		vars/ 
+			main.yml 
+		README.md
+			
+	ubuntu_virtual-host/ 
+		defaults/ 
+			main.yml 
+		files/ 
+		handlers/ 
+			main.yml 
+		meta/ 
+			main.yml 
+		tasks/ 
+			main.yml 
+		templates/ 
+		tests/ 
+			inventory 
+			test.yml 
+		vars/ 
+			main.yml 
+		README.md
+```

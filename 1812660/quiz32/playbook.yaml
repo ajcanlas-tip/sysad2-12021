@@ -1,0 +1,20 @@
+---
+  - name: Ubuntu - Install Apache and Adjust Firewall
+    hosts: ubuntu
+    roles:
+      - ubuntu_apache
+
+  - name: Ubuntu - Create Virtual Host
+    hosts: ubuntu
+    roles:
+      - ubuntu_virtual-host
+
+  - name: Centos - Install Httpd and Adjust Firewall
+    hosts: centos
+    roles:
+      - centos_httpd
+
+  - name: Centos - Create Virtual Host
+    hosts: centos
+    roles:
+      - centos_virtual-host

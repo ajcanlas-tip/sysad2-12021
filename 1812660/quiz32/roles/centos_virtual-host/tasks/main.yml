@@ -1,0 +1,77 @@
+---
+# tasks file for roles/centos_virtual-host
+
+- name: Create Virtual Host
+  file:
+    path: /var/www/lucana_domain_centos
+    state: directory
+    owner: rlucana-tip
+    group: rlucana-tip
+    mode: '0755'
+
+- name: Create Log Directory
+  file:
+    path: /var/www/lucana_domain_centos/log
+    state: directory
+    owner: rlucana-tip
+    group: rlucana-tip
+    mode: '0755'
+
+- name: Create HTML Directory
+  file:
+    path: /var/www/lucana_domain_centos/html
+    state: directory
+    owner: rlucana-tip
+    group: rlucana-tip
+    mode: '0755'
+
+- name: Copying index.html
+  copy:
+    src: index.html
+    dest: /var/www/lucana_domain_centos/html/index.html
+    owner: rlucana-tip
+    group: rlucana-tip
+    mode: '0755'
+
+- name: Create sites-available
+  file:
+    path: /etc/httpd/sites-available
+    state: directory
+    mode: '0755'
+
+- name: Create sites-enabled
+  file:
+    path: /etc/httpd/sites-enabled
+    state: directory
+    mode: '0755'
+
+- name: Create httpd.conf
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    line: "IncludeOptional sites-enabled/*.conf"
+
+- name: Copy Configuration File to sites-available
+  copy:
+    src: lucana_domain_centos.conf
+    dest: /etc/httpd/sites-available/lucana_domain_centos.conf
+    owner: rlucana-tip
+    group: rlucana-tip
+    mode: '0755'
+
+- name: Link sites directory
+  file:
+    src: /etc/httpd/sites-available/lucana_domain_centos.conf
+    dest: /etc/httpd/sites-enabled/lucana_domain_centos.conf
+    state: link
+
+- name: Setsebool
+  seboolean:
+    name: httpd_unified
+    state: yes
+    persistent: yes
+
+- name: Restarting httpd
+  service:
+    name: httpd
+    state: restarted
+

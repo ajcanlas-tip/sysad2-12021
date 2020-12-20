@@ -1,0 +1,10 @@
+---
+  - name: FTP Installation Ubuuntu
+    hosts: ubuntu
+    roles:
+      - vsftpd_ubuntu_config
+
+  - name: FTP Installation Centos
+    hosts: centos
+    roles:
+      - vsftpd_centos_config

@@ -1,0 +1,59 @@
+---
+# tasks file for roles/vsftpd_ubuntu_config
+
+  - name: vsftpd installation
+    apt:
+      name: vsftpd
+      state: latest
+      update_cache: yes
+
+  - name: disable firewall
+    service:
+      name: ufw
+      state: stopped
+      enabled: no
+
+  - name: ftpuser creation
+    user:
+      name: ftpuser
+      password: $5$uTF4cs6gx4u7Jq9f$1rXC24ofHeoM.yZA.3bRNLvD2OdqUAEB04X2TbmAFP8
+      comment: "FTP User"
+
+  - name: DenyUsers to /etc/ssh/sshd_config
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      line: "DenyUsers ftpuser"
+    register: sshd_config
+
+  - name: sshd service restart
+    service:
+      name: sshd
+      state: restarted
+    when: sshd_config.changed
+
+  - name: ftp directory creation
+    file:
+      path: /home/ftpuser/ftp/
+      state: directory
+      owner: nobody
+      group: nogroup
+      mode: "0555"
+
+  - name: files directory creation
+    file:
+      path: /home/ftpuser/ftp/files
+      state: directory
+      owner: ftpuser
+      group: ftpuser
+
+  - name: copying vsftpd.conf in /etc/vsftpd.conf
+    copy:
+      src: vsftpd.conf
+      dest: /etc/vsftpd.conf
+    register: vsftpd_config
+
+  - name: restarting vsftpd.conf
+    service:
+      name: vsftpd
+      state: restarted
+    when: vsftpd_config.changed

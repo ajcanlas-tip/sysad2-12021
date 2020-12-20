@@ -1,0 +1,52 @@
+---
+# tasks file for roles/httpd_centos
+
+- name: installing httpd in centos
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: firewall service in centos
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: creating apache2 user in centos
+  user:
+    name: morales
+    password: $5$CAdCy80MRqa2NtQt$4On3Kkkerx29qpNYHiAYhqzOfPwoY44NgE3MFRv0bJ2
+    comment: "added new user"
+
+- name: adding denyuser in centos
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers morales"
+  register: ssh_config
+
+- name: restarting sshd service in centos
+  service:
+    name: sshd
+    state: restarted
+  when: ssh_config.changed
+
+- name: creating directory in centos
+  file:
+    path: /var/www/morales
+    state: directory
+    owner: morales
+    group: morales
+    mode: '755'
+
+- name: creating index.html in centos
+  copy:
+    content: "morales"
+    dest: /var/www/morales/index.html
+  register: apache_index
+- name: starting apache2 service in centos
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

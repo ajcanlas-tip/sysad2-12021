@@ -1,0 +1,47 @@
+---
+# tasks file for roles/httpd_ubuntu
+
+- name: installing apache2
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: firewall service
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: creating apache2 user
+  user:
+    name: morales
+    password: $5$hqA.3DF8rL5DJSwX$8rKrxasx2HI9eYZa4sG9wsFtqIxYL9EjhFW1TZovSJ1
+    comment: "added new user"
+
+- name: adding denyuser
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers morales"
+  register: sshd_config
+
+- name: creating directory
+  file:
+    path: /var/www/morales
+    state: directory
+    owner: morales
+    group: morales
+    mode: '755'
+
+- name: creating index.html
+  copy:
+    content: "morales"
+    dest: /var/www/morales/index.html
+  register: apache_index
+
+- name: starting apache service
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

@@ -1,0 +1,59 @@
+---
+# tasks file for ubuntu
+- name: Install apache2
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+
+- name: Stop firewall
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+
+- name: Create apache2 user
+  user:
+    name: alcantara2
+    password: $5$UPs//Enc4/2GZ54q$LwC0YZ91t80MYgDMOr17.mQdyJDpj6t1yc7n2/b.009
+    comment: "Apache2 User"
+
+
+- name: Add DenyUser in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers alcantara2"
+  register: sshd_config
+
+
+- name: Restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+
+- name: Create domain directory
+  file:
+    path: /var/www/alcantara2
+    state: directory
+    owner: alcantara2
+    group: alcantara2
+    mode: '755'
+
+
+- name: Create index.html
+  copy:
+    content: "Im Vher Jann"
+    dest: /var/www/alcantara2/index.html
+  register: apache_index
+
+
+- name: Start Apache2 service
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

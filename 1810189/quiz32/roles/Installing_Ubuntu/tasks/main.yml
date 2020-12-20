@@ -1,0 +1,52 @@
+---
+# tasks file for roles/Installing_Ubuntu
+- name: Installation of apache2 on ubuntu
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: setup firewall
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: Create user for apache2
+  user:
+    name: kenzo
+    password: $5$xD38hIv0rx0V1NHe$i76DGIEOAZ4xmGUJtF/gbIQB1XBCylTDN7/cMP/PNEZ
+    comment: "user succesfully created"
+
+- name: Add DenyUsers
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUser kenzo"
+  register: sshd_config
+
+- name: Restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Creating domain
+  file:
+    path: /var/www/kenzo
+    state: directory
+    owner: kenzo
+    group: kenzo
+    mode: '755'
+
+- name: Creating index.html
+  copy:
+    content: "kevin malupet"
+    dest: /var/www/kenzo/index.html
+  register: apache_index
+
+- name: Restarting apache2 service
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

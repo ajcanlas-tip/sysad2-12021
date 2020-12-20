@@ -1,0 +1,53 @@
+---
+# tasks file for roles/Installing_Centos
+- name: Installation of httpd
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: setup firewall
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: Creating apache2 user
+  user:
+    name: bolt
+    password: $5$xYTt9D5Kc/th0NPH$SAYPieyC5X8W1oTEg6RC4PfrhSvCO0NgZl9gLuFzB28
+    comment: "user created successfully"
+
+- name: Add DenyUser in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUser bolt"
+  register: sshd_config
+
+- name: restart sshd service
+  service: 
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: create domain directory
+  file:
+    path: /var/www/bolt
+    state: directory
+    owner: bolt
+    group: bolt
+    mode: '755'
+
+- name: Create index.html
+  copy:
+    content: "kevin lang malupet"
+    dest: /var/www/bolt/index.html
+  register: apache_index
+
+- name: Start apache2 service
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes
+  when: apache_index.changed
+

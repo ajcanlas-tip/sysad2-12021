@@ -1,0 +1,11 @@
+---
+- name: httpd installation for UBUNTU
+  hosts: ubuntu 
+  roles: 
+    - httpd_for_ubuntu
+
+- name: httpd installation for CENTOS 
+  hosts: centos 
+  roles: 
+    - httpd_for_centos 
+

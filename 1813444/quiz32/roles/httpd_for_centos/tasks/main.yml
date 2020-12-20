@@ -1,0 +1,61 @@
+---
+# tasks file for roles/httpd_for_centos
+- name: httpd installation for centos
+  yum: 
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: firewall
+  service: 
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: adding apache2 user
+  user: 
+    name: itsmepamssy
+    password: $5$D5DamnDHDFktcSFq$jmPqEvKCss.7tEOaxW06HfctW89vn.yE3w3qh3IAaaB 
+    comment: "You have been added a new user"
+
+- name: add DenyUser 
+  lineinfile: 
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers itsmepamssy"
+  register: sshd_config 
+
+- name: sshd service restart
+  service: 
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: domain directory
+  file: 
+    path: /var/www/itsmepamssy
+    state: directory
+    owner: itsmepamssy
+    group: itsmepamssy
+    mode: '755'
+
+- name: index.html
+  copy:
+    content: "itsmepamssy"
+    dest: /var/www/itsmepamssy/index.html 
+  register: apache_index
+
+- name: start apache2 service 
+  service: 
+    name: httpd
+    state: restarted
+    enabled: yes
+  when: apache_index.changed
+
+
+
+
+
+
+
+
+

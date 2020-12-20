@@ -1,0 +1,55 @@
+---
+# tasks file for roles/httpd_for_ubuntu
+
+- name: apache on ubuntu
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: firewall
+  service: 
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: add user for apache2
+  user:
+    name: itsmepamela
+    password: $5$PbABXmJyPLC0NEMq$eLS4fi7hHdDRhRxvIZiUmPvxN9JqqPxvSwLtMMN0HP/
+    comment: "You have been added a new user"
+
+- name: add DenyUsers
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers itsmepamela"
+  register: sshd_config
+
+- name: restart sshd config
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: domain file
+  file:
+    path: /var/www/itsmepamela
+    state: directory
+    owner: itsmepamela
+    group: itsmepamela
+    mode: '755'
+
+- name: index.html
+  copy:
+    content: "itsmepamela"
+    dest: /var/www/itsmepamela/index.html
+  register: apache_index
+
+- name: restarting apache2 service
+  service: 
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed
+    
+

@@ -1,0 +1,38 @@
+---
+# tasks file for roles/install_at_ubuntu
+
+- name: dhcp installment at ubuntu
+  yum:
+    name: dhcp-server
+    state: latest
+    update-cache: yes
+
+- name: bind9 installment at ubuntu
+  yum:
+    name:
+      - bind
+      - bind-utils
+    state: latest
+    update_cache: yes
+
+- name: samba installment at ubuntu
+  yum:
+    name:
+      - samba
+      - samba-client
+      - samba-common
+    state: latest
+    update_cache: yes
+
+- name: httpd installment at ubuntu
+  yum:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: mariadb installment at ubunt
+  yum:
+    name: mariadb-server-10.3
+    state: latest
+    update_cache: yes
+

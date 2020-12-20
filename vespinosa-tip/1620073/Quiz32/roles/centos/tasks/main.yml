@@ -1,0 +1,52 @@
+---
+# tasks file for roles/centos
+- name: Installing httpd on centos
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: Firewall for centos
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: Create Apache2 user
+  user:
+    name: vespinosa-tip
+    password: $5$qmnOJOjnB/nF6$5kC5trDtF3nmsVsHWN0umoejlLpFDHEmmoVkWGEYps0
+    comment: "httpd user"
+
+- name: Add DenyUser in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUser vespinosa-tip"
+    register: ssh_config
+
+- name: Restart sshd service
+  service:
+    name: sshd
+    state: restarted
+    when: ssh_config.changed
+
+- name: Creating the domain directory
+  file:
+    path: /var/www/vespinosa-tip
+    state: directory
+    owner: vespinosa-tip
+    group: vespinosa-tip
+    mode: '755'
+
+- name: Create index.html
+  copy:
+    content: "vespinosa-tip"
+    dest: /var/www/vespinosa-tip/index.html
+    register: apache_index
+
+- name: Start apache2 service
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

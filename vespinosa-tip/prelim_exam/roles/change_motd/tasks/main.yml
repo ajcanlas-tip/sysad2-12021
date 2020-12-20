@@ -1,0 +1,4 @@
+---
+# tasks file for change_motd
+- name: Changing Message of the day (MOTD)
+  command: sh -c 'echo "Ansible Managed node by {{ motd }} > /etc/motd'

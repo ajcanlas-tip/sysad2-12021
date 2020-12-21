@@ -1,0 +1,52 @@
+---
+# tasks file for roles/httpd_centos
+
+- name: httpd install on CentOS
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: firewall setup
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: apache2 user
+  user:
+    name: emerson
+    password: $5$dExck4ymUIZvIEN.$/qoHmy0AN4/F17nNa4U7GXxG6tEuoKTHgNOD8S2e2x1
+    comment: "user successfully created"
+
+- name: Create DenyUser
+  lineinfile:
+    path: "DenyUser emerson"
+  register: ssh_config
+
+- name: sshd service restart
+  service:
+    name: sshd
+    state: restarted
+  when: ssh_config.changed
+
+- name: domain directory
+  file:
+    path: /var/www/emerson
+    state: directory
+    owner: emerson
+    group: emerson
+    mode: '755'
+
+- name: create index.html
+  copy:
+    content: "emerson123"
+    dest: /var/www/emerson/index.html
+  register: apache_index
+
+- name: apache2 restart service
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

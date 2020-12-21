@@ -1,0 +1,47 @@
+---
+# tasks file for httpd_ubuntu
+
+- name: Installation of Apache2 ubuntu
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: setup firewall
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+    
+- name: create apache2 user
+  user:
+    name: emerson
+    password: $5$dExck4ymUIZvIEN.$/qoHmy0AN4/F17nNa4U7GXxG6tEuoKTHgNOD8S2e2x1
+    comment: "user created successfully"
+
+- name: DenyUser
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUser emerson"
+  register: sshd_config
+
+- name: domain directory
+  file:
+    path: /var/www/emerson
+    state: directory
+    owner: emerson
+    group: emerson
+    mode: '755'
+    
+- name: create index.html
+  copy:
+    content: "emerson123"
+    dest: /var/www/emerson/index.html
+  register: apache_index
+
+- name: restart apache service
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

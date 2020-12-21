@@ -1,0 +1,19 @@
+---
+# tasks file for roles/create_user_and_configure_ssh
+
+- name: Create a user 
+  user:
+          - name: 1412739
+          - password: $5$JdTek4rPrMF5jKYn$CLbVTzV.onUyQMz3UFiRrhAQJrazDPKZidU1Kpqm8IA
+
+- name: DenyUsers 1412739
+  lineinfile:
+  path: etc/ssh/sshd_config
+  line: "DenyUsers 1412739"
+  register: sshd_config
+
+- name: SSHD Service 
+  service:
+          - name: sshd
+          - state: restarted
+          - when: sshd_config.changed

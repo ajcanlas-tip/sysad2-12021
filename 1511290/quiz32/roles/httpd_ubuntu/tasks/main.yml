@@ -1,0 +1,47 @@
+---
+# tasks file for roles/httpd_ubuntu 
+
+- name: installing apache2 in ubuntu
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: firewall service in ubuntu
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: creating apache2 user in ubuntu
+  user:
+    name: acelindro
+    password: $5$0ndHwR1ul3wNYyyQ$iTnWmLMaMa3GDHh4sJy5AGBegjmAYW97aQvgvBOL025 
+    comment: "added new user"
+
+- name: adding denyuser in ubuntu
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers acelindro"
+  register: sshd_config
+
+- name: creating directory in ubuntu
+  file:
+    path: /var/www/acelindro
+    state: directory
+    owner: acelindro
+    group: acelindro
+    mode: '755'
+
+- name: creating index.html in ubuntu
+  copy:
+    content: "acelindro"
+    dest: /var/www/acelindro/index.html
+  register: apache_index
+
+- name: starting apache service in ubuntu
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

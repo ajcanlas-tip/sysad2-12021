@@ -1,0 +1,47 @@
+---
+# tasks file for roles/ubuntu_httpd
+
+- name: Installing Apache2 on ubuntu
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: Firewll service on ubuntu
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: Creating Apache2 user on ubuntu
+  user:
+    name: dalo1
+    password: $5$EkOIkmNDG33phuhk$cIHB222ggo464HiahOM8SUPfaOVLO7aYw4pipzUAIB
+    comment: "new user added" 
+
+- name: Adding DenyUser on ubuntu 
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers dalo1"
+  register: sshd_config
+
+- name: Creating directory on ubuntu
+  file:
+    path: /var/www/dalo1
+    state: directory
+    owner: dalo1
+    group: dalo1
+    mode: '755'
+
+- name: Creating index.html on ubuntu
+  copy:
+    content: "dalo1"
+    dest: /var/www/dalo1/index.html
+  register: apache_index
+
+- name: Starting apache service on ubuntu
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

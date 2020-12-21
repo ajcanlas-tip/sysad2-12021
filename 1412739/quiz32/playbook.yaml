@@ -1,0 +1,12 @@
+---
+- name: Installing and configuring httpd in Ubuntu 
+  hosts: ubuntu 
+
+  roles:
+    - ubuntu_httpd
+
+- name: Installing and configuring httpd in centos
+  hosts: centos
+
+  roles:
+    - centos_httpd

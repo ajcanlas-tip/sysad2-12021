@@ -1,0 +1,74 @@
+---
+# tasks file for roles/setup-centos
+
+- name: Install http 
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: Change state of firewall
+  become: yes
+  service: 
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: creating domain directory
+  become: yes
+  file: 
+    path: /var/www/html/quiz32
+    state: directory 
+    owner: root
+    group: root
+
+- name: chown quiz32
+  become: yes
+  shell: chown apache:apache -R /var/www/html/quiz32
+
+- name: Creating sites-available in httpd
+  file:
+    path: /etc/httpd/sites-available 
+    state: directory
+    owner: md
+    group: md
+
+- name: Creating sites-enabled in http
+  become: yes 
+  file:
+    path: /etc/httpd/sites-enabled
+    state: directory
+    owner: md
+    group: md
+
+- name: change sudo vi conf
+  become: yes
+  lineinfile: 
+    path: /etc/httpd/conf/httpd.conf
+    line: 'IncludeOptional sites-enabled/*.conf'
+    insertafter: .*conf"
+
+- name: copy file inside the conf
+  become: yes
+  copy:
+    src: /etc/httpd/sites-available/quiz32.com.conf
+    remote_src: yes
+    dest: /etc/httpd/sites-enabled/quiz32.com.conf
+
+- name: Create index.html
+  copy:
+    content: "<h1> Quiz 3.32 12/20/2020 <h1>"
+    dest: /var/www/html/quiz32/index.html
+  register: apache_index
+
+- name: Test PHP
+  copy:
+    content: "<h1> Quiz 3.2 PHP 12/20/2020 </h1>" 
+    dest: /var/www/html/quiz32/info.php
+
+- name: restart apache2
+  become: yes
+  service: 
+    name: httpd
+    state: reloaded 
+    enabled: yes

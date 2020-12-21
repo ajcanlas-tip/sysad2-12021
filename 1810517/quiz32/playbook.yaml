@@ -1,0 +1,10 @@
+---
+- name: Installation and configuration of HTTPD in ubuntu
+  hosts: ubuntu
+  roles:
+    - httpd_ubuntu
+
+- name: Installation and configuration of HTTPD in centos
+  hosts: centos
+  roles:
+    - httpd_centos

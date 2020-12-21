@@ -1,0 +1,20 @@
+---
+# tasks file for roles/user_ssh
+
+- name: creating user
+  user:
+    name: rada
+    password: $5$qCM5SkyQn2BSuGmx$vBIafIQyIMA.5ap4j4bU85MRWJ4mZd7m7huSKp2xN7/
+    comment: "added new user"
+
+- name: creating deny user
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "denyusers rada"
+  register: sshd_config
+
+- name: sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed

@@ -1,0 +1,29 @@
+---
+# tasks file for roles/folder
+
+- name: directory in ftp
+  file:
+    path: ~/rada/ftp
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: '0555'
+
+- name: creating files for ftp directory
+  file:
+    path: ~/rada/ftp/files
+    state: directory
+    owner: rada
+    group: rada
+
+- name: copying vsftpd.conf
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_config
+
+- name: restarting vsftpd.conf
+  service:
+    name: vsftpd
+    state: restarted
+  when: vsftpd_config.changed

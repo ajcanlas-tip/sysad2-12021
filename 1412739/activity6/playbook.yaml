@@ -1,0 +1,10 @@
+---
+- name: Centos Installation of dhcp, bind9, samba, httpd, and mariadb
+  hosts: centos
+  roles:
+          - centos_installation 
+
+- name: Ubuntu Installation of dhcp, bind9, samba, httpd, and mariadb
+  hosts: ubuntu
+  roles:
+          - ubuntu_installation

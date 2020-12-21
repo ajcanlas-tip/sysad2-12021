@@ -1,0 +1,2 @@
+[Ubuntu]
+10.0.2.4 ansible_ssh_pass=crebello123 ansible_ssh_user=crebello ansible_sudo_pass=crebello123

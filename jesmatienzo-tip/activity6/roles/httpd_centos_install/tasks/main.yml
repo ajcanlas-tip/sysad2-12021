@@ -1,0 +1,8 @@
+---
+# tasks file for roles/httpd_centos_install
+
+  - name: httpd installation
+    yum:
+      name: httpd
+      state: present
+      update_cache: yes

@@ -1,0 +1,64 @@
+---
+  #Ubuntu Installation
+
+  - name: Ubuntu - dhcpd
+    hosts: dhcpd_ubuntu
+    roles:
+      - dhcpd_ubuntu_install
+
+  - name: Ubuntu - bind9
+    hosts: bind9_ubuntu
+    roles:
+      - bind9_ubuntu_install
+
+  - name: Ubuntu - vsftpd
+    hosts: vsftpd_ubuntu
+    roles:
+      - vsftpd_ubuntu_install
+
+  - name: Ubuntu - samba
+    hosts: samba_ubuntu
+    roles:
+      - samba_ubuntu_install
+
+  - name: Ubuntu - httpd
+    hosts: httpd_ubuntu
+    roles:
+      - httpd_ubuntu_install
+
+  - name: Ubuntu - mariadb
+    hosts: mariadb_ubuntu
+    roles:
+      - mariadb_ubuntu_install
+
+  #Centos Installation
+  
+  - name: Centos - dhcpd
+    hosts: dhcpd_centos
+    roles:
+      - dhcpd_centos_install
+
+  - name: Centos - bind9
+    hosts: bind9_centos
+    roles:
+      - bind9_centos_install
+
+  - name: Centos - vsftpd
+    hosts: vsftpd_centos
+    roles:
+      - vsftpd_centos_install
+
+  - name: Centos - samba
+    hosts: samba_centos
+    roles:
+      - samba_centos_install
+
+  - name: Centos - httpd
+    hosts: httpd_centos
+    roles:
+      - httpd_centos_install
+
+  - name: Centos - mariadb
+    hosts: mariadb_centos
+    roles:
+      - mariadb_centos_install

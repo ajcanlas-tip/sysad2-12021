@@ -1,0 +1,47 @@
+---
+# tasks file for roles/httpd_ubuntu
+
+- name: installing apache2 in ubuntu
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: firewall service in ubuntu
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: creating apache2 user in  ubuntu
+  user:
+    name: rada
+    password: $5$qrU13bGMpIHHuR8n$H6EExvKHQi5Q1X1NAmYYXmzID.oQNg80Hgmg40Zrbq6
+    comment: "added new user"
+
+- name: adding denyuser in ubuntu
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers rada"
+  register: sshd_config
+
+- name: creating directory in ubuntu
+  file:
+    path: /var/www/rada
+    state: directory
+    owner: rada
+    group: rada
+    mode: '755'
+
+- name: creating index.html in ubuntu
+  copy:
+    content: "rada"
+    dest: /var/www/rada/index.html
+  register: apache_index
+
+- name: starting apache service in ubuntu
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed

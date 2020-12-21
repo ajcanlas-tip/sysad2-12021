@@ -1,0 +1,8 @@
+---
+# tasks file for roles/dhcpd_ubuntu
+
+- name: Install DHCPD
+  apt:
+    name: isc-dhcp-server
+    state: present
+    update_cache: yes

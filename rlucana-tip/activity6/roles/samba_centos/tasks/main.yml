@@ -1,0 +1,12 @@
+---
+# tasks file for roles/samba_centos
+
+- name: Install Samba
+  yum:
+    name:
+
+      - samba
+      - samba-client
+    state: present
+    update_cache: yes
+

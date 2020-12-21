@@ -1,0 +1,62 @@
+---
+  - name: Install vsftpd in Ubuntu
+    hosts: vsftpd_ubuntu
+    roles:
+      - vsftpd_ubuntu
+
+  - name: Install vsftpd in Centos
+    hosts: vsftpd_centos
+    roles:
+      - vsftpd_centos
+
+  - name: Install httpd in Ubuntu
+    hosts: httpd_ubuntu
+    roles:
+      - httpd_ubuntu
+
+  - name: Install httpd in Centos
+    hosts: httpd_centos
+    roles:
+      - httpd_centos
+
+  - name: Install dhcpd in Ubuntu
+    hosts: dhcpd_ubuntu
+    roles:
+      - dhcpd_ubuntu
+
+  - name: Install dhcpd in Centos
+    hosts: dhcpd_centos
+    roles:
+      - dhcpd_centos
+
+  - name: Install bind9 in Ubuntu
+    hosts: bind9_ubuntu
+    roles:
+      - bind9_ubuntu
+
+  - name: Install bind9 in Centos
+    hosts: bind9_centos
+    roles:
+      - bind9_centos
+
+  - name: Install samba in Ubuntu
+    hosts: samba_ubuntu
+    roles:
+      - samba_ubuntu
+
+  - name: Install samba in Centos
+    hosts: samba_centos
+    roles:
+      - samba_centos
+
+  - name: Install mariadb in Ubuntu
+    hosts: mariadb_ubuntu
+    roles:
+      - mariadb_ubuntu
+
+  - name: Install mariadb in Centos
+    hosts: mariadb_centos
+    roles:
+      - mariadb_centos
+
+

@@ -1,0 +1,8 @@
+---
+# tasks file for roles/mariadb_centos
+
+- name: Installing MariaDB
+  yum:
+    name: mariadb-server
+    state: present
+    update_cache: yes

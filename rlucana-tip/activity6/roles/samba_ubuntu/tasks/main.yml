@@ -1,0 +1,8 @@
+---
+# tasks file for roles/samba_ubuntu
+
+- name: Install Samba
+  apt:
+    name: samba
+    state: present
+    update_cache: yes

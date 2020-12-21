@@ -1,0 +1,8 @@
+---
+# tasks file for roles/dhcpd_centos
+
+- name: Install DHCPD
+  yum:
+    name: dhcp-server
+    state: present
+    update_cache: yes

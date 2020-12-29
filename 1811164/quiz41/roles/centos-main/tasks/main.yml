@@ -1,0 +1,45 @@
+---
+# tasks file for centos-main
+- name: install latest httpd , maridadb-server
+  dnf:
+    name:
+      - httpd
+      - mariadb-server
+      - php-mysqlnd
+      - php-fpm
+    update_cache: yes
+
+- name: enable and start httpd
+  service:
+    name: httpd
+    enabled: yes
+    state: started
+
+- name: enable and start httpd
+  service:
+    name: mariadb
+    enabled: yes
+    state: started
+
+- name: install required packages
+  dnf:
+    name:
+      - gcc
+      - glibc
+      - glibc-common
+      - wget
+      - gd
+      - gd-devel
+      - perl
+      - postfix
+
+- name: add group nagiosxi
+  group:
+    name: nagiosxi
+    state: present
+
+- name: create nagios user account
+  user:
+    name: nagios
+    group: nagiosxi
+

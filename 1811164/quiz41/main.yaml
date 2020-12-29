@@ -1,0 +1,15 @@
+---
+- name: UBUNTU
+  hosts: ubuntu
+  roles:
+    - ubuntu-conf
+    - ubuntu-main
+    - ubuntu-plugins
+
+- hosts: centos
+  roles:
+    - centos-main
+    - centos-nagios
+    - centos-plugins
+    
+

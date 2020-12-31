@@ -1,6 +1,7 @@
 ---
 - hosts: ubuntu
   roles:
+    - elastic1
 
 - hosts: centos
   roles:

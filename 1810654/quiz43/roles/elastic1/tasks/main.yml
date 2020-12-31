@@ -1,0 +1,123 @@
+---
+# tasks file for elastic1
+- name: Install prerequisite for elastic stack
+  apt:
+    name:
+      - openjdk-11-jdk
+      - nginx
+    state: latest
+    update_cache: yes
+
+- name: Add Elasticsearch apt key
+  apt_key:
+    url: "https://packages.elastic.co/GPG-KEY-elasticsearch"
+    state: present
+
+- name: Install apt repo
+  apt:
+    name: apt-transport-https
+    state: present
+
+- name: Addlog elasticsearch repository
+  apt_repository:
+    filename: elastic-7.x
+    repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+    state: present
+
+- name: Installing elasticsearch
+  apt:
+    name: elasticsearch
+    state: present
+    update_cache: yes
+
+- name: Changing cluster name
+  lineinfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'cluster.name:'
+    line: 'cluster.name: ivan'
+
+- name: Changing node name
+  lineinfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'node.name:'
+    line: 'node.name: node-1'
+
+- name: Update the config file to allow access
+  lineinfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'network.host:'
+    line: 'network.host: "0.0.0.0"'
+
+- name: update the port config file
+  lineinfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'http.port:'
+    line: 'http.port: 9200'
+
+- name: putting discovery type
+  lineinfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    line: 'discovery.type: "single-node"'
+
+- name: Starting elasticsearch
+  service:
+    name: elasticsearch
+    state: started
+
+- name: Installing kibana
+  apt:
+    name: kibana
+    state: present
+    update_cache: yes
+
+- name: updating config file to allow outside access
+  lineinfile:
+    destfile: /etc/kibana/kibana.yml
+    regexp: 'server.host:'
+    line: 'server.host: "0.0.0.0"'
+
+- name: Defining server port
+  lineinfile:
+    destfile: /etc/kibana/kibana.yml
+    regexp: 'server.port:'
+    line: 'server.port: 5601'
+
+- name: changing server name
+  lineinfile:
+    destfile: /etc/kibana/kibana.yml
+    regexp: 'server.name:'
+    line: 'server.name: "kibana"'
+
+- name: Defining elastic hoost
+  lineinfile:
+    destfile: /etc/kibana/kibana.yml
+    regexp: 'elasticsearch.hosts:'
+    line: 'elasticsearch.hosts: ["http://0.0.0.0:9200"]'
+
+- name: Starting kibana
+  service:
+    name: kibana
+    state: started
+
+- name: Installing logstash
+  apt:
+    name: logstash
+    state: present
+    update_cache: yes
+
+- name: Starting lostash
+  service:
+    name: logstash
+    state: started
+
+- name: Installing filebeat
+  apt:
+    name: filebeat
+    state: present
+    update_cache: yes
+
+- name: Starting filebeat
+  service:
+    name: filebeat
+    state: started
+

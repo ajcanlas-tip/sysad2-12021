@@ -1,0 +1,7 @@
+---
+- hosts: ubuntu
+  roles:
+
+- hosts: centos
+  roles:
+    - elastic2

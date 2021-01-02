@@ -1,0 +1,4 @@
+[ubuntu]
+192.168.11.12
+[centos]
+192.168.11.7 ansible_ssh_user=icantero

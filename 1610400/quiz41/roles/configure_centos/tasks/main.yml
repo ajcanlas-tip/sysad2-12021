@@ -1,0 +1,36 @@
+---
+# tasks file for configure_centos
+
+ name: Install latest httpd, mariadb-server php-mysqlnd php-fpm
+ dnf:
+   name:
+     - httpd
+     - mariadb-server
+     - php-mysqlnd
+     - php-fpm
+   update_cache: yes
+
+
+ name: Enable and start httpd
+ service:
+   name: httpd
+   enabled: yes
+   state: started
+
+ name: Enable and start httpd
+ service:
+   name: mariadb
+   enabled: yes
+   state: started
+
+ name: Add group nagiosxi
+ group:
+   name: nagiosxi
+   state: present
+
+ name: Create Nagios user account
+ user:
+   name: nagios
+   groupL nagiosxi
+
+

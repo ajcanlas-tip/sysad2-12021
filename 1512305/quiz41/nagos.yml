@@ -1,0 +1,14 @@
+---
+- name: Install on ubuntu
+  hosts: ubuntu
+  roles:
+    - configure_ubuntu
+    - nagios_main
+    - nagios_plugins
+
+- name: Install on Centos
+  hosts: centos
+  roles: 
+    - configure_centos
+    - nagios_main_centos
+    - nagios_plugins_1

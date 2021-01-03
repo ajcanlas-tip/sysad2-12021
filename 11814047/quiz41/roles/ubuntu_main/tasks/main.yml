@@ -1,0 +1,61 @@
+---
+# tasks file for ubuntu_main
+- name: Download and Extract Nagios Core
+  unarchive:
+    src: http://sourceforge.net/projects/nagios/files/nagios-4.x/nagios-4.4.66/nagios-4.4.6.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Configure Nagios in Ubuntu
+  command: ./configure --with-command-group=nagcmd
+  args:
+    chdir: /tmp/nagios-4.4.6
+
+- name: Make Clean Nagios
+  command: make clean
+  args:
+    chdir: /tmp/nagios-4.4.6
+
+- name: Make All Nagios
+  command: make all
+  args:
+    chdir: /tmp/nagios-4.4.6
+
+- name: Make Install Nagios
+  command: make install
+  args:
+    chdir: /tmp/nagios-4.4.66
+
+- name: Make Install-init Nagios
+  command: make install-init
+  args:
+    chdir: /tmp/nagios-4.4.6
+
+- name: Make Install-daemoninit Nagios
+  command: make install-daemoninit
+  args:
+    chdir: /tmp/nagios-4.4.6
+
+- name: Make Install-config Nagios
+  command: make install-config
+  args:
+    chdir: /tmp/nagios-4.4.6
+
+- name: Make Install-commandmode Nagios
+  command: make install-commandmode
+  args:
+    chdir: /tmp/nagios-4.4.6
+
+- name: Add User Account
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: user
+    password: password
+
+- name: a2enmod cgi
+  command: a2enmod cgi
+
+- name: Restart apache2
+  service:
+    name: apache2
+    state: restarted

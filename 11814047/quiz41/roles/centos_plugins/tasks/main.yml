@@ -1,0 +1,28 @@
+---
+# tasks file for centos_plugins
+- name: Downdload and Extract nagios-plugins
+  unarchive:
+    src: https://nagios-plugins.org/download/nagios-plugins-2.2.1.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Nagios-plugins
+  command: ./configure --with-nagios-user=nagios --with-nagios-group=nagiosxi
+  args:
+    chdir: /tmp/nagios-plugins-2.2.1
+
+- name: Make
+  command: make
+  args:
+    chdir: /tmp/nagios-plugins-2.2.1
+
+- name: Make Install
+  command: make install
+  args:
+    chdir: /tmp/nagios-plugins-2.2.1
+
+- name: Start nagios plugins
+  service:
+    name: nagios
+    state: started
+    enabled: yes

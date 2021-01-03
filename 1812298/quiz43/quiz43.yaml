@@ -1,0 +1,85 @@
+---
+ - name: Install Elastic Stack
+   hosts: ubuntu
+
+   tasks:
+      - name: Install
+        apt:
+          name:
+            - openjdk-11-jdk
+            - nginx
+          state: latest
+          update_cache: yes
+
+      - name: ElasticSearch APT key
+        apt_key:
+          url: "https://packages.elastic.co/GPG-KEY-elasticsearch"
+          state: present
+
+      - name: Install APT Repository
+        apt:
+          name: apt-transport-https
+          state: present
+
+      - name: ElasticSearch Repository
+        apt_repository:
+          filename: elastic-7.x
+          repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+          state: present
+
+      - name: Install ElasticSearch
+        apt:
+          name: elasticsearch
+          update_cache: yes
+
+      - name: Allow access
+        lineinfile:
+          destfile: /etc/elasticsearch/elasticsearch.yml
+          regexp: 'network.hosts'
+          line: 'network.host: localhost'
+
+      - name: Update Port
+        lineinfile:
+          destfile: /etc/elasticsearch/elasticsearch.yml
+          regexp: 'http.port'
+          line: 'http.port: 9200'
+
+      - name: Install Kibana
+        apt:
+          name: kibana
+          update_cache: yes
+
+      - name: Allowing access
+        lineinfile:
+          destfile: /etc/kibana/kibana.yml
+          regexp: 'server.host'
+          line: 'server.host: localhost'
+
+      - name: Server Port
+        lineinfile:
+          destfile: /etc/kibana/kibana.yml
+          regexp: 'server.port'
+          line: 'server.port: 5601'
+
+      - name: ElasticSearch URL
+        lineinfile:
+          destfile: /etc/kibana/kibana.yml
+          regexp: 'elasticsearch.url'
+          line: 'elasticsearch.url: "http://localhost.9200'
+
+      - name: Install Filebeat
+        apt:
+          name: filebeat
+          state: present
+          update_cache: yes
+
+      - name: Install Logstash
+        apt:
+          name: logstash
+          state: present
+          update_cache: yes
+
+      - name: Start Logstash
+        service:
+          name: logstash
+          state: started

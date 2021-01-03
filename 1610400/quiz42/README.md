@@ -1,0 +1,11 @@
+######
+  - README.md
+  - ansible.cfg
+  - grafana.repo
+  - influxdb.repo
+  - inventory
+  - main.yaml
+  - promtheus.repo
+  - roles
+    - centos
+    - ubuntu

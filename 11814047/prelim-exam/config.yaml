@@ -1,0 +1,10 @@
+---
+- hosts: all
+  vars:
+    item: galitpe
+    motd: galit
+  roles:
+    - python
+    - java
+    - change_motd
+    - create_user

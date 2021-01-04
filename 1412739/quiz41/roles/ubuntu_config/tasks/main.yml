@@ -1,0 +1,33 @@
+---
+# tasks file for roles/ubuntu_config
+
+- name: Install Nagios Core Dependecies Packages on Ubuntu
+  apt:
+    name:
+      - build-essential
+      - apache2
+      - php
+      - openssl
+      - perl
+      - make
+      - php-gd
+      - libgd-dev
+      - libapache2-mod-php
+      - libperl-dev
+      - libssl-dev
+      - daemon
+      - wget
+      - apache2-utils
+      - unzip
+    state: latest
+    update_cache: yes
+
+- name: Add group nagcmd
+  group:
+    name: nagcmd
+    state: present
+
+- name: Add user Nagios
+  user:
+    name: nagios
+    group: nagcmd

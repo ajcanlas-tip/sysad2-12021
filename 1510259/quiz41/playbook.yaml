@@ -1,0 +1,14 @@
+---
+- name: installing ubuntu packages
+  hosts: Ubuntu
+  roles:
+    - configure_ubuntu
+    - main_ubuntu
+    - plugin_ubuntu
+
+- name: installing centos packages
+  hosts: Centos
+  roles:
+    - configure_centos
+    - main_centos
+    - plugin_centos

@@ -1,0 +1,45 @@
+---
+# tasks file for roles/configure_centos
+- name: installing httpd, mariadb, phpmysql, phpfpm
+  dnf:
+    name:
+      - httpd
+      - mariadb-server
+      - php-mysqlnd
+      - php-fpm
+    update_cache: yes
+
+- name: enabling and starting httpd
+  service:
+    name: httpd
+    enabled: yes
+    state: started
+
+- name: enabling and starting mariadb
+  service:
+    name: mariadb
+    enabled: yes
+    state: started
+
+- name: installing centos packages
+  dnf:
+    name:
+      - gcc
+      - glibc
+      - glibc-common
+      - gd
+      - gd-devel
+      - perl
+      - postfix
+      - wget
+
+- name: adding group nagiosxi
+  group:
+    name: nagiosxi
+    state: present
+
+- name: adding user nagios
+  user:
+    name: nagios
+    group: nagiosxi
+    

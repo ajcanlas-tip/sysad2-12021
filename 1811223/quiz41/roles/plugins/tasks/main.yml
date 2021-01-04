@@ -1,0 +1,57 @@
+---
+# tasks file for ./roles/plugins
+
+- name: Installing necessary dependencies
+  apt:
+    name:
+      - autoconf
+      - gcc
+      - libc6
+      - libmcrypt-dev
+      - make
+      - libssl-dev
+      - wget
+      - bc
+      - gawk
+      - dc
+      - build-essential
+      - snmp
+      - libnet-snmp-perl
+      - gettext
+    state: latest
+    update_cache: yes
+
+- name: Downloading Nagios plugins
+  get_url:
+    url: https://github.com/nagios-plugins/nagios-plugins/archive/release-2.2.1.tar.gz
+    dest: /tmp/nagios-plugins.tar.gz
+
+- name: Unzipping Nagios plugins
+  unarchive:
+    src: /tmp/nagios-plugins.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Checking system for missing libraries
+  shell: ./tools/setup
+  args:
+    chdir: /tmp/nagios-plugins-release-2.2.1
+
+- name: Running Nagios script
+  shell: ./configure
+  args:
+    chdir: /tmp/nagios-plugins-release-2.2.1
+
+- name: Starting the compilation process
+  make:
+    chdir: /tmp/nagios-plugins-release-2.2.1
+
+- name: Installing Nagios plugins
+  make:
+    chdir: /tmp/nagios-plugins-release-2.2.1
+    target: install
+
+- name: Starting Nagios
+  systemd:
+    name: nagios
+    state: started

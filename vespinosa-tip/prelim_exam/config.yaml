@@ -1,0 +1,11 @@
+---
+- hosts: all
+  vars:
+    item: gio_test
+    motd: ggraper-tip
+
+    roles:
+      - python
+      - java
+      - change_motd
+      - create_user

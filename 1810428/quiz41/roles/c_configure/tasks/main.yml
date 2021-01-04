@@ -1,0 +1,44 @@
+---
+# tasks file for roles/c_configure
+- name: install latest httpd, mariadb-server, php-mysqlnd php-fpm
+  dnf:
+    name:
+      - httpd
+      - mariadb-server
+      - php-mysqlnd
+      - php-fpm
+    update_cache: yes
+
+- name: start httpd
+  service:
+    name: httpd
+    enabled: yes
+    state: started
+
+- name: start mariadb
+  service:
+    name: mariadb
+    enabled: yes
+    state: started
+
+- name: install required packages
+  dnf:
+    name:
+      - gcc
+      - glibc
+      - glibc-common
+      - wget
+      - gd
+      - gd-devel
+      - perl
+      - postfix
+
+- name: add group
+  group:
+    name: nagiosxi
+    state: present
+
+- name: add user
+  user:
+    name: nagios
+    group: nagiosxi

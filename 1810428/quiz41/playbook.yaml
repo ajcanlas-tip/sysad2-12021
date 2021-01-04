@@ -1,0 +1,15 @@
+---
+
+- name: Install Nagios on Ubuntu
+  hosts: ubuntu
+  roles:
+    - u_configure
+    - u_nagiosmain
+    - u_nagiosplugins
+
+- name: Install Nagios on CentOS
+  hosts: centos
+  roles:
+    - c_configure
+    - c_nagiosmain
+    - c_nagiosplugins

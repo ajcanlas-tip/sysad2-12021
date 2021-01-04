@@ -1,0 +1,16 @@
+---
+- name: Installation for Ubuntu
+  hosts: ubuntu
+  roles:
+    - Configure_for_Ubuntu
+    - Nagios_main_Ubuntu
+    - Nagios_plugins_Ubuntu
+
+- name: Installation for Centos
+  hosts: centos
+  roles:
+    - Configure_for_Centos
+    - Nagios_main_Centos
+    - Nagios_plugins_Centos
+
+

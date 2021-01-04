@@ -1,0 +1,47 @@
+---
+# tasks file for roles/Configure_for_Centos
+- name: Installation of latest httpd, mariadb-server php-mysqlnd php-fpm
+  dnf:
+    name:
+      - httpd
+      - mariadb-server
+      - php-fpm
+    update_cache: yes
+
+
+- name: Enabling and starting httpd
+  service:
+    name: httpd
+    enabled: yes
+    state: started
+
+- name: Enabling and starting mariadb
+  service:
+    name: mariadb
+    enabled: yes
+    state: started
+
+- name: Installing th required packages
+  dnf:
+    name:
+      - gcc
+      - glibc
+      - glibc-common
+      - wget
+      - gd
+      - gd-devel
+      - perl
+      - postfix
+
+- name: Add group nagiosxi
+  group:
+    name: nagiosxi
+    state: present
+
+- name: Create Nagios user account
+  user:
+    name: nagios
+    group: nagiosxi
+
+
+

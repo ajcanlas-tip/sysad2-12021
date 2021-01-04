@@ -1,0 +1,93 @@
+---
+# tasks file for roles/elastic_for_centos
+name: Installing prerequisite for Elasticstack
+yum:
+  name: java-11-openjdk-devel
+  state: present
+  update_cache: yes
+
+name: Installing ElasticSearch repo
+yum_repository:
+  name: Elastic_7.x_repo
+  baseurl: https://artifacts.elastic.co/package/7.x/yum
+  gpgcheck: yes
+  gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+  enabled: yes
+  description: Elastic 7.x repo
+
+name: Installing Elastic GPG-KEY
+rpm_key:
+  key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+  state: present
+
+name: Install ElasticSearch
+yum:
+  name: elasticsearch
+  update_cache: yes
+
+name: Update Config File to allow Access
+lineinfile:
+  destfile: /etc/elasticsearch/elasticsearch.yml
+  regexp: 'network.hosts:'
+  line: 'network.hosts: localhost'
+
+name: Update Config File
+lineinfile:
+  destfile: /etc/elasticsearch/elasticsearch.yml
+  regxp: 'http.port:'
+  line: 'https.port: 9200'
+
+name: Installing Logstash repo
+yum_repository:
+  name: Elastic repository for 7.x package
+  baseurl: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+  enabled: yes
+  desription: Elastix 7.x package repo
+
+name: Install logstash
+yum:
+  name: logstash
+  state: present
+  update_cache: yes
+
+name: update config file
+lineinfile:
+  destfile: /etc/logstash/logstash.yml
+  regexp: 'https.hosts:'
+  line: 'https.hosts: 192.168.254.104'
+
+name: Installing Kibana repo
+yum_repository:
+  name: Kibana 7.x package
+  baseurl: https://artifacts.elastic.co/package/7.x/yum
+  gpgcheck: yes
+  gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+  enabled: yes
+  description: Kibana-7.x
+
+name: install kibana
+yum:
+  name: kibana
+  state: present
+  update_cache: yes
+
+name: Update config file
+lineinfile:
+  destfile: /etc/kibana/kibana.yml
+  regexp: 'server.port:'
+  line: 'server.port: 5601'
+
+name: Start Elastic Search
+service:
+  name: elasticsearch
+  state: started
+
+name: Start kibana
+service:
+  name: kibana
+  state: started
+
+name: Start logstash
+service:
+  name: logstash
+  state: started

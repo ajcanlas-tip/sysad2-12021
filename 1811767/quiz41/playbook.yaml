@@ -1,0 +1,7 @@
+---
+- name: Installing
+  hosts: ubuntu
+  roles:
+    - installnagios
+    - configurenagios
+    - pluginnagios

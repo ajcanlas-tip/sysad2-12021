@@ -1,0 +1,69 @@
+---
+# tasks file for roles/installnagios
+- name: Install Nagios
+  apt:
+    name:
+      - build-essential
+      - apache2
+      - php
+      - openssl
+      - perl
+      - make
+      - php-gd
+      - libgd-dev
+      - libapache2-mod-php
+      - libperl-dev
+      - libssl-dev
+      - daemon
+      - wget
+      - apache2-utils
+      - unzip
+    state: latest
+    update_cache: yes
+
+- name: add nagios group
+  group:
+    name: nagios
+    state: present
+
+- name: Add nagcmd
+  group:
+    name: nagcmd
+    state: present
+
+- name: Create Nagios User
+  user:
+    name: nagios
+    shell: /bin/bash
+    comment: nagios user
+    group: nagios
+    password: qwertyuiop
+
+- name: Add nagios user
+  user:
+    name: nagios
+    group: nagcmd
+    append: yes
+
+- name: Add www-data user
+  user:
+    name: www-data
+    group: nagcmd
+    append: yes
+
+- name: Create Download directory
+  file:
+    path: /downloads
+    state: directory
+    owner: nobody
+    group: nogroup
+
+- name: Download
+  get_url:
+    url: http://prdownloads.soureforge.net/sourceforge/nagios/nagios-4.2.1.tar.gz
+    dest: /downloads
+
+- name: Download plugins
+  get_url:
+    url: https://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz
+    dest: /downloads

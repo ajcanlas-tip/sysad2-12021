@@ -1,0 +1,28 @@
+---
+# tasks file for nagios3
+- name: install nagios plugins
+  unarchive:
+    src: https://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: conf nagios plugins
+  command: ./configure --with-nagios-user=nagios --with-nagios-group=nagcmd
+  args:
+    chdir: /tmp/nagios-plugins-2.3.3
+
+- name: conf using make
+  make:
+    chdir: /tmp/nagios-plugins-2.3.3
+
+- name: conf using make install
+  make:
+    target: install
+    chdir: /tmp/nagios-plugins-2.3.3
+
+- name: enabled and start nagios
+  service:
+    name: nagios
+    enabled: yes
+    state: started
+

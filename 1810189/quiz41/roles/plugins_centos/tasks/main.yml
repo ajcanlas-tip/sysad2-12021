@@ -1,0 +1,23 @@
+---
+# tasks file for roles/plugins_centos
+- name: Download and Extract Nagios plugins
+  unarchive:
+    src: https://nagios-plugins.org/download/nagios-plugins-2.2.1.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Configure nagios plugins
+  command: ./configure --with-nagios-user=nagios --with-nagios-group=nagiosxi
+  args:
+    chdir: /tmp/nagios-plugins-2.2.1
+
+- name: use make
+  make:
+    chdir: /tmp/nagios-plugins-2.2.1
+
+- name: Use make install
+  make:
+    target: install
+    chdir: /tmp/nagios-plugins-2.2.1
+
+

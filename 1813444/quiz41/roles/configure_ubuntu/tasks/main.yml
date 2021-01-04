@@ -1,0 +1,33 @@
+---
+# tasks file for roles/configure_ubuntu
+
+- name: ubuntu packages installation
+  apt:
+    name:
+      - apache2
+      - php
+      - openssl
+      - perl
+      - make
+      - php-gd
+      - build-essential
+      - libgd-dev
+      - wget
+      - apache2-utils
+      - unzip
+      - libapache2-mod-php
+      - libperl-dev
+      - libssl-dev
+      - daemon
+    state: latest
+    update_cache: yes
+
+- name: nagios cmd grp
+  group: 
+    name: nagcmd
+    state: present
+
+- name: nagios user
+  user:
+    user: nagios
+    group: nagcmd

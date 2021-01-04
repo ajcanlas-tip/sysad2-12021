@@ -1,0 +1,10 @@
+---
+ - name: Nagios installation
+   hosts: ubuntu
+   roles:
+     - install
+
+ - name: Nagios plugins installation
+   hosts: ubuntu
+   roles:
+     - plugins

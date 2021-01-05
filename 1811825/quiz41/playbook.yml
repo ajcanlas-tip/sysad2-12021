@@ -1,0 +1,8 @@
+---
+
+- name: installation
+  hosts: ubuntu
+  roles:
+    - installzed
+    - configurezed
+    - pluginzed

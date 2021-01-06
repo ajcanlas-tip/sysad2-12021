@@ -1,0 +1,80 @@
+---
+# tasks file for roles/CentOS/Nagios
+
+ - name: Download required packages
+   yum: 
+    name: 
+     - gcc
+     - glibc
+     - glibc-common
+     - perl
+     - gd-devel
+     - postfix
+     - unzip
+    state: present
+
+ - name: Download Nagios Core
+   get_url:
+     url: https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.5.tar.gz
+     dest: /tmp
+
+ - name: Add group
+   become: yes
+   group:
+     name: naggroup
+     state: present
+
+ - name: Add user 
+   become: yes
+   user:
+     name: naguser
+     group: naggroup
+
+ - name: Configure nagios
+   become: yes
+   command: ./configure --with-command-group=naggroup
+   args:
+     chdir: /tmp/nagios-4.4.5
+
+ - name: Clean
+   become: yes
+   make:
+     target: clean
+     chdir: /tmp/nagios-4.4.5
+
+ - name: Make all
+   become: yes
+   make:
+     target: all
+     chdir: /tmp/nagios-4.4.5
+
+ - name: Create systemd unit file
+   become: yes
+   make:
+     target: install-daemoninit
+     chdir: /tmp/nagios-4.4.5
+
+ - name: Apache config. files
+   make:
+     chdir: /tmp/nagios-4.4.5
+     target: install-webconf
+   become: yes
+
+ - name: Htpasswd module
+   pip:
+     name: passlib
+     state: latest
+
+ - name: Restart httpd
+   become: yes
+   service:
+     name: httpd
+     state: restarted
+
+
+ - name: Extract Nagios Core
+   unarchive:
+     src: /tmp/nagios-4.4.5.tar.gz
+     dest: /tmp
+     remote_src: yes
+

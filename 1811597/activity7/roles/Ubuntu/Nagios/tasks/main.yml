@@ -1,0 +1,21 @@
+---
+# tasks file for roles/Ubuntu/Nagios
+ - name: Download required packages
+   apt:
+     name: 
+      - apache2
+      - build-essential
+      - libapache2-mod-php
+      - libgd-dev
+      - unzip
+     state: latest
+     update_cache: yes
+
+ - name: Install Nagios Core
+   apt:
+     name:
+       - nagios4
+       - nagios-plugins-contrib
+       - nagios-nrpe-plugin
+
+

@@ -1,0 +1,41 @@
+---
+# tasks file for roles/Ubuntu/ELK
+ - name: Add elastic repo
+   apt_key:
+     url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+     state: present
+
+ - name: Add transport package
+   apt:
+     name: apt-transport-https
+     state: present
+     update_cache: yes
+
+ - name: Add elastic repo to system's repo
+   shell: echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee –a /etc/apt/sources.list.d/elastic-7.x.list
+
+ - name: Install elasticsearch
+   apt:
+     name: elasticsearch
+     state: present
+     update_cache: yes
+
+ - name: Install Kibana
+   apt:
+     name: kibana
+     state: present
+     update_cache: yes
+
+ - name: Install LogStash
+   apt: 
+    name: logstash
+    state: present
+    update_cache: yes
+
+ - name: Install filebeat
+   apt:
+     name: filebeat
+     state: present
+     update_cache: yes
+
+

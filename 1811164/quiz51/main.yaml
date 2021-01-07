@@ -1,0 +1,8 @@
+---
+- hosts: ubuntu
+  roles:
+    - esearch1
+
+- hosts: centos
+  roles:
+    - esearch2

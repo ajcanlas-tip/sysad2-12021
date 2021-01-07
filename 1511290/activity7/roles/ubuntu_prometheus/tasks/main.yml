@@ -1,0 +1,8 @@
+---
+# tasks file for roles/ubuntu_prometheus
+
+- name: installing prometheus in ubuntu
+  apt:
+    name:
+      - prometheus
+      - prometheus-node-exporter

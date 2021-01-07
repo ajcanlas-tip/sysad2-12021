@@ -1,0 +1,17 @@
+---
+# tasks file for roles/centos_grafana
+
+- name: adding grafana repository
+  copy:
+    src: grafana.repo
+    dest: /etc/yum.repos.d/
+
+- name: updating centos
+  yum:
+    update_cache: yes
+
+
+- name: installing grafana
+  yum:
+    name: grafana
+    state: present

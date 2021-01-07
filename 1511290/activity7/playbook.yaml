@@ -1,0 +1,20 @@
+---
+
+- name: installing ubuntu packages
+  hosts: ubuntu
+  roles:
+    - ubuntu_elk
+    - ubuntu_grafana
+    - ubuntu_nagios
+    - ubuntu_prometheus
+
+
+- name: installing centos packages
+  hosts: centos
+  roles:
+    - centos_elk
+    - centos_grafana
+    - centos_nagios
+    - centos_prometheus
+
+

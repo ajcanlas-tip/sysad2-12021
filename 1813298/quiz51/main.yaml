@@ -1,0 +1,11 @@
+---
+
+- name: Install elasticsearch, kibana (elk) stack, logstash on Ubuntu
+  hosts: ubuntu
+  roles:
+    - ubuntu_elk
+
+- name: Install elasticsearch, kibana (elk) stack, logstash on Centos
+  hosts: centos
+  roles:
+    - elk_centos

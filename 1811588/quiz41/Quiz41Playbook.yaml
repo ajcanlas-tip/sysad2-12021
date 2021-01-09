@@ -1,0 +1,7 @@
+---
+- name: Nagios Core Installation
+  hosts: ubuntu
+  roles:
+    - nagiosins
+    - nagiosplug
+    - nagiosconf

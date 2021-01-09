@@ -1,0 +1,6 @@
+---
+- name: Elastic Stack Installation
+  hosts: ubuntu
+
+  tasks:
+    - name: 

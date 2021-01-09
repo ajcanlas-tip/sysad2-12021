@@ -1,0 +1,88 @@
+---
+# tasks file for roles/Ubuntu_install_nagios
+
+- name: Install Ubuntu Packages
+  apt:
+    name:
+      - apache2
+      - apache2-utils
+      - build-essential
+      - daemon
+      - libapache2-mod-php
+      - libgd-dev
+      - libperl-dev
+      - libssl-dev
+      - make 
+      - openssl
+      - perl
+      - php
+      - php-gd
+      - unzip
+      - wget
+    state:
+    update_cache: yes
+
+- name: Add group nagcmd
+  group:
+    name: nagcmd
+    state: present
+
+- name: Add User nagios
+  user:
+    name: nagios
+    group: nagcmd
+
+- name: Download and Extract nagios core
+  unarchive:
+    src: https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.5.tar.gz
+    dest: /tmp
+    copy: no
+
+- name: Configure nagios
+  command: ./configure --with-nagios-group=nagcmd --with-command-group=nagcmd --with-httpd_conf=/etc/apache2/sites-enabled
+  args:
+    chdir: /tmp/nagios-4.4.5
+
+- name: Configure nagios clean
+  make:
+    target: clean
+    chdir: /tmp/nagios-4.4.5
+
+- name: nagios compilation
+  make:
+    target: all
+    chdir: /tmp/nagios-4.4.5
+
+- name: Install nagios compilation
+  make:
+    target: install
+    chdir: /tmp/nagios-4.4.5
+
+- name: Install nagios init
+  make:
+    target: install-init
+    chdir: /tmp/nagios-4.4.5
+
+- name: Install nagios config
+  make:
+    target: install-config
+    chdir: /tmp/nagios-4.4.5
+
+- name: Install nagios commandmode
+  make:
+    target: install-commandmode
+    chdir: /tmp/nagios-4.4.5
+
+- name: Add User Account
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: jdalo
+    password jdalo
+
+- name: a2emod cgi
+  command: a2emod cgi
+
+- name: Restart apache2
+  service:
+    name: apache2
+    state: restarted

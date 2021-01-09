@@ -1,0 +1,97 @@
+---
+# tasks file for roles/Centos_install_nagios
+
+- name: Install Centos Packages
+  dnf:
+    name:
+      - gcc
+      - glibc
+      - glibc-common
+      - gd
+      - gd-level
+      - perl
+      - postfix
+      - wget
+    state: present
+
+- name: Add Group Nagiosxi
+  group:
+    name: nagiosxi
+    state: present
+
+- name: Add User Nagios
+  user:
+    name: nagios
+    group: nagiosxi
+
+- name: Download and Extract Nagios Packages
+  unarchive:
+    src: https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.5.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Configure Nagios
+  command: ./configure --with-command-group=nagiosxi
+  args:
+    chdir: /tmp/nagios-4.4.5
+
+- name: Configure Make Clean
+  make:
+    target: clean
+    chdir: /tmp/nagios-4.4.5
+
+- name: Configure make all
+  make:
+    target: all
+    chdir: /tmp/nagios-4.4.5
+
+- name: Configure Make Install
+   make:
+     target: install
+     chdir: /tmp/nagios-4.4.5
+
+- name: Configure MAke Install Init
+  make:
+    target: install-init
+    chdir: /tmp/nagios-4.4.5
+
+- name: Configure Make Install Config
+  make:
+    target: Install-daemoninit
+    chdir: /tmp/nagios-4.4.5
+
+- name: Configure Make Install Config
+  make:
+    target: install-config
+    chdir: /tmp/nagios-4.4.5
+
+- name: Install Commandmode
+  make:
+    target: install-commandmode
+    chdir: /tmp/nagios-4.4.5
+
+- name: Configuring Make Install Exfoliation
+  make:
+    target: install-exfoliation
+    chdir: /tmp/nagios-4.4.5
+
+- name: Install Make Install Webconf
+  make:
+    target: install-webconf
+    chdir: /tmp/nagios-4.4.5
+
+- name: Install Passlib
+  pip:
+    name: passlib
+
+- name: User Authenticator
+  htpasswd:
+    path: usr/local/nagios/etc/htpasswd.users
+    name: jdalo
+    password: jdalo
+
+- name: Restart httpd
+  service:
+    name: httpd
+    enabled: yes
+    state: restarted

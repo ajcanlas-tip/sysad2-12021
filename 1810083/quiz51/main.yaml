@@ -1,0 +1,10 @@
+--- 
+- name: Installing ELK on Ubuntu
+  hosts: ubuntu
+  roles:
+    - Installing_Elk_Ubuntu
+
+- name: Installing ELK on Centos
+  hosts: centos
+  roles:
+    - Installing_Elk_Centos

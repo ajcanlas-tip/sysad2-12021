@@ -1,0 +1,10 @@
+---
+- name: install stack for ubuntu
+  hosts: Ubuntu
+  roles:
+    - ubuntu_elk
+
+- name: install stack for centos
+  hosts: Centos
+  roles:
+    - centos_elk

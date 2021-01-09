@@ -1,0 +1,8 @@
+---
+- hosts: ubuntu
+  roles:
+    - Elastic1
+
+- hosts: centos
+  roles:
+    - Elastic2

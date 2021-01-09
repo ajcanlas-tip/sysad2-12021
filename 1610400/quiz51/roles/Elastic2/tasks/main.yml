@@ -1,0 +1,56 @@
+---
+# tasks file for Elastic2
+- name: install docker
+  yum:
+    name: docker
+    state: latest
+    update_cache: yes
+
+- name: pull elasticsearch image
+  container.podman.podman_image:
+    name: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+
+- name: create elasticsearch network
+  container.podman.podman_network:
+    name: elastic
+  become: true
+
+- name: create elasticsearch container
+  container.podman.podman_containers:
+    containers:
+      - name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+        state: present
+        ports:
+          - "9200:9200"
+        network:
+          - name: elastic
+
+- name: pull kibana image
+  container.podman.podman.image:
+    name: docker.elastic.co/kibana/kibana:7.10.1
+
+- name: create kibana container
+  conatiner.podman.podman.containers:
+    name: kibana
+    image: docker.elastic.co/kibana/kibana:7.10.1
+    state: present
+    ports:
+      - "5601:5601"
+    network:
+      - name: elastic
+ 
+- name: pull logstash image
+  container.podman.podman.image:
+    name: docker.elastic.co/logstash/logstash:7.10.1
+
+- name: Create logstash container
+  container.podman.podman.containers:
+    containers:
+      - name: logstash
+        image: docker.elastic.co/logstash/logstash:7.10.1
+	state: present
+	ports:
+	  - "5044:5044"
+	network:
+	  - name: elastic

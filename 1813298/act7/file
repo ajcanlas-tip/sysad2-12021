@@ -1,0 +1,10 @@
+ansible.cfg
+elasticsearch.repo
+error
+file
+grafana.repo
+inventory
+main.yaml
+out
+prometheus.repo
+roles

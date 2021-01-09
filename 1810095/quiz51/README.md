@@ -14,8 +14,7 @@
     │   ├── meta
     │   │   └── main.yml
     │   ├── tasks
-    │   │   ├── main.yml
-    │   │   └── main.yml~
+    │   │   └── main.yml
     │   ├── templates
     │   ├── tests
     │   │   ├── inventory
@@ -40,4 +39,4 @@
         └── vars
             └── main.yml
 
-19 directories, 21 files
+19 directories, 20 files

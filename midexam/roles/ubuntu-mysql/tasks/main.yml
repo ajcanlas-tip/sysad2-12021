@@ -1,0 +1,23 @@
+---
+# tasks file for roles/ubuntu-mysql
+- name: Install Mysql-server
+  apt:
+    name: mysql-server
+    state: latest
+    update_cache: yes
+
+- name: Mysql Host Index
+  copy:
+    content: "Season2"
+    dest: /var/www/html/index1.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: mysql_index1
+
+- name: Start and Enable mysql-server
+  service:
+    name: mysql
+    state: restarted
+    enabled: yes
+  when: mysql_index1

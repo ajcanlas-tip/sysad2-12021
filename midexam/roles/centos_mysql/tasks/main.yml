@@ -1,0 +1,25 @@
+---
+# tasks file for roles/centos_mysql
+- name: Install mysql-server
+  yum:
+    name:
+      - mariadb-server
+      - mariadb
+    state: latest
+    update_cache: yes
+
+- name: Mysql host index
+  copy:
+    content: "Penthouse"
+    dest: /var/www/html/index1.html
+    owner: root
+    group: root
+    mode: '0664'
+  register: mysql_index
+
+- name: Start Mariadb
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+  when: mysql_index.changed

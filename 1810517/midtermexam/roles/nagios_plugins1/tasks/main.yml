@@ -1,0 +1,27 @@
+---
+# tasks file for roles/nagios_plugins1
+- name: download nagios plugins
+  unarchive:
+    src: https://nagios-plugins.org/download/nagios-plugins-2.2.1.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: configure nagios plugins
+  command: ./configure --with-nagios-user=nagios --with-nagios-group=nagiosxi
+  args:
+    chdir: /tmp/nagios-plugins-2.2.1
+
+- name: use make
+  make:
+    chdir: /tmp/nagios-plugins-2.2.1
+
+- name: install by make
+  make:
+    target: install
+    chdir: /tmp/nagios-plugins-2.2.1
+
+- name: start and enable nagios
+  service:
+    name: nagios
+    state: started
+    enabled: yes

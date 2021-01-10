@@ -1,0 +1,5 @@
+---
+# tasks file for roles/u_webservice
+- name: checking the web service in ubuntu
+  uri:
+    url: https://www.example.com/

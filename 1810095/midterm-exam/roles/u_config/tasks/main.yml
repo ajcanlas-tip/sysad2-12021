@@ -1,0 +1,32 @@
+---
+# tasks file for roles/u_config
+- name: installing nagios config in ubuntu
+  apt:
+    name:
+      - apache2
+      - apache2-utils
+      - build-essential
+      - daemon
+      - libapache2-mod-php
+      - libgd-dev
+      - libperl-dev
+      - libssl-dev
+      - make
+      - openssl
+      - php
+      - php-gd
+      - perl
+      - wget
+      - unzip
+    state: latest
+    update_cache: yes
+
+- name: adding group nagios cmd
+  group:
+    name: nagcmd
+    state: present
+
+- name: adding user nagios
+  user:
+    name: nagios
+    group: nagcmd

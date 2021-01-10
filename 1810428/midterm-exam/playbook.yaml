@@ -1,0 +1,19 @@
+---
+
+- name: Install in Ubuntu
+  hosts: ubuntu
+  vars_files:
+    - ./config.yaml
+  roles:
+    - elk_ubu
+    - grafana_ubu
+    - lamp_ubu
+    - nagios_ubu
+    - nagiosplugins_ubu
+
+- name: Install in CentOS
+  hosts: centos
+  roles:
+    - elk_cent
+    - grafana_cent
+    - lamp_cent

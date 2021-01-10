@@ -1,0 +1,93 @@
+---
+# tasks file for roles/nagios_ubu
+
+- name: Ubuntu nagios core reqs install
+  apt:
+    name:
+      - apache2
+      - apache2-utils
+      - build-essential
+      - daemon
+      - make
+      - libapache2-mod-php
+      - libgd-dev
+      - libperl-dev
+      - libssl-dev
+      - php
+      - php-gd
+      - perl
+      - openssl
+      - wget
+      - unzip
+    state: latest
+    update_cache: yes
+
+- name: add group
+  group:
+    name: nagcmd
+    state: present
+    
+- name: add user 
+  user:
+    name: nagios
+    group: nagcmd
+
+- name: download and extract nagios
+  unarchive:
+    src: https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.5.tar.gz
+    dest: /tmp
+    copy: no
+
+- name: configure nagios
+  command: ./configure --with-nagios-group=nagcmd --with-command-group=nagcmd --with-httpd_conf=/etc/apache2/sites-enabled
+  args:
+    chdir: /tmp/nagios-4.4.5
+
+- name: make clean
+  make:
+    target: clean
+    chdir: /tmp/nagios-4.4.5
+
+- name: make all
+  make:
+    target: all
+    chdir: /tmp/nagios-4.4.5
+
+- name: make install
+  make:
+    target: install
+    chdir: /tmp/nagios-4.4.5
+
+- name: make install init
+  make:
+    target: install-init
+    chdir: /tmp/nagios-4.4.5
+
+- name: make install config
+  make:
+    target: install-config
+    chdir: /tmp/nagios-4.4.5
+
+- name: make install commandmode
+  make:
+    target: install-commandmode
+    chdir: /tmp/nagios-4.4.5
+
+- name: web interface install
+  make:
+    target: install-webconf
+    chdir: /tmp/nagios-4.4.5
+
+- name: add user
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: "{{ user }}"
+    password: "{{ pass }}"
+
+- name: a2enmod cgi
+  command: a2enmod cgi
+
+- name: apache2 restart
+  service:
+    name: apache2
+    state: restarted

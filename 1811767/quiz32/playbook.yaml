@@ -1,0 +1,66 @@
+---
+- name: Install HTTPD Server
+  hosts: ubuntu
+
+  tasks:
+    - name: Installing Apache2
+      apt:
+        name: apache2
+        state: latest
+        update_cache: yes
+
+    - name: Allow installation through Firewall
+      ufw:
+        rule: allow
+        direction: in
+        name: Apache
+
+    - name: Creating Directories
+      file:
+        name: /var/www/quiz32
+        state: directory
+        owner: nobody
+        group: nogroup
+
+    - name: Creating HTML file
+      copy:
+        src: index.html
+        dest: /var/www/quiz32
+
+    - name: Configuring Directory
+      copy:
+        src: /etc/apache2/sites-available/000-default.conf
+        remote_src: yes
+        dest: /quiz32.conf
+
+    - name: Copying default file
+      copy:
+        src: /quiz32.conf
+        remote_src: yes
+        dest: /etc/apache2/sites-available
+
+    - name: Editing quiz32 docu root
+      replace:
+        path: /etc/apache2/sites-available/quiz32.conf
+        regexp: '/var/www/html'
+        replace: '/var/www/quiz32'
+
+    - name: Creating Server Admin
+      replace:
+        path: /etc/apache2/sites-available/quiz32.conf
+        regexp: "ServerAdmin webmaster@localhost"
+        replace: "ServerAdmin sntan@sntan"
+
+    - name: Editing server name
+      replace:
+        path: /etc/apache2/sites-available/quiz32.conf
+        regexp: "#ServerName www.example.com"
+        replace: "#ServerName www.quiz32.com"
+
+    - name: Activating Virtualhost
+      command: a2ensite quiz32.conf
+
+    - name: Reloading Apache2
+      service:
+        name: apache2
+        state: reloaded

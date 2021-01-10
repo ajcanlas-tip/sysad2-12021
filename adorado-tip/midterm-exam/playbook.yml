@@ -1,0 +1,16 @@
+---
+ - name: Installing ELK, LAMP and GPI stack
+   hosts: centos
+   roles:
+     - centos/gpi
+     - centos/lamp
+     - centos/elk
+
+ - name: Installing Nagios, ELK, LAMP and GPI stack
+   hosts: ubuntu
+   roles:
+     - ubuntu/gpi
+     - ubuntu/lamp
+     - ubuntu/nagios
+     - ubuntu/elk
+     

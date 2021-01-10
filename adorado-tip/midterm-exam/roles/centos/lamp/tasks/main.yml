@@ -1,0 +1,41 @@
+---
+# tasks file for ./roles/centos/lamp
+
+- name: Installing Apache web server
+  dnf:
+    name: httpd
+    state: present
+
+- name: Starting HTTPD
+  systemd:
+    state: started
+    name: httpd
+
+- name: Enabling Firewall
+  firewalld:
+    service: http
+    permanent: yes
+    state: enabled
+
+- name: Installing MariaDB
+  dnf:
+    state: latest
+    name: mariadb-server
+
+- name: Starting MariaDB
+  systemd:
+    state: started
+    enabled: yes
+    name: mariadb
+
+- name: Installing PHP
+  dnf:
+    name:
+      - php
+      - php-mysqlnd
+    state: latest
+
+- name: Restarting HTTPD
+  systemd:
+    state: restarted
+    name: httpd

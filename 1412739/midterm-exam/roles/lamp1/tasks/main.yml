@@ -1,0 +1,69 @@
+---
+# tasks file for roles/lamp1
+
+- name: Install Apache2
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: Add Apache_index
+  copy:
+    content: "Hello World"
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
+    register: apache_index
+
+- name: Start Apache2 Service
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed
+
+- name: Whitelist Apache2 In UFW
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+
+- name: Install mysql-server
+  apt:
+    name: mysql-server
+    state: latest
+    update_cache: yes
+
+- name: Add MySQL_index
+  copy:
+    content: "Hi World"
+    dest: /var/www/html/index1.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: mysql_index
+
+- name: Start MySQL Service
+  service:
+    name: mysql
+    state: restarted
+    enabled: yes
+  when: mysq;_index.changed
+
+- name: Install PHP
+  apt:
+    name:
+      - php
+      - php-mysql
+      - libapache2-mod-php
+    state: latest
+    update_cache: yes
+
+- name: Add php_index
+  copy:
+    content: "Test PHP"
+    dest: /var/www/html/index2.html
+    owner: root
+    group: root
+    mode: '0644'

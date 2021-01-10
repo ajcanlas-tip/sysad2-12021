@@ -1,0 +1,62 @@
+---
+# tasks file for roles/grafana1
+
+- name: Get Grafana Package
+  apt:
+    deb: https://d1.grafana.com/oss/release/grafana_7.3.6_amd64.deb
+  register: pkg_grafana
+
+- name: Depackage Grafana
+  dpkg_selections:
+    name: grafana_7.3.6_amd64.deb
+    selection: install
+  when: pkg_grafana.changed
+
+- name: Install LibFontConfig
+  apt:
+    name: libfontconfig1
+    state: latest
+    update_cache: yes
+    
+- name: Install Grafana
+  apt:
+    name: grafana
+    state: latest
+    update_cache: yes
+
+- name: Start Grafana 
+  service:
+    name: grafana-server
+    state: started
+
+- name: Install prometheus
+  apt:
+    name: prometheus
+    state: latest
+    update_cache: yes
+
+- name: Start Prometheus
+  service:
+    name: prometheus
+    state: started
+
+- name: Add InfluxData Key
+  apt_key:
+    url: https://repos.influxdata.com/influxdb.key
+    state: present
+
+- name: Add Influxdata Repository
+  apt_repository:
+    repo: 'deb https://repos.influxdata.com/ubuntu focal stable'
+    state: present
+
+- name: Install InfluxDB
+  apt:
+    name: influxdb
+    state: latest
+    update_cache: yes
+
+- name: Start InfluxDB
+  service:
+    name: influxdb
+    state: started

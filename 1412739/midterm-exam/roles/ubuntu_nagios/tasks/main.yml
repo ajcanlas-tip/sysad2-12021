@@ -1,0 +1,33 @@
+---
+# tasks file for roles/ubuntu_nagios
+
+- name: Install Nagios COe Dependencies Package
+  apt:
+    name:
+      - build-essential
+      - apache2
+      - php
+      - openssl
+      - perl
+      - make
+      - php-gd
+      - libgd-dev
+      - libapache2-mod-php
+      - libperl-dev
+      - libssl-dev
+      - daemon
+      - wget
+      - apache2-utils
+      - unzip
+    state: latest
+    update_cache: yes
+
+- name: Add Group NAGCMD
+  group:
+    name: nagcmd
+    state: present
+
+- name: Add User NAGIOS
+  user:
+    name: nagios
+    group: nagcmd

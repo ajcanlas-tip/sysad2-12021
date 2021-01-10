@@ -1,0 +1,55 @@
+---
+# tasks file for roles/nagios2
+- name: DL nagios core
+  unarchive:
+    src: https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.5.tar.gz
+    dest: /tmp
+    copy: no
+
+- name: Configure nagios
+  command: ./configure --with-nagios-group=nagcmd --with-command-group=nagcmd --with-httpd_conf=/etc/apache2/sites-enabled
+  args:
+    chdir: /tmp/nagios-4.4.5
+
+- name: Compile nagios
+  make:
+    chdir: /tmp/nagios-4.4.5
+    target: clean
+
+- name: Compile all nagios
+  make:
+    target: all
+    chdir: /tmp/nagios-4.4.5
+
+- name: Compile install nagios
+  make:
+    target: install
+    chdir: /tmp/nagios-4.4.5
+
+- name: Complie init nagios
+  make:
+    target: install-init
+    chdir: /tmp/nagios-4.4.5
+
+- name: Compile nagios commandmode
+  make:
+    target: install-commandmode
+    chdir: /tmp/nagios-4.4.5
+
+- name: Fire up the web
+  make:
+    target: install-webconf
+    chdir: /tmp/nagios-4.4.5
+
+- name: a2enmod cgi
+  command: a2enmod cgi
+
+- name: Restart apache2
+  service:
+    name: apache2
+    state: restarted
+
+
+
+
+

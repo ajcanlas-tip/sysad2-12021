@@ -1,0 +1,47 @@
+---
+# tasks file for ./roles/ubuntu/lamp
+
+- name: Installing Apache
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: Starting Apache web server
+  systemd:
+    state: started
+    enabled: yes
+    name: apache2
+
+- name: Allowing Apache on firewall
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+    state: enabled
+
+- name: Installing MySQL server
+  apt:
+    name: mysql-server
+    state: latest
+
+- name: Installing PHP Packages
+  apt:
+    name:
+      - php
+      - php-mysql
+      - libapache2-mod-php
+
+- name: Testing PHP
+  copy:
+    src: ubuntu/exam.html
+    dest: /var/www/html/info.php
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Installing MariaDB
+  apt:
+    name: mariadb-server-10.3
+    state: latest
+    update_cache: yes

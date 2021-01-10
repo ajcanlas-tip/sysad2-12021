@@ -1,0 +1,141 @@
+---
+# tasks file for ./roles/ubuntu/nagios
+
+- name: Installing Apache, PHP7 and other necessary modules
+  apt:
+    name:
+      - apache2
+      - php
+      - libapache2-mod-php7.0
+      - unzip
+      - python3-pip
+    state: latest
+    update_cache: yes
+
+- name: Installing passlib
+  pip:
+    name: passlib
+    state: latest
+
+- name: Downloading Nagios
+  get_url:
+    url: https://github.com/NagiosEnterprises/nagioscore/releases/download/nagios-4.4.2/nagios-4.4.2.tar.gz
+    dest: /tmp/nagioscore.tar.gz
+
+- name: Unzipping Nagios
+  unarchive:
+    src: /tmp/nagioscore.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Running Nagios script
+  shell: ./configure --with-httpd-conf=/etc/apache2/sites-enabled
+  args:
+    chdir: /tmp/nagios-4.4.2
+
+- name: Starting compilation process
+  make:
+    chdir: /tmp/nagios-4.4.2
+    target: all
+
+- name: Creating Nagios user and group
+  make:
+    chdir: /tmp/nagios-4.4.2
+    target: install-groups-users
+
+- name: Adding Apache to the Nagios group
+  user:
+    name: www-data
+    group: nagios
+
+- name: Installing Nagios
+  make:
+    chdir: /tmp/nagios-4.4.2
+    target: install
+
+- name: Installing Nagios sample configuration files
+  make:
+    chdir: /tmp/nagios-4.4.2
+    target: install-config
+
+- name: Installing initialization script
+  make:
+    chdir: /tmp/nagios-4.4.2
+    target: install-daemoninit
+
+- name: Installing Apache web server configuration files
+  make:
+    chdir: /tmp/nagios-4.4.2
+    target: install-webconf
+
+- name: Installing commandmode
+  make:
+    chdir: /tmp/nagios-4.4.2
+    target: install-commandmode
+
+- name: Restarting Apache service
+  systemd:
+    name: apache2
+    state: restarted
+
+- name: Creating Nagios admin account
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: adorado-tip
+    password: "adorado-tip"
+    crypt_scheme: md5_crypt
+
+- name: Installing necessary dependencies for Nagios plugins
+  apt:
+    name:
+      - autoconf
+      - gcc
+      - libc6
+      - libmcrypt-dev
+      - make
+      - libssl-dev
+      - wget
+      - bc
+      - gawk
+      - dc
+      - build-essential
+      - snmp
+      - libnet-snmp-perl
+      - gettext
+    state: latest
+    update_cache: yes
+
+- name: Downloading Nagios plugins
+  get_url:
+    url: https://github.com/nagios-plugins/nagios-plugins/archive/release-2.2.1.tar.gz
+    dest: /tmp/nagios-plugins.tar.gz
+
+- name: Unzipping Nagios plugins
+  unarchive:
+    src: /tmp/nagios-plugins.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Checking system for missing libraries
+  shell: ./tools/setup
+  args:
+    chdir: /tmp/nagios-plugins-release-2.2.1
+
+- name: Running Nagios script
+  shell: ./configure
+  args:
+    chdir: /tmp/nagios-plugins-release-2.2.1
+
+- name: Starting the compilation process
+  make:
+    chdir: /tmp/nagios-plugins-release-2.2.1
+
+- name: Installing Nagios plugins
+  make:
+    chdir: /tmp/nagios-plugins-release-2.2.1
+    target: install
+
+- name: Starting Nagios
+  systemd:
+    name: nagios
+    state: started

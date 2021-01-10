@@ -1,0 +1,119 @@
+---
+# tasks file for ./roles/ubuntu/elk
+
+- name: Adding Elasticsearch GPG key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Adding Elasticsearch RPM
+  shell: echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
+
+- name: Updating Ubuntu package list
+  apt:
+    upgrade: 'yes'
+    update_cache: yes
+
+- name: Installing Elasticsearch
+  apt:
+    name: elasticsearch
+    update_cache: yes
+
+- name: Configuring Elasticsearch configuration file
+  lineinfile:
+    path: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'network.host:'
+    line: 'network.host: 127.0.0.1'
+
+- name: Configuring Elasticsearch HTTP port
+  lineinfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'http.port:'
+    line: 'http.port: 9200'
+
+- name: Starting Elasticsearch
+  systemd:
+    state: started
+    enabled: yes
+    name: elasticsearch
+
+- name: Installing Kibana
+  apt:
+    name: kibana
+    update_cache: yes
+
+- name: Configuring Kibana server host
+  replace:
+    path: /etc/kibana/kibana.yml
+    regexp: 'server.host:'
+    replace: 'server.host: "localhost"'
+  register: kibana_host
+
+- name: Configuring Kibana server port
+  replace:
+    path: /etc/kibana/kibana.yml
+    regexp: 'server.port: 5601'
+    replace: 'server.port: 5601'
+  register: kibana_port
+
+- name: Configuring Elasticsearch URL
+  replace:
+    path: /etc/kibana/kibana.yml
+    regexp: 'elasticsearch.url:'
+    replace: 'elasticsearch.url: ["https://localhost:9200"]'
+  register: kibana_url
+
+- name: Starting Kibana
+  systemd:
+    name: kibana
+    state: started
+
+- name: Restarting kibana
+  systemd:
+    name: kibana
+    state: restarted
+
+- name: Installing Logstash
+  apt:
+    name: logstash
+    update_cache: yes
+
+- name: Getting configuration file
+  copy:
+    src: ubuntu/input.conf
+    dest: "/etc/logstash/conf.d"
+
+- name: Getting configuration file
+  copy:
+    src: ubuntu/filter.conf
+    dest: "/etc/logstash/conf.d"
+
+- name: Getting configuration file
+  copy:
+    src: ubuntu/output.conf
+    dest: "/etc/logstash/conf.d"
+
+- name: Starting Logstash
+  systemd:
+    state: started
+    enabled: yes
+    name: logstash
+
+- name: Installing Filebeat
+  apt:
+    name: filebeat
+    update_cache: yes
+
+- name: Getting Filebeat config file
+  copy:
+    src: ubuntu/filebeat.yml
+    dest: "/etc/filebeat/"
+
+- name: Enabling Filebeat modules
+  shell: filebeat modules enable system nginx mysql
+
+- name: Starting Filebeat
+  systemd:
+    state: started
+    enabled: yes
+    name: filebeat

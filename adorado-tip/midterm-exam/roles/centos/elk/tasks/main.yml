@@ -1,0 +1,118 @@
+---
+# tasks file for ./roles/centos/elk
+
+- name: Adding Elasticsearch GPG key
+  rpm_key:
+    state: present
+    key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+- name: Adding Elasticsearch repo
+  copy:
+    src: centos/elasticsearch.repo
+    dest: /etc/yum.repos.d/
+
+- name: Updating centos package list
+  dnf:
+    state: latest
+    update_cache: yes
+
+- name: Installing Elasticsearch
+  dnf:
+    name: elasticsearch
+    state: latest
+
+- name: Configuring Elasticsearch network host
+  lineinfile:
+    path: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'network.host:'
+    line: 'network.host: 127.0.0.1'
+
+- name: Configuring Elasticsearch HTTP port
+  lineinfile:
+    path: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'http.port:'
+    line: 'http.port: 9200'
+
+- name: Starting Elasticsearch
+  systemd:
+    state: started
+    enabled: yes
+    name: elasticsearch
+    
+- name: Installing Kibana
+  dnf:
+    name: kibana
+    state: latest
+
+- name: Configuring Kibana server host
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: '#server.host:'
+    line: 'server.host: "127.0.0.1"'
+
+- name: Configuring Kibana server port
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: '#server.port: 5601'
+    line: 'server.port:5601'
+
+- name: Configuring Kibana elasticsearch host URL
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: 'elasticsearch.hosts:'
+    line: 'elasticsearch.hosts: ["http://localhost:9200"]'
+
+- name: Starting Kibana
+  systemd:
+    state: started
+    enabled: yes
+    name: kibana
+
+- name: Installing Logstash
+  dnf:
+    name: logstash
+    state: latest
+
+- name: Getting config file
+  copy:
+    src: centos/input.conf
+    dest: "/etc/logstash/conf.d"
+
+- name: Getting config file
+  copy:
+    src: centos/filter.conf
+    dest: "/etc/logstash/conf.d"
+
+- name: Getting config file
+  copy:
+    src: centos/output.conf
+    dest: "/etc/logstash/conf.d"
+
+- name: Starting Logstash
+  systemd:
+    state: started
+    enabled: yes
+    name: logstash
+
+- name: Installing Filebeat
+  dnf:
+    name: filebeat
+    state: latest
+
+- name: Getting config file
+  copy:
+    src: centos/filebeat.yml
+    dest: "/etc/filebeat/"
+
+- name: Enabling Filebeat modules
+  shell: filebeat modules enable system nginx mysql
+
+- name: Loading Filebeat template
+  shell: filebeat setup --index-management -E output.logstash.enabled=false -E 'output.elasticsearch.hosts=["localhost:9200"]'
+
+- name: Starting Filebeat
+  systemd:
+    state: started
+    enabled: yes
+    name: filebeat
+  

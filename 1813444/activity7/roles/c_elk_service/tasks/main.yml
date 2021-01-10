@@ -1,0 +1,34 @@
+---
+# tasks file for roles/c_elk_service
+
+- name: gpg key
+  command: sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+- name: elk repository 
+  copy:
+    src: elasticsearch.repo
+    dest: /etc/yum.repos.d/ 
+
+- name: update centos
+  dnf: 
+    update_cache: yes
+
+- name: installation of elasticsearch 
+  dnf: 
+    name: elasticsearch 
+    state: present 
+
+- name: installation of logstash 
+  dnf:
+    name: logstash 
+    state: present 
+
+- name: installation of kibana
+  dnf: 
+    name: kibana
+    state: present
+
+- name: installation of filebeat 
+  yum:
+    name: filebeat
+    state: present 

@@ -1,0 +1,16 @@
+---
+- name: installing services for ubuntu
+  hosts: ubuntu
+  roles:
+    - u_elk_service
+    - u_grafana_service
+    - u_nagios_service
+    - u_prometheus_service
+
+- name: installing services for centos
+  hosts: centos
+  roles:
+    - c_elk_service
+    - c_grafana_service 
+    - c_nagios_service
+    - c_prometheus_service 

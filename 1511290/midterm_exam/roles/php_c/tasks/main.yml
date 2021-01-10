@@ -1,0 +1,16 @@
+---
+# tasks file for roles/php_c
+
+- name: installing php
+  yum:
+    name: php
+    state: latest
+    update_cache: yes
+
+- name: PHP host index
+  copy:
+    content: "sample2"
+    dest: /var/www/html/index2.html
+    owner: root
+    group: root
+    mode: '0644'

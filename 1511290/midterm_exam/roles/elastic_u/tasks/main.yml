@@ -1,0 +1,114 @@
+---
+# tasks file for roles/elastic_u
+
+- name: install pre-requisites for elastic
+  apt:
+    name:
+      - openjdk-11-jdk
+      - nginx
+    state: latest
+    update_cache: yes
+
+- name: add elastic repository
+  apt_key:
+    url: "https://packages.elastic.co/GPG-KEY-elasticsearch"
+    state: present
+
+- name: install apt repo
+  apt:
+    name: apt-transport-https
+    state: latest
+    update_cache: yes
+
+- name: getting apt transport https
+  apt_repository:
+    filename: elastic-7.x
+    repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+    state: present
+
+- name: installing elastic search
+  apt:
+    name: elasticsearch
+    state: present
+    update_cache: yes
+
+- name: update config file to allow access
+  lineinfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'network.host'
+    line: 'network,host: "0.0.0.0" '
+
+- name: update port config
+  lineinfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'http.port'
+    line: 'http.port: 9200'
+
+- name: add discovery type 
+  lineinfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    line: 'discovery.type: "single-node" '
+
+- name: jvm heap size
+  lineinfile:
+    dest: /etc/elasticsearch/jvm.options
+    regexp: '-Xms'
+    line: 'Xms512m'
+
+- name: jvm heapsize max
+  lineinfile:
+    dest: /etc/elasticsearch/jvm.options
+    regexp: '-Xmx'
+    line: '-Xmx512m'
+
+- name: off ufw
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: enable elasticsearch
+  service:
+    state: started
+    enabled: yes
+    
+- name: install kibana
+  apt:
+    name: kibana
+    state: latest
+    update_cache: yes
+
+- name: remove hashtag in serverport
+  lineinfile:
+    dest: /etc/kibana/kibana.yml
+    regexp: 'server.port'
+    line: 'server.port:5601'
+
+- name: remove hashtag on server.host
+  lineinfile:
+    dest: /etc/kibana/kibana.yml
+    regexp: '#elasticsearch.hosts'
+    line: 'elasticsearch.host: ["http://0.0.0.0:9200"]'
+
+- name: start and enable kibana
+  service:
+    name: kibana
+    state: started
+    enabled: yes
+
+- name: allow ufw
+  command: ufw allow 5601/tcp
+
+- name: install logstash
+  apt:
+    name: logstash
+    state: latest
+    update_cache: yes
+
+- name: start and install logstash
+  service:
+    name: logstash
+    state: started
+    enabled: yes
+
+

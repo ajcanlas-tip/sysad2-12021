@@ -1,0 +1,54 @@
+- name: Installing Elasticsearch
+  hosts: elasticsearch
+  vars_files:
+   - config.yml
+  roles:
+   - elasticsearch
+
+- name: Installing Kibana 
+  hosts: kibana
+  vars_files:
+   - config.yml
+  roles:
+   - kibana
+
+- name: Installing logstash
+  hosts: logstash
+  vars_files:
+   - config.yml
+  roles:
+   - logstash
+
+- name: Installing Nagios Core and Plugins
+  hosts: nagios
+  vars_files:
+   - config.yml
+  roles:
+   - nagios
+
+- name: Installing Grafana
+  hosts: grafana
+  roles:
+   - grafana
+
+- name: Installing Prometheus
+  hosts: prometheus
+  roles:
+   - prometheus
+
+- name: Installing Influxdb
+  hosts: influxdb
+  roles:
+   - influxdb
+
+- name: Installing Apache
+  hosts: apache
+  vars_files:
+   - config.yml
+  roles:
+   - apache
+
+- name: Installing Mariadb
+  hosts: mariadb
+  roles:
+   - mariadb

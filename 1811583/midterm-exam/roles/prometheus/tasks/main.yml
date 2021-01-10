@@ -1,0 +1,97 @@
+---
+# tasks file for roles/prometheus
+- name: Updating Packages
+  apt:
+   name: unzip
+   update_cache: yes
+
+- name: Installing Nginx
+  apt:
+   name: nginx
+   update_cache: yes
+
+- name: Starting Nginx
+  service:
+   name: nginx
+   state: started
+
+- name: Creating Directory for /etc/prometheus
+  file:
+   path: /etc/prometheus
+   state: directory
+   group: nogroup
+   owner: nobody
+   mode: '0755'
+
+- name: Creating Directory named downloads
+  file:
+   path: ./downloads
+   state: directory
+   owner: nobody
+   group: nogroup
+
+- name: Creating Directory for /var/lib/prometheus
+  file:
+   path: /var/lib/prometheus
+   state: directory
+   group: nogroup
+   owner: nobody
+   mode: '0755'
+
+- name: Downloading Prometheus
+  get_url:
+   url:  https://github.com/prometheus/prometheus/releases/download/v2.0.0/prometheus-2.0.0.linux-amd64.tar.gz
+   dest: ./downloads
+
+- name: Extracting prometheus file
+  shell: 'tar xvf prometheus-2.0.0.linux-amd64.tar.gz'
+  args:
+   chdir: ./downloads
+
+- name: Copying Prometheus to local
+  copy:
+   src: ./downloads/prometheus-2.0.0.linux-amd64/prometheus
+   dest: /usr/local/bin/
+   remote_src: True
+
+- name: Copying Prometool to local
+  copy:
+   src: ./downloads/prometheus-2.0.0.linux-amd64/promtool
+   dest: /usr/local/bin/
+   remote_src: True
+
+- name: Executable prometheus
+  file:
+   path: /usr/local/bin/prometheus
+   mode: u+x,g+x,o+x
+
+- name: Executable prometool
+  file:
+   path: /usr/local/bin/promtool
+   mode: u+x,g+x,o+x
+
+- name: Copying consoles to /etc/prometheus directory
+  shell: 'cp -r ./downloads/prometheus-2.0.0.linux-amd64/consoles /etc/prometheus'
+   
+- name: Copying console library to /etc/prometheus directory
+  shell: 'cp -r ./downloads/prometheus-2.0.0.linux-amd64/console_libraries /etc/prometheus'
+
+- name: Creating Prometheus configuration
+  copy:
+   src: premetheusconfig
+   dest: /etc/prometheus/prometheus.yml
+
+- name: Creating file for systemd service
+  copy:
+   src: prometheusservice
+   dest: /etc/systemd/system/prometheus.service
+
+- name: Reloading systemd services
+  systemd:
+   daemon_reload: yes
+
+- name: Starting Prometheus
+  service:
+   name: prometheus
+   enabled: yes
+   state: started

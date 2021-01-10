@@ -1,0 +1,77 @@
+---
+# tasks file for roles/apache
+- name: Installing Apache
+  apt:
+   name: apache2
+   state: latest
+   update_cache: yes
+
+- name: Configuring firewall to allow apache
+  ufw:
+   rule: allow
+   name: 'Apache'
+
+- name: Creating a Directory for the sample website
+  file:
+   path: /var/www/sampleweb
+   state: directory
+   owner: nobody
+   group: nogroup
+
+- name: Creating apache user
+  user:
+   name: '{{ apache_user }}'
+
+- name: Assigning user
+  file:
+   path: /var/www/sampleweb
+   group: '{{ apache_user }}'
+   owner: '{{ apache_user }}'
+
+- name: Adding permission to web roots
+  file:
+   path: /var/www/sampleweb
+   mode: '0755'
+
+- name: Rendering index.html
+  copy:
+   src: index.html
+   dest: /var/www/sampleweb
+
+- name: Configuring files directory PART1
+  copy:
+   src: /etc/apache2/sites-available/000-default.conf
+   remote_src: yes
+   dest: /sampleweb.conf
+
+- name: Configuring files directory PART2
+  copy:
+   src: /sampleweb.conf
+   remote_src: yes
+   dest: /etc/apache2/sites-available
+
+- name: Editing configuration file
+  replace:
+   path: /etc/apache2/sites-available/sampleweb.conf
+   regexp: "ServerAdmin webmaster@localhost"
+   replace: "ServerAdmin ryan@example.com"
+
+- name: Configuring document root
+  replace:
+   path:  /etc/apache2/sites-available/sampleweb.conf
+   regexp: '/var/www/html'
+   replace: '/var/www/sampleweb'
+
+- name: Setting Server name
+  replace:
+   path:  /etc/apache2/sites-available/sampleweb.conf
+   regexp: "#ServerName www.example.com"
+   replace: "ServerName sampleweb.example.com"
+
+- name: Activating Virtual Host
+  command: a2ensite sampleweb.conf
+
+- name: Reloading Apache
+  service:
+   name: apache2
+   state: reloaded

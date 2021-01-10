@@ -1,0 +1,14 @@
+---
+- hosts: ubuntu
+  vars_files:
+    - ./config.yaml
+  roles:
+    - grafana2
+    - lampstack2
+    - estack1
+
+- hosts: centos
+  roles:
+    - cestack
+    - grafana1
+    - lampstack1

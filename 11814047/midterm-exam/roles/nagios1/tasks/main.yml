@@ -1,0 +1,32 @@
+---
+# tasks file for nagios1
+- name: INSTALL NAGIOS CORE ON UBUNTU
+  apt:
+    name:
+      - build-essential
+      - apache2
+      - php
+      - openssl
+      - perl
+      - make
+      - php-gd
+      - libgd-dev
+      - libapache2-mod-php
+      - libperl-dev
+      - libssl-dev
+      - daemon
+      - wget
+      - apach2-utils
+      - unzip
+    state: latest
+    update_cache: yes
+
+- name: ADD GROUP NAGCMD
+  group:
+    name: nagcmd
+    state: present
+
+- name: ADD USER NAGIOS
+  user:
+    name: nagios
+    group: nagcmd

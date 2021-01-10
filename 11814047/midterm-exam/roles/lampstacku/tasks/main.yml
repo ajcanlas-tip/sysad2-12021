@@ -1,0 +1,68 @@
+---
+# tasks file for lampstacku
+- name: INSTALL APACHE
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: ADD apache_index
+  copy:
+    content: "Hi, I'm Adrian!"
+    dest: /var/www/html/index.thml
+    owner: root
+    group: root
+    mode: '0644'
+  register: apache_index
+
+- name: START APACHE2 SERVICE
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed
+
+- name: WHITELIST APACHE2 IN UFW
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+
+- name: INSTALL MYSQL-SERVER
+  apt:
+    name: mysql-server
+    state: latest
+    update_cache: yes
+
+- name: ADD mysql_index
+  copy:
+    content: "Hi, I'm Adrian!"
+    dest: /var/www/html/index1.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: mysql_index
+
+- name: START MYSQL SERVICE
+  service:
+    name: mysql
+    state: restarted
+    enabled: yes
+  when: mysql_index.changed
+
+- name: INSTALL PHP
+  apt:
+    name:
+      - php
+      - php-mysql
+      - libapache2-mod-php
+    state: latest
+    update_cache: yes
+
+- name: ADD php_index
+  copy:
+    content: "Hi, I'm Adrian!"
+    dest: /var/www/html/index2.html
+    owner: root
+    group: root
+    mode: '0644'

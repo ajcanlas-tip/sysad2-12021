@@ -1,0 +1,17 @@
+---
+- hosts: ubuntu
+  vars_files:
+    - ./config.yaml
+  roles:
+    - elasticstacku
+    - nagios1
+    - nagios2
+    - nagios3
+    - grafanau
+    - lampstacku
+
+- hosts: centos
+  vars_files:
+    - elasticstackc
+    - grafanac
+    - lampstackc

@@ -1,0 +1,62 @@
+---
+# tasks file for roles/graf_ubun
+ - name: install package
+   apt:
+    deb: https://dl.grafana.com/oss/release/grafana_7.3.6_amd64.deb
+    register: pkg_grafana
+
+ - name: extract package
+   dpkg_selections:
+    name: grafana_7.3.6_adm64.deb
+    selection: install
+   when: pkg_grafana.changed
+
+ - name: install libfront
+   apt:
+    name: lobfrontconfig1
+    state: latest
+    update_cache: yes
+
+ - name: install grafana
+   apt:
+    name: grafana
+    state: latest
+    update_cache: yes
+
+ - name: start grafana
+   service:
+    name: grafana
+    state: started
+
+ - name: istall prometheus
+   apt:
+    name: prometheus
+    state: latest
+    update_cache: yes
+
+ - name: start prometheus
+   service:
+    name: prometheus
+    state: started
+
+ - name: create influx key
+   apt_key:
+    url: https://repos.influxdata.com/influxdb.key
+    state: present
+
+ - name: install influxdb rep
+   apt_repository:
+    repo: 'https://repos.influxdata.com/ubuntufocal stable'
+    state: present
+
+ - name: install influxdb
+   apt:
+    name: influxdb
+    state: latest
+    update_cache: yes
+
+ - name: start influxdb
+   service:
+    name: influxdb
+    state: started
+

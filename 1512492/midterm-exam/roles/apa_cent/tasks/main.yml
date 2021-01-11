@@ -1,0 +1,72 @@
+---
+# tasks file for roles/apa_cent
+ - name: install httpd
+   yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+ - name: copy httpd index
+   copy:
+    content: 'laoke'
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0555'
+   register: httpd
+
+ - name: start httpd
+   service:
+    name: httpd
+    state: started
+   when: httpd.changed
+
+ - name: stop firewall
+   service:
+    name: firewall
+    state: stopped
+
+ - name: install mariadb
+   yum:
+    name: mariadb-server
+    state: latest
+    update_cache: yes
+
+ - name: copy mysql index
+   copy:
+    content: 'laoke'
+    dest: /var/www/html/index_1.html
+    owner: root
+    group: root
+    mode: '0555'
+  register: mysql
+
+ - name: start mariadb
+   service:
+    name: mariadb
+    state: started
+   when: mysql.changed
+
+ - name: install php
+   yum:
+    name:
+     - php
+     - php-mysqlnd
+    state: latest
+    update_cache: yes
+
+ - name: copy php index
+   copy:
+    content: 'laoke'
+    dest: /var/www/html/index_2.html
+    owner: root
+    group: root
+    mode: '0555'
+   register: php
+
+ - name: restart httpd
+   service:
+    name: httpd
+    state: restarted
+   when: php.changed
+

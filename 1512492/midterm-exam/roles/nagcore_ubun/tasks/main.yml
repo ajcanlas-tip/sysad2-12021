@@ -1,0 +1,57 @@
+---
+# tasks file for roles/nagcore_ubun
+ - name: install nagios core
+   unarchive:
+    src: https://sourceforge.net/projects/nagios/files/nagios-4.x/nagios-4.4.6.tar.gz
+    dest: /tmp
+    copy: no
+
+ - name: config nagios for ubuntu
+   command: ./configure --with-nagios-group=nagcmd --with-command-group=nagcmd --with-httpd_conf=/etc/apache2/sites-enabled
+   args:
+    chdir: /tmp/nagios-4.4.6
+
+ - name: compile nagios
+   make:
+    chdir: /tmp/nagios-4.4.6
+    target: all
+
+ - name: install compiled file
+   make:
+    target: install
+    chdir: /tmp/nagios-4.4.6
+
+ - name: create install init
+   make:
+    target: install-init
+    chdir: /tmp/nagios-4.4.6
+
+ - name: create install config
+   make:
+    target: install-config
+    chdir: /tmp/nagios-4.4.6
+
+ - name: create install cmd mode
+   make:
+    target: install-commandmode
+    chdir: /tmp/nagios-4.4.6
+
+ - name: create webconf
+   make:
+    target: install-webconf
+    chdir: /tmp/nagios-4.4.6
+
+ - name: create user
+   htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: "{{ username }}"
+    password: "{{ password }}"
+
+ - name: a2enmod cgi
+   command: a2enmod cgi
+
+ - name: restart apache
+   service:
+    name: apache2
+    state: restarted
+

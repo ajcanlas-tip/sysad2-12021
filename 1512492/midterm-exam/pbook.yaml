@@ -1,0 +1,18 @@
+---
+ - name: ubuntu istaller
+   host: ubuntu
+   roles:
+     - elas_ubun
+     - graf_ubun
+     - apa_ubun
+     - nag_ubun
+     - nagcore_ubun
+     - nagplug_ubun
+
+ - name: centos installer
+   host: centos
+   roles:
+     - elas_cent
+     - graf_cent
+     - apa_cent
+

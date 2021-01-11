@@ -1,0 +1,101 @@
+---
+# tasks file for roles/elas_cent
+ - name: install java
+   yum:
+    name: java-11-openjdk-devel
+    state: present
+    update_cache: yes
+
+ - name: install elastic rep
+   yum_repository:
+    name: Elastic_7.X.repo
+    baseurl: https://artifacts.elestic.co/packages/7.x/yum
+    gpgcheck: yes
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    enable: yes
+    description: elastic 7.x repo
+
+ - name:install gpgkey
+   rpm_key:
+    key: https://artifacts/elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+ - name: install elastic search
+   yum:
+    name: elasticsearch
+    state: present
+    update_cache: yes
+
+ - name: update config file to access
+   lineinfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'network.host'
+    line: 'network.host: localhost'
+
+ - name: update config file
+   lineinfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'http.port:'
+    line: 'http.port 9200'
+
+ - name: start elastic search
+   service:
+    name: elasticsearch
+    state: started
+
+ - name: install logstash rep
+   yum_repository:
+    name: elastic repository for 7.x repo
+    baseurl: https://artifacts.elastic.co/packaged/7.x/yum
+    gpgcheck: yes
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elsticsearch
+    enable: yes
+    description: elastic 7.x packages repo
+
+ - name: install logstash
+   yum:
+    name: logstash
+    state: present
+    update_cache: yes
+
+ - name: update config
+   lineinfile:
+    destfile: /etc/logstash/logstash.yml
+    regexp: 'http.host:'
+    line: 'http.host: 127.0.0.1'
+
+ - name: start logstash
+   service:
+    name: logstash
+    state: started
+
+ - name: install kibana rep
+   yum_repository:
+    name: kibana 7.x packages
+    baseurl: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    enabled: yes
+    description: kibana 7.x
+
+ - install kibana
+   yum: 
+    name: kibana
+    state: present
+    update_cache: yes
+ 
+ - name: allow config to access host
+   lineinfile: 
+    destfile: /etc/kibana/kibana.yml
+    regexp: 'server.host: '
+    line: 'server.host: 0.0.0.0'
+
+ - name: update config
+   lineinfile:
+    destfile: /etc/kibana/kibana.yml
+    regexp: 'server.port: '
+    line: 'server.port: 5601'
+
+ - name: start kibana
+   service:
+    name: kibana
+    state: started
+

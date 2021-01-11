@@ -1,0 +1,10 @@
+---
+- name: Service Installation for Ubuntu 
+  hosts: ubuntu 
+  roles: 
+    - u_elk_installation
+
+- name: Service Installation for Centos 
+  hosts: centos 
+  roles: 
+    - c_elk_installation 

@@ -1,0 +1,88 @@
+---
+# tasks file for roles/c_elk_installation
+
+- name: Docker Installation
+  yum: 
+    name: docker
+    state: latest
+    update_cache: yes 
+
+- name: Pulling ES img
+  containers.podman.podman_image: 
+    name: docker.elastic.co/elasticsearch/elasticsearch:7.10.1 
+
+- name: Network of ES 
+  containers.podman.podman_network:
+    name: elastic
+  become: true 
+
+- name: Container for ES
+  containers.podman.podman_containers: 
+    containers: 
+      - name: elasticsearch 
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1 
+        state: present 
+        ports: 
+          - "9200:9200"
+        networks: 
+          - name: elastic 
+
+- name: Pulling Kibana img
+  containers.podman.podman_image: 
+    name: docker.elastic.co/kibana/kibana:7.10.1
+
+- name: Container for Kibana
+  containers.podman.podman_containers: 
+    containers: 
+      - name: kibana
+        image: docker.elastic.co/kibana/kibana:7.10.1 
+        state: present
+        ports: 
+          - "5601:5601"
+        networks: 
+          - name: elastic
+
+- name: Pull logstash img 
+  containers.podman.podman_image:
+    name: docker.elastic.co/logstash/logstash:7.10.1 
+
+- name: Pull container for logstash 
+  containers.podman.podman_containers: 
+    containers: 
+      - name: logstash 
+        image: docker.elastic.co/logstash/logstash:7.10.1 
+        state: present
+        ports: 
+          - "5044:5044"
+        networks: 
+          - name: elastic 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

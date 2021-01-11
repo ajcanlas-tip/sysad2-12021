@@ -1,7 +1,7 @@
 ---
 - hosts: ubuntu
   vars_files:
-   - ./config.yaml
+    - ./config.yaml
   roles:
     - elastic1
     - nagios

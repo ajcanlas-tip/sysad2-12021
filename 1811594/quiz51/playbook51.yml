@@ -1,0 +1,15 @@
+---
+- name: Install Elasticsearch using Docker
+  hosts: Ubuntu
+  roles:
+   - elasticsearch_docker
+
+- name: Install Kibana using Docker
+  hosts: Ubuntu
+  roles:
+   - kibana_docker
+
+- name: Install Logstash using Docker
+  hosts: Ubuntu
+  roles:
+   - logstash_docker

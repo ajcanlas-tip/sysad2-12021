@@ -1,0 +1,15 @@
+---
+- name: Elasticsearch installation with Docker container
+  hosts: ubuntu
+  roles:
+   - elasticsearch
+
+- name: Kibana installation
+  hosts: ubuntu
+  roles:
+   - kibana
+
+- name: Logstash installation
+  hosts: ubuntu
+  roles:
+   - logstash

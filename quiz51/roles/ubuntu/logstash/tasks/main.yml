@@ -1,0 +1,25 @@
+---
+- name: logstash configuration
+  file:
+   path: ./pipeline
+   state: directory
+
+- name: Create logstash configuration
+  copy:
+   src: logstash.conf
+   dest: ./pipeline
+
+- name: Download logstash and create logstash container
+  docker_container:
+   name: logstash
+   image: docker.elastic.co/logstash/logstash:7.10.1
+   networks:
+    - name: elastic
+   networks_cli_compatible: yes
+   volumes:
+    - ./pipeline/:/usr/share/logstash/pipeline/
+   env:
+    discovery.type: "single-node"
+   ports:
+      - 5044:5044
+# tasks file for roles/ubuntu/logstash

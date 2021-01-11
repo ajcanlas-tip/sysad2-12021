@@ -1,0 +1,8 @@
+---
+- hosts: ubuntu
+  roles:
+    - ElasticStackU
+
+- hosts: centos
+  roles:
+    - ElasticStackC

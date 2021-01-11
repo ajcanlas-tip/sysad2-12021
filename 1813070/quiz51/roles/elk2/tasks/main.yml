@@ -1,0 +1,58 @@
+---
+# tasks file for roles/elk2
+- name: Docker for Centos
+  yum:
+    name: docker
+    state: latest
+    update_cache: yes
+
+- name: Pull elasticsearch
+  containers.podman.podman_image:
+    name: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+
+- name: Elasticsearch network
+  containers.podman.podman_network:
+    name: elastic
+  become: true
+
+- name: Container for elasticsearch
+  containers.podman.podman_containers:
+    containers:
+      - name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+        state: present
+        ports:
+          - "9400:9400"
+        networks:
+          - name: elastic
+
+- name: Pull kibana
+  containers.podman.podman_image:
+    name: docker.elastic.co/kibana/kibana:7.10.1
+
+- name: Container for kibana
+  containers.podman.podman_image:
+    containers:
+      - name: kibana
+        image: docker.elastic.co/kibana/kibana:7.10.1
+        state: present
+        ports:
+          - "5602:5602"
+        networks:
+          - name: elastic
+
+- name: Pull logtash
+  containers.podman.podman_image:
+    name: docker.elastic.co/logtash/logtash:7.10.1
+
+- name: Container for logtash
+  containers.podman.podman_containers:
+    containers:
+      - name: logtash
+        image: docker.elastic.co/logtash/logtash:7.10.1
+        state: present
+        ports:
+          - "5044:5044"
+        networks:
+          - name: elastic
+

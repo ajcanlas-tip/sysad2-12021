@@ -1,0 +1,33 @@
+---
+- name: act4
+  hosts: all
+
+  tasks:
+- name: Installation of OpenStack-Ansible and Boto
+  pip:
+    name:
+      - ansible
+      - boto
+      - python-openstackclient
+
+- name: Installing CentOS
+  hosts: centos
+
+  tasks:
+    - name: Installing Java
+      become: yes
+      yum:
+        name: java-1.8.0-openjdk
+        state: present
+        update_cache: yes
+
+- name: Installing Ubuntu
+  hosts: ubuntu
+
+  tasks:
+    - name: UBUNTU
+      become: yes
+      apt:
+        name: default-jre
+        state: present
+        update_cache: yes

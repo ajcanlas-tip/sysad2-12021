@@ -1,0 +1,41 @@
+---
+ - name: GPG key added to the trusted keys
+   apt_key:
+     url: https://packages.grafana.com/gpg.key
+     state: present
+
+ - name: Grafana repos
+   shell: echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+
+ - name: Update APT cache
+   apt:
+     upgrade: 'yes'
+     update_cache: yes
+   become: yes
+
+ - name: Grafana installation
+   apt:
+     name: grafana
+ 
+ - name: Prometheus installation
+   apt:
+     name:
+       - prometheus
+       - prometheus-node-exporter
+     state: present
+
+
+ - name: Influxdb repo
+   shell: echo "deb https://repos.influxdata.com/ubuntu focal stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+
+ - name: Influxdb key
+   apt_key:
+     url: https://repos.influxdata.com/influxdb.key
+     state: present
+
+ - name: Influxdb installation
+   apt:
+     name: influxdb
+     state: present
+
+# tasks file for ubuntu/gpi

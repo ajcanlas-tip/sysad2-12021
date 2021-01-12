@@ -1,0 +1,53 @@
+---
+ - name: Grafana.repo
+   copy:
+     src: grafana.repo
+     dest: /etc/yum.repos.d/
+
+ - name: Cache update
+   yum:
+     update_cache: yes
+
+ - name: Grafana installation
+   yum:
+     name: grafana
+     state: present
+
+ - name: Prometheus repo.
+   copy:
+     src: prometheus.repo
+     dest: /etc/yum.repos.d/
+
+ - name: Cache update
+   yum:
+     update_cache: yes
+
+ - name: Prometheus installation
+   dnf:
+     name:
+       - prometheus2
+       - node_exporter
+
+     state: present
+   become: yes
+
+ - name: Influxdb repo
+   copy:
+     src: influxdb.repo
+     dest: /etc/yum.repos.d/
+
+ - name: Cache update
+   dnf:
+     update_cache: yes
+
+ - name: Influxdb installation
+   dnf:
+     name: influxdb
+     state: present
+
+ - name: Start influxdb service
+   service:
+     name: influxdb
+     state: started
+     enabled: yes
+# tasks file for centos/gpi

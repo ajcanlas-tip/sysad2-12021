@@ -1,0 +1,20 @@
+---
+ - name: Installation requirement for ubuntu
+   hosts: ubuntu
+   vars_files:
+    - config.yaml
+
+   
+   roles:
+     - ubuntu/elk
+     - ubuntu/gpi
+     - ubuntu/lamp
+
+ - name: Installation requirement for centos
+   hosts: centos
+
+   roles:
+     - centos/elk
+     - centos/gpi
+     - centos/nagios
+     - centos/lamps

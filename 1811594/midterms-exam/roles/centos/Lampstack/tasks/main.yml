@@ -1,0 +1,44 @@
+---
+ - name: Installing httpd
+   dnf:
+     name: httpd
+     state: latest
+
+ - name: Starting httpd
+   service:
+     name: httpd
+     state: started
+
+ - name: Allow firewall
+   firewalld:
+     service: http
+     permanent: yes
+     state: enabled
+
+ - name: Installing MariaDB
+   dnf:
+     name:
+       - mariadb-server
+       - mariadb
+     state: present
+
+ - name: Starting mariadb service
+   service:
+     name: mariadb
+     state: started
+     enabled: yes
+
+ - name: PHP
+   dnf:
+     name:
+       - php 
+       - php-mysqlnd  
+       - php-gd 
+       - php-xml 
+     state: latest
+
+ - name: Restart httpd
+   service:
+     name: httpd
+     state: restarted
+# tasks file for roles/centos/Lampstack

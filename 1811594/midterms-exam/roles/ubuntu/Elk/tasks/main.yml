@@ -1,0 +1,115 @@
+---
+ - name: Add elastic key
+   apt_key:
+     url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+     state: present
+
+ - name: Add transport package
+   apt:
+     name: apt-transport-https
+     state: present
+     update_cache: yes
+
+ - name: Add elastic repo to system's repo
+   shell: echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee –a /etc/apt/sources.list.d/elastic-7.x.list
+       
+ - name: Update cache
+   become: yes
+   apt:
+     upgrade: yes
+     update_cache: yes
+
+ - name: Install Elasticsearch
+   apt:
+     name: elasticsearch
+     update_cache: yes
+
+ - name: Uncomment network host
+   replace:
+     path: /etc/elasticsearch/elasticsearch.yml
+     regexp: '#network.host: 192.168.0.1'
+     replace: 'network.host: 127.0.0.1'
+
+ - name: Uncomment http port
+   replace:
+     path: /etc/elasticsearch/elasticsearch.yml
+     regexp: '#http.port: 9200'
+     replace: 'http.port: 9200'
+
+ - name: Increase service timeout
+   lineinfile:
+     path: /etc/systemd/system/elasticsearch.service.d/startup-timeout.conf
+     line: '{{ elastic_timeout }}'
+     create: yes
+   register: timeout
+
+ - name: Restarting systemd manager
+   systemd:
+     daemon_reload: yes
+   when: timeout.changed
+
+ - name: Start elasticsearch service
+   service:
+     name: elasticsearch
+     state: started
+     enabled: yes
+
+ - name: Install logstash
+   apt:
+     name: logstash
+     state: present
+
+ - name: Copy 02-beats-input.conf
+   copy:
+     src: ubuntu_files/10-syslog-filter.conf
+     dest: /etc/logstash/conf.d
+
+ - name: copy 10-syslog-filter.conf
+   copy:
+     src: ubuntu_files/10-syslog-filter.conf
+     dest: /etc/logstash/conf.d
+
+ - name: copy 30-elasticsearch-output.conf
+   copy:
+     src: ubuntu_files/30-elasticsearch-output.conf
+     dest: /etc/logstash/conf.d
+
+ - name: Install kibana
+   apt:
+     name: kibana
+     update_cache: yes
+
+ - name: Uncomment server.port
+   replace:
+     path: /etc/kibana/kibana.yml
+     regexp: '#server.port: 5601'
+     replace: 'server.port: 5601'
+
+ - name: Uncomment server.host
+   replace:
+     path: /etc/kibana/kibana.yml
+     regexp: '#server.host: '
+     replace: 'server.host: 127.0.0.1'
+
+ - name: Uncomment Elasticsearch.hosts
+   replace:
+     path: /etc/kibana/kibana.yml
+     regexp: '#elaticsearch.hosts: ["https://localhost:9200"]'
+     replace: 'elasticsearch.hosts: [“http://localhost:9200”]'
+
+ - name: Start and enable kibana
+   service:
+     name: kibana
+     state: started
+
+ - name: Restart kibana
+   service:
+     name: kibana
+     state: restarted
+
+ - name: Allow port 5601
+   ufw:
+     rule: allow
+     port: 5601
+     proto: tcp
+# tasks file for roles/ubuntu/Elk

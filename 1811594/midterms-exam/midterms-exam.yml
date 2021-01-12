@@ -1,0 +1,19 @@
+---
+ - name: Installations for Ubuntu
+   hosts: Ubuntu
+   vars_files:
+     - config.yaml
+   
+   roles:
+     - ubuntu/Elk
+     - ubuntu/GPI
+     - ubuntu/Lampstack
+
+ - name: Installations for CentOS
+   hosts: Centos
+
+   roles:
+     - centos/Elk
+     - centos/GPI
+     - centos/Nagios
+     - centos/Lampstack

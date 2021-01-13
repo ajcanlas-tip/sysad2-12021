@@ -1,0 +1,21 @@
+---
+# tasks file for roles/centos-docker
+- name: install pre requisites
+  yum:
+    name:
+      - python3
+      - python3-pip
+    state: present
+
+- name: install docker file
+  yum:
+    name: docker
+    state: present
+    update_cache: yes
+  register: dockerfile
+
+- name: install the docker.py
+  pip:
+    name: docker.py
+    state: present
+  when: dockerfile.changed

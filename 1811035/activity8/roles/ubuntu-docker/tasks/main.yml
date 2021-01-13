@@ -1,0 +1,21 @@
+---
+# tasks file for roles/ubuntu-docker
+- name: install pre requisites
+  apt:
+    name:
+      - python3
+      - python3-pip
+    state: present
+
+- name: install docker file
+  apt:
+    name: docker.io
+    state: latest
+    update_cache: yes
+  register: dockerio
+
+- name: install docker.py
+  pip:
+    name: dockey.py
+    state: latest
+  when: dockerio.changed

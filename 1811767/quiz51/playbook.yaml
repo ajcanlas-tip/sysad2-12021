@@ -1,0 +1,10 @@
+---
+- name: Elastic Stack Installation Roles
+
+- hosts: ubuntu
+  roles:
+    - ubuntuelastic
+
+- hosts: centos
+  roles:
+    - centoselastic

@@ -1,0 +1,29 @@
+---
+- name: Installations of Nagios Plugins
+  unarchive:
+    scr: https://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Nagios Plugins Config
+  command: ./configure --with-nagios-user=nagiosusr --with-nagios-group=nagcmdgrp
+  args:
+    chdir: /tmp/nagios-plugins-2.3.3
+
+- name: Make Conf
+  make:
+    chdir: /tmp/nagios-plugins-2.3.3
+
+- name: Installing Make
+  make:
+    chdir: /tmp/nagios-plugins-2.3.3
+    target: install
+
+- name: Nagios Start
+  service:
+    name: nagios
+    enable: yes
+    state: started
+    update_cache: yes
+
+# tasks file for roles/ubnagios3

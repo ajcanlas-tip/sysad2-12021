@@ -1,0 +1,21 @@
+---
+- name: Installation in Ubuntu
+  hosts: ubuntu
+  vars_files:
+    - ./config.yaml
+
+  roles:
+    - ubelasticstack
+    - ubnagios1
+    - ubnagios2
+    - ubnagios3
+    - ubgrafana
+    - ublamp
+
+- name: Installation in Centos
+  hosts: centos
+
+  roles:
+    - centelasticstack
+    - centgrafana
+    - centlampstack

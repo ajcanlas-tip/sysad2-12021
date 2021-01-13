@@ -1,0 +1,69 @@
+---
+- name: Installing Apache2
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: Apache Index Registration
+  copy:
+    content: "GOODMORNING! MY NAME IS SHARMAINE"
+    dest: /var/www/html/index1.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: mysql_index
+
+- name: Apache2 Service Restart
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed
+
+- name: UFW Apache2
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+
+- name: Installing MySQL Server
+  apt:
+    name: mysql-server
+    state: latest
+    update_cache: yes
+
+- name: MySQL Index Registration
+  copy:
+    content: "GOODMORNING! MY NAME IS SHARMAINE"
+    dest: /var/www/html/index1.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: mysql_index
+
+- name: MySQL Service Start
+  service:
+    name: mysql
+    state: restarted
+    enabled: yes
+  when: mysql_index.changed
+
+- name: Installing PhP
+  apt:
+    name:
+      - php
+      - libapache2-mod-php
+      - php-mysql
+    state: latest
+    update_cache: yes
+
+- name: PhP Index Registration
+  copy:
+    content: "GOODMORNING! MY NAME IS SHARMAINE"
+    dest: /var/www/html/index2.html
+    owner: root
+    group: root
+    mode: '0644'
+
+# tasks file for roles/ublamp

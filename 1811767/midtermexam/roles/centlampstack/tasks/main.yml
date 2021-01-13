@@ -1,0 +1,73 @@
+---
+- name: Installing Httpd
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: Httpd Index Registration
+  copy:
+    content: "GOODMORNING! MY NAME IS SHARMAINE"
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: httpd
+
+- name: Httpd Start
+  service:
+    name: httpd
+    state: started
+  when: httpd.changed
+
+- name: Stop Firewall
+  service:
+    name: firewall
+    state: stopped
+    update_cached: yes
+
+- name: Installing Mariadb
+  yum:
+    name: mariadb-server
+    state: latest
+    update_cache: yes
+
+- name: MySQL Index Registration
+  copy:
+    content: "GOODMORNING! MY NAME IS SHARMAINE"
+    dest: /var/www/html/index1.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: mysql
+
+- name: Mariadb Start
+  service:
+    name: mariadb
+    state: started
+  when: mysql.changed
+
+- name: Installing Php
+  yum:
+    name:
+      - php-mysql
+      - php
+    state: latest
+    update_cache: yes
+
+- name: Php Index Registration
+  copy:
+    content: "GOODMORNING! MY NAME IS SHARMAINE"
+    dest: /var/www/html/index2.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: php
+
+- name: Httpd Restart
+  service:
+    name: httpd
+    state: restarted
+  when: php.changed
+
+# tasks file for roles/centlampstack

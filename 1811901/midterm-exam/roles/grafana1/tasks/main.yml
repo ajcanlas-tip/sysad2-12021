@@ -1,0 +1,49 @@
+---
+# tasks file for roles/grafana1
+- name: Add repo
+  copy:
+    src: grafana.repo
+    dest: /etc/yum.repos.d/
+
+- name: Install
+  yum:
+    name: grafana
+    state: latest
+    update_cache: yes
+
+- name: Run
+  service:
+    name: grafana-server
+    state: started
+
+- name: Add
+  copy:
+    src: prometheus.repo
+    dest: /etc/yum.repos.d/
+
+- name: Install
+  yum:
+    name: prometheus2
+    state: latest
+    update_cache: yes
+
+- name: Run
+  service:
+    name: prometheus
+    state: started
+
+- name: Add
+  copy:
+    src: influxdb.repo
+    dest: /etc/yum.repos.d/
+
+- name: Install
+  yum:
+    name: influxdb
+    state: latest
+    update_cache: yes
+
+- name: Run
+  service:
+    name: influxdb
+    state: started

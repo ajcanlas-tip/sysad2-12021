@@ -1,0 +1,68 @@
+---
+# tasks file for roles/lampstack2
+- name: Install
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: Add
+  copy:
+    content: "Apache test, Hello"
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: apache_index
+
+- name: Run
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+  when: apache_index.changed
+
+- name: Whitelist
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+
+- name: Install
+  apt:
+    name: mysql-server
+    state: latest
+    update_cache: yes
+
+- name: Add
+  copy:
+    content: "MySQL test, Hello"
+    dest: /var/www/html/index1.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: mysql_index
+
+- name: Run
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+  when: mysql_index.changed
+
+- name: Install
+  apt:
+    name:
+      - php
+      - php-mysql
+      - libapache2-mod-php
+    state: latest
+    update_cache: yes
+
+- name: Add
+  copy:
+    content: "php test, Hello"
+    dest: /var/www/html/index2.html
+    owner: root
+    group: root
+    mode: '0644'

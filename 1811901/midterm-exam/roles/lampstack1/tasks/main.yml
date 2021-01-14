@@ -1,0 +1,71 @@
+---
+# tasks file for roles/lampstack1
+- name: Install
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: Add
+  copy:
+    content: "Apache test, Hello"
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: httpd
+
+- name: Run
+  service:
+    name: httpd
+    state: started
+  when: httpd.changed
+
+- name: Stop firewall
+  service:
+    name: firewalld
+    state: stopped
+
+- name: Install
+  yum:
+    name: mariadb-server
+    state: latest
+    update_cache: yes
+
+- name: Add
+  copy:
+    content: "MySQL test, Hello"
+    dest: /var/www/html/index1.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: mysql
+
+- name: Run
+  service:
+    name: mariadb
+    state: started
+  when: mysql.changed
+
+- name: Install
+  yum:
+    name:
+      - php
+      - php-mysqlnd
+    state: latest
+    update_cache: yes
+
+- name: Add
+  copy:
+    content: "php test, Hello"
+    dest: /var/www/html/index2.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: php
+
+- name: Restart
+  service:
+    name: httpd
+    state: restarted
+  when: php.changed

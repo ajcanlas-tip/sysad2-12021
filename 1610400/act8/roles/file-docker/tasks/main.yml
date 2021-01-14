@@ -1,0 +1,20 @@
+---
+# tasks file for file-docker
+- name: Starting docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: using docker to install web server
+  docker_image:
+    name: flores/docker-apache-php
+    state: present
+    source: pull
+
+- name: Using docker to install db server
+  docker_image:
+    name: mysql/mysql-server:latest
+    state: present
+    source: pull
+    

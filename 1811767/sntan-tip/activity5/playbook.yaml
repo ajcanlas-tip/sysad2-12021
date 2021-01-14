@@ -1,0 +1,12 @@
+---
+- name: Installing Ubuntu Package
+  hosts: ubuntu
+
+  roles:
+    - install-ubuntu
+
+- name: Installing Centos Package
+  hosts: centos
+
+  roles:
+    - install-centos

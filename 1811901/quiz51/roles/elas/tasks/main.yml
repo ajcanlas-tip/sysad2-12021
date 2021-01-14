@@ -1,0 +1,60 @@
+---
+
+- name: docker
+  apt:
+    name: docker.io
+    state: latest
+    update_cache: yes
+  register: docker
+
+- name: Install
+  apt:
+    name: python3
+    state: latest
+    update_cache: true
+  with_items:
+    - python3
+    - python3-pip
+
+- pip:
+    name: docker-py
+    executable: pip3
+    state: latest
+
+- docker_image:
+    name: traefik
+
+- name: dockey.py
+  pip:
+    name: docker.py
+    state: latest
+  when: docker.changed
+
+- name: Network
+  docker_image:
+    name: docker.elastic.co/kibana/kibana:710.1
+
+- name: Container
+  docker_container:
+    name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+    state: present
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - name: elastic
+
+- name: Kibana
+  docker_container:
+    name: kibana
+    image: docker.elastic.co/kibana:7.10.1
+    state: present
+    ports:
+      - "5601:5601"
+    networks:
+      name: elastic
+
+- name: logstash
+  docker_image:
+    name: docker.elastic.co/kibana:7.10.1

@@ -1,0 +1,13 @@
+---
+# tasks file for roles/u_userd
+- name: creating docker group
+  become: yes
+  group:
+    name: docker
+    state: present
+
+- name: adding docker group
+  become: yes
+  user:
+    name: moreno20
+    group: docker

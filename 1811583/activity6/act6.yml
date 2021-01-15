@@ -1,0 +1,14 @@
+---
+- name: Install DHCPD, Bind9, VSFTPD, Samba, HTTPD and MariaDB on Ubuntu
+  hosts: ubuntu
+
+  roles:
+    - ubuntu
+
+
+
+- name: Install DHCPD, Bind9, VSFTPD, Samba, HTTPD and MariaDB on CentOS 
+  hosts: centos
+
+  roles:
+    - centos

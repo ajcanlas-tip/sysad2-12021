@@ -1,0 +1,37 @@
+---
+# tasks file for roles/centos
+- name: Install DHCPD
+  yum:
+    name: dhcp-server
+    state: latest
+    update_cache: yes
+
+- name: Install Bind9
+  yum:
+    name:
+      - bind
+      - bind-utils
+    state: latest
+
+- name: Install VSFTPD
+  yum:
+    name: vsftpd
+    state: latest
+
+- name: Install Samba
+  yum:
+    name:
+      - samba
+      - samba-client
+      - samba-common
+    state: latest
+
+- name: Install HTTPD
+  yum:
+    name: httpd
+    state: latest
+
+- name: Install MariaDB
+  yum:
+    name: mariadb-server
+    state: latest

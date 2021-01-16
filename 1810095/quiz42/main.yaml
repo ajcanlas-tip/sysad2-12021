@@ -1,0 +1,10 @@
+---
+- name: install grafana, prometheus, telegraf in ubuntu
+  hosts: Ubuntu
+  roles:
+    - u_gpt
+
+- name: install grafana, prometheus, telegraf in centos
+  hosts: Centos
+  roles:
+    - c_gpt

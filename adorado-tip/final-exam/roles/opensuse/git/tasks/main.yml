@@ -1,0 +1,13 @@
+---
+# tasks file for ./roles/opensuse/git
+
+- name: Installing git
+  zypper:
+    name: git
+    state: latest
+
+- name: Cloning prelim
+  git:
+    repo: '{{ prelim }}'
+    version: prelim-exam
+    dest: ./prelim-exam

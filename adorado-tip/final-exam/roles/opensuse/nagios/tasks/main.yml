@@ -1,0 +1,125 @@
+---
+# tasks file for ./roles/opensuse/nagios
+
+- name: Installing necessary dependencies
+  zypper:
+   name:
+    - apache2
+    - gcc
+    - glibc
+    - gd
+    - perl
+    - php7
+    - apache2-mod_php7
+    - unzip
+   state: latest
+
+- name: Enabling php7
+  shell: 'a2enmod php7'
+
+- name: Creating nagios group
+  group:
+   name: nagios
+   state: present
+
+- name: Creating nagios group
+  group:
+   name: nagcmd
+   state: present
+
+- name: Creating nagios group
+  group:
+   name: nagadmin
+   state: present
+
+- name: Creating nagios user
+  user:
+   name: nagios
+   comment: nagios user
+   group: nagadmin
+
+- name: Adding wwwrun user group
+  user:
+   name: wwwrun
+   group: nagadmin
+   append: yes
+
+- name: Creating downloads directory
+  file:
+   path: /downloads
+   state: directory
+
+- name: Downloading nagios
+  get_url:
+   url: http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-4.2.1.tar.gz
+   dest: /downloads
+
+- name: Extracting nagios
+  unarchive:
+   src: /downloads/nagios-4.2.1.tar.gz
+   dest: /downloads
+   remote_src: yes
+
+- name: Creating virtual host directory
+  file:
+   path: /etc/httpd/conf.d
+   state: directory
+
+- name: Configuring nagios
+  shell: ./configure --with-command-group=nagcmd --with-command-group=nagcmd --with-httpd_conf=/etc/httpd/conf.d
+  args:
+   chdir: /downloads/nagios-4.2.1
+
+- name: Compiling nagios
+  make:
+   target: all
+   chdir: /downloads/nagios-4.2.1
+
+- name: Installing nagios
+  make:
+   target: install
+   chdir: /downloads/nagios-4.2.1
+
+- name: Installing daemon
+  make:
+   target: install-daemoninit
+   chdir: /downloads/nagios-4.2.1
+
+- name: Installing config files
+  make:
+   target: install-config
+   chdir: /downloads/nagios-4.2.1
+
+- name: Installing commandmode
+  make:
+   target: install-commandmode
+   chdir: /downloads/nagios-4.2.1
+
+- name: Installing webconf
+  make:
+   target: install-webconf
+   chdir: /downloads/nagios-4.2.1
+
+- name: Installing pip
+  zypper:
+   name: python3-pip
+   state: latest
+
+- name: Installing passlib
+  pip:
+   name: passlib
+   state: latest
+
+- name: Creating nagios admin account
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: nagiosadmin
+    password: '{{ admin_pass }}'
+
+- name: Restarting apache
+  systemd:
+   name: apache2
+   state: reloaded
+
+- name: Starting nagios
+  shell: '/etc/init.d/nagios start'

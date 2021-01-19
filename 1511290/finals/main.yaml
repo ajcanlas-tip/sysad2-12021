@@ -1,0 +1,28 @@
+---
+- hosts: centos
+  vars_files:
+    - ./config.yaml
+  roles:
+    - git_cent
+    - es_cent
+    - mt_cent
+    - motd_cent
+
+- hosts: ubuntu
+  vars_files:
+    - ./config.yaml
+  roles:
+    - git_ubu
+    - es_ubu
+    - mt_ubu
+    - motd_ubu
+
+- hosts: opensuse
+  vars_files:
+    - ./config.yaml
+  roles:
+    - git_opnsuse
+    - es_opnsuse
+    - mt_opnsuse
+    - motd_opnsuse
+

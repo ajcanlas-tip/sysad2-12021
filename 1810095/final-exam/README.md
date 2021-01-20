@@ -50,7 +50,6 @@
 │   │   ├── meta
 │   │   │   └── main.yml
 │   │   ├── tasks
-│   │   │   ├── \
 │   │   │   └── main.yml
 │   │   ├── templates
 │   │   ├── tests
@@ -213,4 +212,4 @@
 │           └── main.yml
 └── vsftpd.conf
 
-109 directories, 104 files
+109 directories, 103 files

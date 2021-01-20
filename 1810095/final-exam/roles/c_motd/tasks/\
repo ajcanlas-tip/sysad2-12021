@@ -1,7 +1,0 @@
----
-# tasks file for roles/c_motd
-- name: creating motd
-  lineinfile:
-    path: /etc/motd
-    line: "Ansible Managed by {{ user }}"
-    create: yes

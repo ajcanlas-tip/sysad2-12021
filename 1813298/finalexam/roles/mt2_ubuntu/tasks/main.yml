@@ -1,0 +1,13 @@
+---
+# tasks file for roles/mt2_ubuntu
+
+- name: Installation for prometheus
+  apt:
+    name: prometheus
+    state: latest
+    update_cache: yes
+
+- name: Start prometheus
+  service:
+    name: prometheus
+    state: started

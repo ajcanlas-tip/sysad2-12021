@@ -1,0 +1,67 @@
+---
+# tasks file for es3
+- name: install vsftpd
+  zypper:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: Stop firewall
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: Create ftp user
+  user:
+    name: vherjann100
+    password: $5$v0zlz5bnpZffXKvWB$lk3AES8eQksRqM10UhHzyJdXXwp0bxzaHuwbjx0bb6.
+    comment: "ftp user"
+
+- name: create ftp group
+  group:
+    name: vherjann100
+
+- name: add DenyUser in etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers vherjann100"
+  register: sshd_config
+
+- name: Restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Create ftp directory
+  file:
+    path: /home/vherjann100/ftp
+    state: directory
+    owner: vherjann100
+    group: vherjann100
+
+- name: create files directory
+  file:
+    path: /home/vherjann100/ftp/files
+    state: directory
+    owner: vherjann100
+    group: vherjann100
+
+- name: copy vsftpd.conf
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_config
+
+- name: delete line in vsftpd.conf
+  lineinfile:
+    path: /etc/vsftpd.conf
+    regexp: 'secure_root_dir=/var/run/vsftpd/empty'
+    line: ' '
+
+- name: restart vsftpd.conf
+  service:
+    name: vsftpd
+    state: restarted
+  when: vsftpd_config.changed

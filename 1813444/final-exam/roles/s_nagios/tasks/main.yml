@@ -1,0 +1,126 @@
+---
+# tasks file for roles/s_nagios
+
+- name: installation of packages
+  zypper:
+    name:
+      - apache2
+      - gcc
+      - glibc
+      - gd
+      - perl
+      - php7
+      - apache2-mod_php7
+      - unzip
+    state: latest
+
+- name: enabling php7
+  shell: 'a2enmod php7'
+
+- name: nagios group
+  group:
+    name: nagios
+    state: present
+
+- name: nagios group
+  group:
+    name: nagcmd
+    state: present
+
+- name: nagios group
+  group:
+    name: nagadmin
+    state: present
+
+- name: nagios user
+  user:
+    name: nagios
+    comment: nagios user
+    group: nagadmin
+
+- name: wwwrun for opensuse
+  user:
+    name: wwwrun
+    groups: nagadmin
+    append: yes
+
+- name: installation of dl directory
+  file:
+    path: /downloads
+    state: directory
+
+- name: installation of nagios
+  get_url:
+    url: http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-4.2.1.tar.gz
+    dest: /downloads
+
+- name: nagios core extracting
+  unarchive:
+    src: /downloads/nagios-4.2.1.tar.gz
+    dest: /downloads
+    remote_src: yes
+
+- name: host directory
+  file:
+    path: /etc/httpd/conf.d
+    state: directory
+
+- name: configuration of nagios
+  shell: ./configure --with-command-group=nagcmd --with-command-group=nagcmd --with-httpd_conf=/etc/httpd/conf.d
+  args:
+    chdir: /downloads/nagios-4.2.1
+
+- name: compilation of nagios core
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: all
+
+- name: installation of binaries
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install
+
+- name: installation of init
+  make:
+    chdir: /downloads/nagios-4.2.1                                                                                  
+    target: install-init
+
+- name: installation of config file                                                                                
+  make: 
+    chdir: /downloads/nagios-4.2.1   
+    target: install-config
+
+- name: installation of permissions
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install-commandmode
+
+- name: webconf
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install-webconf
+
+- name: installation of pip
+  zypper:
+    name: python3-pip
+    state: latest
+
+- name: installation of passlib
+  pip:
+    name: passlib
+    state: latest
+
+- name: nagios account
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: nagiosadmin
+    password: '{{ nagadmin_pass }}'
+
+- name: apache service restarting
+  service:
+    name: apache2
+    state: reloaded
+
+- name: nagios service starting
+  shell: '/etc/init.d/nagios start'
+

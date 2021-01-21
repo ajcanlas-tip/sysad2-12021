@@ -1,0 +1,12 @@
+---
+# tasks file for roles/c_clone
+- name: Installation of Git 
+  yum:
+    name: git
+    state: latest
+
+- name: Cloning PE on Centos
+  git:
+    repo: '{{ prelim_exam }}'
+    dest: ./prelim-exam
+    version: prelim-exam

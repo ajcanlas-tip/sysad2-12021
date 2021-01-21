@@ -1,0 +1,97 @@
+---
+- name: Cloning PE in Centos
+  hosts:
+    - centos
+  vars_files:
+    - config.yaml
+  roles:
+    - c_clone
+
+- name: Installation of Enterprise Service for Centos
+  hosts:
+    - centos
+  vars_files:
+    - config.yaml
+  roles:
+    - c_ftp
+
+- name: Installation of Monitoring Service for Centos
+  hosts:
+    - centos
+  vars_files:
+    - config.yaml
+  roles:
+    - c_nagios
+
+- name: MOTD for centos
+  hosts:
+    - centos
+  vars_files:
+    - config.yaml
+  roles:
+    - motd
+
+- name: Cloning PE in Debian
+  hosts:
+    - debian
+  vars_files:
+    - config.yaml
+  roles:
+    - d_clone
+
+- name: Installation of enterprise service for debian
+  hosts:
+    - debian
+  vars_files:
+    - config.yaml
+  roles:
+    - d_ftp
+
+- name: Installation of Monitoring Service for debian
+  hosts:
+    - debian
+  vars_files:
+    - config.yaml
+  roles:
+    - d_nagios
+
+- name: MOTD for Debian
+  hosts:
+    - debian
+  vars_files:
+    - config.yaml
+  roles:
+    - motd
+
+- name: Cloning PE in Opensuse
+  hosts:
+    - suse
+  vars_files:
+    - config.yaml
+  roles: 
+    - s_clone
+
+- name: Installation of Enterprise service for OpenSuse
+  hosts: 
+    - suse
+  vars_files:
+    - config.yaml
+  roles:
+    - s_ftp
+
+- name: Installation of monitoring service for OpenSuse
+  hosts:
+    - suse
+  vars_files:
+    - config.yaml
+  roles: 
+    - s_nagios                                                                                                       
+
+- name: MOTD for Opensuse
+  hosts:
+    - suse
+  vars_files: 
+    - config.yaml 
+  roles:
+    - motd 
+                                                                                                                    

@@ -1,0 +1,96 @@
+---
+- name: Clone Prelim in Centos
+  hosts:
+    - centos
+  vars_files:
+    - config.yaml
+  roles:
+    - centos/Clone
+
+- name: Install Enterprise Service in Centos
+  hosts:
+    - centos
+  vars_files:
+    - config.yaml
+  roles:
+    - centos/FTP
+
+- name: Install Monitoring Service in Centos
+  hosts:
+    - centos
+  vars_files:
+    - config.yaml
+  roles:
+    - centos/Nagios
+
+- name: MOTD for centos
+  hosts:
+    - centos
+  vars_files:
+    - config.yaml
+  roles:
+     - motd
+
+- name: Clone Prelim in Debian
+  hosts:
+    - debian
+  vars_files:
+    - config.yaml
+  roles:
+    - debian/Clone
+
+- name: Install Enterprise Service in Debian
+  hosts:
+    - debian
+  vars_files:
+    - config.yaml
+  roles:
+    - debian/FTP
+
+- name: Install Monitoring Service in Debian
+  hosts:
+    - debian
+  vars_files:
+    - config.yaml
+  roles:
+    - debian/Nagios
+
+- name: MOTD for Debian
+  hosts:
+    - debian
+  vars_files:
+    - config.yaml
+  roles:
+    - motd
+
+- name: Cloning Prelim in Opensuse
+  hosts:
+    - opensuse
+  vars_files:
+    - config.yaml
+  roles: 
+    - opensuse/Clone
+
+- name: Install Enterprise Services in OpenSuse
+  hosts: 
+    - opensuse
+  vars_files:
+    - config.yaml
+  roles:
+    - opensuse/FTP
+
+- name: Install Monitoring Services for OpenSuse
+  hosts:
+    - opensuse
+  vars_files:
+    - config.yaml
+  roles: 
+    - opensuse/Nagios                                                                          
+
+- name: MOTD for Opensuse
+  hosts:
+    - opensuse
+  vars_files: 
+    - config.yaml 
+  roles:
+    - motd 

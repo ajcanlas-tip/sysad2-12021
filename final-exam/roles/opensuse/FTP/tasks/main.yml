@@ -1,0 +1,63 @@
+---
+- name: Install FTP Server
+  zypper:
+    name: vsftpd
+    state: latest
+
+- name: Start FTP Server
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: FTP User
+  user:
+    name: '{{ user }}'
+    password: '{{ ftp_pass }}'
+
+- name: DenyUser
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers '{{ user }}'"
+  register: successfully_denied
+
+- name: Restart sshd
+  service:
+    name: sshd
+    state: restarted
+  when: successfully_denied.changed
+
+- name: Copy  config file
+  copy:
+    src: /etc/vsftpd.conf
+    dest: /etc/vsftpd.conf.default
+    remote_src: True
+
+- name: FTP command
+  replace:
+    path: /etc/vsftpd.conf
+    regexp: 'write_enable=NO'
+    replace: 'write_enable=YES'
+
+- name: LS Recurse
+  replace:
+    path: /etc/vsftpd.conf
+    regexp: '#ls_recurse_enable=YES'
+    replace: 'ls_recurse_enable=YES'
+
+- name: Enable ascii
+  replace:
+    path: /etc/vsftpd.conf
+    regexp: '#ascii_download_enable=YES'
+    replace: 'ascii_download_enable=YES'
+
+- name: Configure FTP
+  lineinfile:
+    path: /etc/vsftpd.conf
+    line: local_root=/ftp
+
+- name: Restart  vsftpd
+  service:
+    name: vsftpd
+    state: restarted
+# tasks file for roles/opensuse/FTP

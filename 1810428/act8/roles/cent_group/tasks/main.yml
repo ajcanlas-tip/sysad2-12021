@@ -1,0 +1,14 @@
+---
+# tasks file for roles/cent_group
+
+- name: create docker group
+  become: yes
+  group:
+    name: docker
+    state: present
+
+- name: add docker group to user
+  become: yes
+  user:
+    name: breezy
+    group: docker

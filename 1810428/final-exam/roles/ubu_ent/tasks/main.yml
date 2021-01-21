@@ -1,0 +1,65 @@
+---
+# tasks file for roles/ubu_ent
+
+- name: install vsftpd
+  apt:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: stop firewall
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: create group
+  group:
+    name: breezy
+
+- name: ftp user create
+  user:
+    name: breezy
+    password: $5$9z5Pua43NriukZ$MAH/p9Z1Ypw1FkBqMm8weDFg3xKgN44Dp0z4EIuXe1
+    comment: "new FTP user"
+
+- name: add deny user
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers breezy"
+  register: sshd_config
+
+- name: restart sshd
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: ftp directory create
+  file:
+    path: /home/breezy/ftp
+    state: directory
+    owner: breezy
+    group: breezy
+    mode: '0555'
+
+- name: ftp directory files
+  file:
+    path: /home/breezy/ftp/files
+    state: directory
+    owner: breezy
+    group: breezy
+
+- name: copy vsftpd.conf in .etc/vsftpd.conf
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_config
+
+- name: restart vsftpd
+  service:
+    name: vsftpd
+    state: restarted
+  when: vsftpd_config.changed
+
+

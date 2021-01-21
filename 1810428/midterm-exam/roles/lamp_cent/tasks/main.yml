@@ -1,0 +1,72 @@
+---
+# tasks file for roles/lamp_cent
+
+- name: Centos httpd install
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: httpd index
+  copy:
+    content: "breezy"
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: httpd
+
+- name: start httpd
+  service:
+    name: httpd
+    state: started
+  when: httpd.changed
+
+- name: stop firewall
+  service:
+    name: firewalld
+    state: stopped
+
+- name: mariadb install
+  yum:
+    name: mariadb-server
+    state: latest
+    update_cache: yes
+
+- name: add mysql_index
+  copy:
+    content: "breezy"
+    dest: /var/www/html/index1.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: mysql
+
+- name: start mariadb
+  service:
+    name: mariadb
+    state: started
+  when: mysql.changed
+
+- name: php install
+  yum:
+    name:
+      - php
+      - php-mysqlnd
+    state: latest
+    update_cache: yes
+
+- name: php index
+  copy:
+    content: "breezy"
+    dest: /var/www/html/index2.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: php
+
+- name: httpd restart
+  service:
+    name: httpd
+    state: restarted
+  when: php.changed

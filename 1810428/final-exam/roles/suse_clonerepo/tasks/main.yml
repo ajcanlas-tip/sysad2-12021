@@ -1,0 +1,22 @@
+---
+# tasks file for roles/suse_clonerepo
+
+- name: create directory
+  file:
+    path: /home/b-hernandez-tip/repo
+    state: directory
+    mode: "777"
+
+- name: git install
+  zypper:
+    name: git
+    state: latest
+    update_cache: yes
+
+- name: clone prelim repo
+  git:
+    repo: 'https://github.com/b-hernandez-tip/sysad2-12021.git'
+    dest: /home/b-hernandez-tip/repo
+    version: prelim-exam
+    clone: yes
+    update: yes

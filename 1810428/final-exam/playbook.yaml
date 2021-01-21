@@ -1,0 +1,32 @@
+---
+
+- name: install for Ubuntu
+  hosts: ubuntu
+  vars_files:
+    - ./config.yaml
+  roles:
+    - ubu_clonerepo
+    - ubu_ent
+    - ubu_moni
+    - ubu_motd
+
+- name: install for Centos
+  hosts: centos
+  vars_files:
+    - ./config.yaml
+  roles:
+    - cent_clonerepo
+    - cent_ent
+    - cent_moni
+    - cent_motd
+
+- name: install for OpenSUSE
+  hosts: opensuse
+  vars_files:
+    - ./config.yaml
+  roles:
+    - suse_clonerepo
+    - suse_ent
+    - suse_moni
+    - suse_motd
+

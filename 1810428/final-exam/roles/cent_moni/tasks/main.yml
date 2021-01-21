@@ -1,0 +1,18 @@
+---
+# tasks file for roles/cent_moni
+
+- name: prometheus repo
+  copy:
+    src: prometheus.repo
+    dest: /etc/yum.repos.d/
+
+- name: prometheus install
+  yum:
+    name: prometheus2
+    state: latest
+    update_cache: yes
+
+- name: start prometheus
+  service:
+    name: prometheus
+    state: started

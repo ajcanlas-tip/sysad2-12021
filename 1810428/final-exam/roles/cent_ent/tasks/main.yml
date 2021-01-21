@@ -1,0 +1,62 @@
+---
+# tasks file for roles/cent_ent
+
+- name: install vsftpd
+  yum:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: stop firewall
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: create group
+  group:
+    name: breezy
+
+- name: create ftp user
+  user:
+    name: breezy
+    password: $5$1Kbvxe15MTqWFYNZ$kq708qr1/1M/w/DM8zrP6SCjILPkU2ZQnJC60rLtvvB
+    comment: "new FTP user"
+
+- name: add deny user
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers breezy"
+  register: sshd_config
+
+- name: restart sshd
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: ftp directory
+  file:
+    path: /home/breezy/ftp
+    state: directory
+    owner: breezy
+    group: breezy
+
+- name: ftp files directory
+  file:
+    path: /home/breezy/ftp/files
+    state: directory
+    owner: breezy
+    group: breezy
+
+- name: copy vsftpd
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_config
+
+- name: restart vsftpd
+  service:
+    name: vsftpd
+    state: restarted
+  when: vsftpd_config.changed

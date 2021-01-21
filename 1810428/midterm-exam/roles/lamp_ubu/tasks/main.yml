@@ -1,0 +1,65 @@
+---
+# tasks file for roles/lamp_ubu
+
+- name: Ubuntu Install apache
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: add apache index
+  copy:
+    content: "breezy"
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: apache_index
+
+- name: start apache2
+  service:
+    name: apache2
+    enabled: yes
+  when: apache_index.changed
+
+- name: whitelist apache
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+
+- name: mysql server install
+  apt:
+    name: mysql-server
+    state: latest
+    update_cache: yes
+
+- name: add mysql index
+  copy:
+    content: "breezy"
+    dest: /var/www/html/index1.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: mysql_index
+
+- name: start mysql
+  service:
+    name: mysql
+    state: restarted
+    enabled: yes
+  when: mysql_index.changed
+
+- name: install php
+  apt:
+    name:
+      - php
+      - php-mysql
+      - libapache2-mod-php
+    state: latest
+    update_cache: yes
+
+- name: php index
+  copy:
+    content: "breezy"
+    dest: /var/www/html/index2.html

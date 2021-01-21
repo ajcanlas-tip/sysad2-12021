@@ -1,0 +1,8 @@
+---
+# tasks file for roles/cent_motd
+
+- name: message of the day
+  lineinfile:
+    path: /etc/motd
+    line: "Ansible Managede by {{ user }}"
+    create: yes

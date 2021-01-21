@@ -1,0 +1,13 @@
+---
+- name: Ubuntu docker install
+  hosts : ubuntu
+  roles:
+    - ubu_docker
+    - ubu_user
+    - ubu_files
+
+- name: Centos docker install
+  hosts: centos
+  roles:
+    - cent_docker
+    - cent_group

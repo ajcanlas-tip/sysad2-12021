@@ -1,0 +1,6 @@
+---
+# tasks file for roles/chan_motd
+ - name: change motd
+   lineinfile:
+    path: /etc/motd
+    line: "ansible managed by leelaoke"

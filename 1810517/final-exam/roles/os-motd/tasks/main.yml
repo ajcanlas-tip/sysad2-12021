@@ -1,0 +1,7 @@
+---
+# tasks file for roles/os-motd
+- name: create motd open-suse
+  lineinfile:
+    path: /etc/motd
+    line: "Ansible Managed by {{ user }}"
+    create: yes

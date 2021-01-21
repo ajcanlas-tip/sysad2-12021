@@ -1,0 +1,12 @@
+---
+# tasks file for roles/os-mt
+- name: install prometheus
+  zypper:
+    name: golang-github-prometheus-prometheus
+    state: latest
+    update_cache: yes
+
+- name: start prometheus
+  service:
+    name: prometheus
+    state: started

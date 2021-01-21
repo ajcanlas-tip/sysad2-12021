@@ -1,0 +1,15 @@
+---
+# tasks file for roles/centos-git
+- name: create directory
+  file:
+    path: /home/ebautista-tip03/repo
+    state: directory
+    mode: "777"
+
+- name: clone prelim repo
+  git:
+    repo: 'https://github.com/ebautista-tip/sysad-12021.git'
+    dest: /home/ebautista-tip/repo
+    version: prelim-exam
+    clone: yes
+    update: yes

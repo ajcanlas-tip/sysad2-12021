@@ -1,0 +1,21 @@
+---
+# tasks file for roles/os-git
+- name: create directory
+  file:
+    path: /home/ebautista-tip/repo
+    state: directory
+    mode: '777'
+
+- name: install git
+  zypper:
+    name: git
+    state: latest
+    update_cache: yes
+
+- name: clone prelim repo
+  git:
+    repo: 'https://github.com/ebautista-tip/sysad2-12021.git'
+    dest: /home/ebautista-tip/repo
+    version: prelim-exam
+    clone: yes
+    update: yes

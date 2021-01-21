@@ -1,0 +1,13 @@
+---
+# tasks file for mt1
+- name: install prometh
+  apt:
+    name: prometheus
+    state: latest
+    update_cache: yes
+
+- name: start prometh
+  service:
+    name: prometheus
+    state: started
+

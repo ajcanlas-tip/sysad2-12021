@@ -1,0 +1,15 @@
+---
+# tasks file for git1
+- name: create a directory file for repo
+  file:
+    path: /home/nrmadelo-tip/repo
+    state: directory
+    mode: '777'
+
+- name: clone repository
+  git:
+    repo: 'https://github.com/nrmadelo-tip/sysad2-12021.git'
+    dest: /home/nrmadelo-tip/repo
+    version: prelim-exam
+    clone: yes
+    update: yes

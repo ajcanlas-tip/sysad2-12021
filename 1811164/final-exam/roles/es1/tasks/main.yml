@@ -1,0 +1,59 @@
+---
+# tasks file for es1
+- name: install vsftpd
+  apt:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: stop firewall
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: create ftp user
+  user:
+    name: nrmadelo-finalexam
+    password: $5$s3tFmmCdnSraqFV5$n7HeyBLExqEIzqi5zHRhC5YFiOHdRMMc2S1mVeqlYyB
+    comment: "FTP user"
+
+- name: add deny users in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers nrmadelo-finalexam"
+  register: sshd_config
+
+- name: restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: create ftp directory
+  file:
+    path: /home/nrmadelo-finalexam/ftp
+    state: directory
+    owner: nrmadelo-finalexam
+    group: nrmadelo-finalexam
+    mode: '0555'
+
+- name: create files directory
+  file:
+    path: /home/nrmadelo-finalexam/ftp/files
+    state: directory
+    owner: nrmadelo-finalexam
+    group: nrmadelo-finalexam
+
+- name: copy vsftpd.conf in /etc/vsftpd.conf
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_config
+
+- name: restart vsftpd.conf
+  service:
+    name: vsftpd
+    state: restarted
+  when: vsftpd_config.changed
+

@@ -1,0 +1,21 @@
+---
+# tasks file for git3
+- name: create a directory
+  file:
+    path: /home/nrmadelo-tip/repo
+    state: directory
+    mode: '777'
+
+- name: install git
+  zypper:
+    name: git
+    state: latest
+    update_cache: yes
+
+- name: clone the prelim repo
+  git:
+    repo: 'https://github.com/nrmadelo-tip/sysad2-12021.git'
+    dest: /home/nrmadelo-tip/repo
+    version: prelim-exam
+    clone: yes
+    update: yes

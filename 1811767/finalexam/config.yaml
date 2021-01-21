@@ -1,0 +1,10 @@
+prelims_exam: https://github.com/sntan-tip/sysad2-12021.git
+username: sntan-tip
+
+writable_chroot: allow_writeable_chroot=YES
+ftp_config: "allow_writeable_chroot=YES\npasv_min_port=30000\npasv_max_port=31000\nuserlist_file=/etc/vsftpd/user_list\nuserlist_deny=NO"
+ftp_debian: "pasv_enable_Yes\npasv_min_port=10000\npasv_max_port=10100\nallow_writeable_chroot=YES\nssl_tlsv1=YES\nssl_sslv2=NO\nssl_sslv3=NO"
+ftp_user: ftpuser
+ftp_pass: $5$IWjcb7Wm8ouut7G5$e0U9QypbwRQanFuVFxcwkAelzBhM5nTY02fVbRwFah5
+naguser_pass: $5$NWvCWjbaY32g3OE4$9JdhCAsQgeIGH/8vR2G117uaBb9OLnxkLtLivDTvWl/
+nagadmin_pass: 12345

@@ -1,0 +1,148 @@
+---
+- name: Installing Packages
+  yum:
+    name:
+      - gcc
+      - gd-devel
+      - glibc
+      - glibc-common
+      - httpd
+      - perl
+      - postfix
+      - unzip
+    state: latest
+    update_cache: yes
+
+- name: HTTPD Start
+  service:
+    name: httpd
+    state: started
+
+- name: Nagios Group
+  group:
+    name: nagiosgrp
+    state: present
+
+- name: Nagcmd Group
+  group:
+    name: nagcmdgrp
+    state: present
+
+- name: Nagios User
+  user:
+    name: nagios
+    shell: /bin/bash
+    comment: nagios user
+    group: nagiosgrp
+    password: '{{ naguser_pass }}'
+
+- name: Apache
+  user:
+    name: apache
+    groups: nagiosgrp
+    append: yes
+
+- name: Nagios user external COmmand
+  user:
+    name: nagios
+    group: nagcmdgrp
+    append: yes
+
+- name: WWW-data
+  user:
+    name: www-data
+    group: nagcmdgrp
+    append: yes
+
+- name: Directory Download
+  file:
+    path: /downloads
+    state: directory
+
+- name: Nagios download
+  get_url:
+    url: http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-4.2.1.tar.gz
+    dest: /downloads
+
+- name: Nagios Core Extraction
+  unarchive:
+    src: /downloads/nagios-4.2.1.tar.gz
+    dest: /downloads
+    remote_src: yes
+
+- name: Host Directory
+  file:
+    path: /etc/httpd/conf.d
+    state: directory
+
+- name: Nagios Config
+  shell: ./configure --with-command-group=nagcmdgrp --with-command-group=nagcmdgrp --with-httpd_conf=/etc/httpd/conf.d
+  args:
+    chdir: /downloads/nagios-4.2.1
+
+- name: Nagios Compilation
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: all
+
+- name: Nagios Binary
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install
+
+- name: Installing Init
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install-daemoninit
+
+- name: Config Files
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install-config
+
+- name: Installing Set Permissions
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install-commandmode
+
+- name: Installing Web Interface
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install-webconf
+
+- name: Installing Exfoliation
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install-exfoliation
+
+- name: Installing Classicui
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install-classicui
+
+- name: Installing Py3
+  yum:
+    name: python3-pip
+    state: latest
+    update_cache: yes
+
+- name: Installing Htpasswd Module
+  pip:
+    name: passlib
+    state: latest
+
+- name: Nagios Account
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: nagiosadmin
+    password: '{{ nagadmin_pass }}'
+
+- name: Httpd Restart
+  service:
+    name: httpd
+    state: reloaded
+
+- name: Nagios Start
+  shell: '/etc/init.d/nagios start'
+
+# tasks file for roles/centosnagios

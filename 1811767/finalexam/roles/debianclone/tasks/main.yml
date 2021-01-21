@@ -1,0 +1,13 @@
+---
+- name: Installation Git
+  apt:
+    name: git
+    state: latest
+
+- name: Cloning Prelim Exam Branch
+  git:
+    repo: '{{ prelim }}'
+    dest: ./prelimexam
+    version: prelimexam
+
+# tasks file for roles/debianclone

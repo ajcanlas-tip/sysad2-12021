@@ -1,0 +1,33 @@
+---
+- name: Debian
+  hosts: debian
+
+  vars_files:
+    - config.yaml
+  roles:
+    - debianclone
+    - debianftp
+    - debiannagios
+    - dcmotd
+
+- name: Centos
+  hosts: centos
+
+  vars_files:
+    - config.yaml
+  roles:
+    - centosclone
+    - centosftp
+    - centosnagios
+    - dcmotd
+
+- name: OpenSUSE
+  hosts: suse
+
+  vars_files:
+    - config.yaml
+  roles:
+    - suseclone
+    - suseftp
+    - susenagios
+    - dcmotd

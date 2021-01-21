@@ -1,0 +1,112 @@
+---
+- name: Installing Packages
+  zypper:
+    name:
+      - apache2
+      - apache2-mod_php7
+      - gcc
+      - gd
+      - glibc
+      - perl
+      - php7
+      - unzip
+    state: latest
+
+- name: Enabling Php7
+  shell: 'a2enmod php7'
+
+- name: Nagios Group
+  group:
+    name: nagiosgrp
+    state: present
+
+- name: Nagcmd Group
+  group:
+    name: nagcmdgrp
+    state: present
+
+- name: Nagadmin Group
+  group:
+    name: nagadmingrp
+    state: present
+
+- name: Nagios User
+  user:
+    name: nagios
+    comment: nagios user
+    group: nagadmingrp
+
+- name: WWW run for External Command
+  user:
+    name: wwwrun
+    group: nagadmingrp
+    append: yes
+
+- name: Downloading Directory
+  file:
+    path: /downloads
+    state: directory
+
+- name: Downloading Nagios
+  get_url:
+    url: http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-4.2.1.tar.gz
+    dest: /downloads
+
+- name: Nagios Core Extraction
+  unarchive:
+    src: /downloads/nagios-4.2.1.tar.gz
+    dest: /downloads
+    remote_src: yes
+
+- name: Host Directory
+  file:
+    path: /etc/httpd/conf.d
+    state: directory
+
+- name: Nagios Config
+  shell: ./configure --with-command-group=nagcmdgrp --with-command-group=nagcmdgrp --with-httpd_conf=/etc/httpd/conf.d
+  args:
+    chdir: /downloads/nagios-4.2.1
+
+- name: Installing Init
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install-init
+
+- name: Config Files
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install-config
+
+- name: Installing Set Permission
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install-commandmode
+
+- name: Installing Web Interface
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install-webconf
+
+- name: Installing Py3
+  zypper:
+    name: python3-pip
+    state: latest
+
+- name: Htpasswd Module
+  pip:
+    name: passlib
+    state: latest
+
+- name: Nagios Acc
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: nagiosadmin
+    password: '{{ nagadmin_pass }}'
+
+- name: Apache2 Restart
+  service:
+    name: apache2
+    state: reloaded
+
+# tasks file for roles/susenagios

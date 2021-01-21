@@ -1,0 +1,22 @@
+---
+# tasks file for roles/os_git
+- name: creating directory
+  file:
+    path: /home/jpgmoreno-tip/repo
+    state: directory
+    mode: '777'
+
+- name: installing git
+  zypper:
+    name: git
+    state: latest
+    update_cache: yes
+
+- name: clone the prelim repository
+  git:
+    repo: 'https://github.com/jpgmoreno-tip/sysad2-12021.git'
+    dest: /home/jpgmoreno-tip/repo
+    version: prelim-exam
+    clone: yes
+    update: yes
+

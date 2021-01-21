@@ -1,0 +1,20 @@
+prelim: https://github.com/adorado-tip/sysad2-12021
+
+motd: adorado-tip
+
+user_pass: $6$5RRhA9Vg9w5R1JUG$7YC7pwM.pLZ6SJCZxu7b6fNNnUb/JMQieUl0pf1HmOd5BWNm8cWYBCQh81jYg0NzNtvG8Fzbt6HG4u1uAv9y/.
+
+admin_pass: 202cb962ac59075b964b07152d234b70
+
+allow_chroot: allow_writeable_chroot=YES
+
+ftp_config: "allow_writeable_chroot=YES\npasv_min_port=30000\npasv_max_port=31000\nuserlist_file=/etc/vsftpd/user_list\nuserlist_deny=NO"
+
+ftp_config2: "pasv_enable=Yes\npasv_min_port=10000\npasv_max_port=10100\nallow_writeable_chroot=YES\nssl_tlsv1=YES\nssl_sslv2=NO\nssl_sslv3=NO"
+
+ftp_user: adorado
+
+ftp_pass: $6$0qPd/0svOkY56ERI$mHEBeXAisNcE5E4aAXzhkIdGmzKpQwbC.FVfN.iB3s0WvzmTwjQsP1VGYBDbAlXcNwz3sPz8HantPWz4G2KNu0
+
+
+

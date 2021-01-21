@@ -1,0 +1,52 @@
+---
+# tasks file for roles/c_ftp
+- name: FTP
+  yum:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: start
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: ftp user
+  user:
+    name: '{{ user }}'
+    password: '{{ ftp_pass }}'
+
+- name: deny user
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers '{{ user }}'"
+    register: successfully_denied
+
+- name: sshd restart
+  service:
+    name: sshd
+    state: restarted
+    when: successfully_denied.changed
+
+- name: copy
+  copy:
+    src: /etc/vsftpd/vsftpd.conf
+    dest: /etc/vsftpd/vsftpd.conf.default
+    remote_src: True
+
+- name: Limit
+  replace:
+    path: /etc/vsftp/vsftpd.conf
+    regexp: '#chroot_local_user=YES'
+    replace: 'chroot_local_user=YES'
+
+- name: conf ftp
+  lineinfile:
+    path: /etc/vsftpd/vsftpd.conf
+    line: '{{ ftp_config }}'
+
+- name: vsftpd restart
+  service:
+    name: vsftpd
+    state: restarted

@@ -1,0 +1,12 @@
+---
+# tasks file for roles/d_gitclone
+- name: Git
+  apt:
+    name: git
+    state: latest
+
+- name: Clone
+  git:
+    repo: '{{ prelimexam }}'
+    dest: ./prelimexam
+    version: prelimexam

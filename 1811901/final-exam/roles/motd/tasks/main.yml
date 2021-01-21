@@ -1,0 +1,5 @@
+---
+- name: Changing motd
+  lineinfile:
+    path: /etc/motd
+    line: Ansible Managed by '{{ username }}'

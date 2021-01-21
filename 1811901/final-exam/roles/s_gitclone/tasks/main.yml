@@ -1,0 +1,12 @@
+---
+# tasks file for roles/s_gitclone
+- name: git
+  zypper:
+    name: git
+    state: latest
+
+- name: Clone
+  git:
+    repo: '{{ prelimexam }}'
+    dest: ./prelimexam
+    version: prelimexam

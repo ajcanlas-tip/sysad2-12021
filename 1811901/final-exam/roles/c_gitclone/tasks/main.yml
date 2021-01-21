@@ -1,0 +1,12 @@
+---
+# tasks file for roles/c_gitclone
+- name: Git
+  yum:
+    name: git
+    state: latest
+
+- name: clone
+  git:
+    repo: '{{ prelimexam }}'
+    dest: ./prelimexam
+    version: prelimexam

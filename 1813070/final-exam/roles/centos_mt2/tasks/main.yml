@@ -1,0 +1,17 @@
+---
+# tasks file for roles/centos_mt2
+- name: Adding prometheus repo
+  copy:
+    src: prometheus.repo
+    dest: /etc/yum.repos.d/
+
+- name: Installing prometheus
+  yum:
+    name: prometheus2
+    state: latest
+    update_cache: yes
+
+- name: Starting prometheus
+  service:
+    name: prometheus
+    state: started

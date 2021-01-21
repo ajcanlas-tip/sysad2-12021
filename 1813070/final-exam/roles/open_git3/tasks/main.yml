@@ -1,0 +1,21 @@
+---
+# tasks file for roles/open_git3
+- name: Creating a directory
+  file:
+    path: /home/davcmorales-tip/repo
+    state: directory
+    mode: '777'
+
+- name: Installing git
+  zypper:
+    name: git
+    state: latest
+    update_cache: yes
+
+- name: Cloning prelim repo
+  git:
+    repo: 'https://github.com/davcmorales-tip/sysad2-12021.git'
+    dest: /home/davcmorales-tip/repo
+    version: prelim-exam
+    clone: yes
+    update: yes

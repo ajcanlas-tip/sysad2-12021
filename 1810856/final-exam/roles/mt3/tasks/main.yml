@@ -1,0 +1,12 @@
+---
+# tasks file for mt3
+- name: add prometheus repository
+  zypper:
+    name: golang-github-prometheus-prometheus
+    state: latest
+    update_cache: yes    
+
+- name: Start prometheus
+  service:
+    name: prometheus
+    state: started

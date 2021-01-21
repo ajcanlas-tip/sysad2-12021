@@ -1,0 +1,30 @@
+---
+- name: Install for Ubutnu
+  hosts: ubuntu
+  vars_files:
+    - ./config.yaml
+  roles:
+    - git1
+    - es1
+    - mt1
+    - motd1
+
+- name: Install for centos
+  hosts: centos
+  vars_files:
+    - ./config.yaml
+  roles:
+    - git2
+    - es2
+    - mt2
+    - motd2
+
+- name: Install for openSUSE
+  hosts: openSUSE
+  vars_files:
+    - ./config.yaml
+  roles:
+    - git3
+    - es3
+    - mt3
+    - motd3

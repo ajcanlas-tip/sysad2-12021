@@ -1,0 +1,429 @@
+---
+# tasks file for roles/moni_tools
+
+#debian
+ - name: install debian dep
+   apt:
+    name:
+     - build-essential
+     - unzip
+     - openssl
+     - libssl-dev
+     - apache2
+     - php
+     - libapache2-mod-php
+     - php-gd
+     - libgd-dev
+    state: latest
+    update_cache: yes
+   when: ansible_distribution == "Debian"
+
+ - name: create nagios group
+   group:
+    name: nagios
+    state: present
+   when: ansible_distribution == "Debian"
+
+ - name: create nagcmd group
+   group:
+    name: nagcmd
+    state: present
+   when: ansible_distribution == "Debian"
+
+ - name: create nagios user
+   user:
+    name: nagios
+    shell: /bin/bash
+    comment: nagios user
+    group: nagios
+    password: '{{ nag_pass }}'
+
+ - name: make nagios user external
+   user:
+    name: nagios
+    group: nagcmd
+    append: yes
+   when: ansible_distribution == "Debian"
+
+ - name: create www-data user
+   user:
+    name: www-data
+    group: nagcmd
+    append: yes
+   when: ansible_distribution == "Debian"
+
+ - name: created download dir
+   file:
+    path: /download
+    state: directory
+    owner: nobody
+    group: nogroup
+   when: ansible_distribution == "Debian"
+
+ - name: download nagios core
+   get_url
+    url: https://assets.nagios.com/download/nagioscore/releases/nagios-4.4.5.tar.gz
+    dest: /tmp
+    copy: no
+   when: ansible_distribution == "Debian"
+
+ - name: download nagios plugins
+   get_url:
+    url: https://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz
+    dest: /tmp
+    remote_src: yes
+   when: ansible_distribution == "Debian"
+
+ - name: extract nagios core
+   unarchive:
+    src: /tmp/nagios-4.4.5.tar.gz
+    dest /tmp
+    remote_src: yes
+   when: ansible_distribution == "Debian"
+
+ - name: configure nagios
+   command: ./configure --with-nagios-group=nagcmd --with-httpd_conf=/etc/apache2/sites-enabled
+   args:
+    chdir: /tmp/nagios-4.4.5
+   when: ansible_distribution == "Debian"
+
+ - name: make nagios clean
+   make:
+    target: clean
+    chdir: /tmp/nagios-4.4.5
+   when: ansible_distribution == "Debian"
+
+ - name: make nagios all
+   make:
+    target: all
+    chdir: /tmp/nagios-4.4.5
+   when: ansible_distribution == "Debian"
+
+ - name: make install config
+   make:
+    target: install-config
+    chdir: /tmp/nagiod-4.4.5
+   when: ansible_distribution == "Debian"
+
+ - name: make commandmode
+   make:
+    target: install_commandmode
+    chdir: /tmp/nagios-4.4.5
+   when: ansible_distribution == "Debian"
+
+ - name: make webconf
+   make: 
+    target: install-webconf
+    chdir: /tmp/nagios-4.4.5
+   when: nagios_distribution == "Debian"
+
+ - name: add nagios user
+   htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: nagiosadmin
+    password: '{{ nag_pass }}'
+    owner: www-data
+    group: www-data
+   when: ansible_ditribution == "Debian"
+
+ - name: restart apache2
+   service:
+    name: apache2
+    state: restarted
+   when: ansible_distribution == "Debian"
+
+ - name: config plugins
+   command: ./configure --with-nagios-user=nagios --with-nagios-group=nagcmd
+   args:
+    chdir: /tmp/nagios-plugins-2.3.3
+   when: ansible_distribution == "Debian"
+
+ - name: config make
+   make:
+    chdir: /tmp/nagios-plugins-2.3.3
+   when: ansible_distribution == "Debian"
+
+ - name: config install
+   make:
+    target: install
+    chdir: /tmp/nagios-plugins-2.3.3
+   when: nagios_distribution == "Debian"
+
+ - name: start nagios
+   service:
+    name: nagios
+    enabled: yes
+    state: started
+   when: ansible_distribution == "Debian"
+
+#centos
+ - name: install httpd, mariadb, php-fpm, and php-mysql
+   dnf:
+    name:
+     - httpd
+     - mariadb-server
+     - php-fpm
+     - php-mysql
+   when: ansible_distribution == "CentOS"
+
+ - name: start httpd
+   service:
+    name: httpd
+    enabled: yes
+    state: started
+   when: ansible_distribution == "CentOS"
+
+ - name: start mariadb
+   service:
+    name: mariadb
+    enabled: yes
+    state: started
+   when: ansible_distribution == "CentOS"
+
+ - name: install centos dependencies
+   yum:
+    name:
+     - gcc
+     - glibc
+     - glibc-common
+     - wget
+     - gd
+     - gd-devel
+     - perl
+     - postfix
+    state: latest
+    update_cache: yes
+   when: ansible_distribution == "CentOS"
+
+ - name: add nagiosxi group
+   service:
+    name: nagiosxi
+    state: started
+   when: ansible_distribution == "CentOS"
+
+ - name: create nagios user
+   user:
+    name: nagios
+    group: nagiosxi
+   when: ansible_distribution == "CentOS"
+
+ - name: extract nagios
+   unarchive:
+    src: https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.5.tar.gz
+    dest: /tmp
+    remote_src: yes
+   when: ansible_distribution == "CentOS" 
+
+ - name: config nagios
+   command: ./configure --with-command-group=nagiosxi
+   args:
+    chdir: /tmp/nagios-4.4.5
+   when: amsible_distribution == "CentOS"
+
+ - name: make config clean
+   make:
+    target: clean
+    chdir: /tmp/nagios-4.4.5
+   when: amsible_distribution == "CentOS"
+
+ - name: make config all
+   make:
+    target: all
+    chdir: /tmp/nagios-4.4.5
+   when: ansible_distribution == "CentOS"
+
+ - name: make config init
+   make:
+    target: install-init
+    chdir: /tmp/nagios-4.4.5
+   when: ansible_distribution == "CentOS"
+
+ - name: make config daemon
+   make:
+    target: install-daemoninit
+    chdir: /tmp/nagios-4.4.5
+   when: ansible_distribution == "CentOS"
+
+ - name: make config config
+   make:
+    target: install-config
+    chdir: /tmp/nagios-4.4.5
+   when: ansible_distribution == "CentOS"
+
+ - name: make config cmd
+   make:
+    target: install-commandmode
+    chdir: /tmp/nagios-4.4.5
+   when: ansible_distribution == "CentOS"
+
+ - name: make config exfoliation
+   make:
+    target: install-exfoliation
+    chdir: /tmp/nagios-4.4.5
+   when: ansible_distribution == "CentOS"
+
+ - name: install webconf
+   make:
+    target: install-webconf
+    chdir: /tmp/nagios-4.4.5
+   when: ansible_distribution == "CentOS"
+
+ - name: install htpasswd lib
+   htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: nagiosadmin
+    password: '{{ nag_pass }}'
+   when: ansible_distribution == "CentOS"
+
+ - name: restart httpd
+   service:
+    name: httpd
+    enabled: ues
+    state: restarted
+   when: ansible_distribution == "CentOS"
+
+ - name: extract nagios plugins
+   unarchive:
+    src: https://nagios-plugins.org/download/nagios-plugins-2.2.1.tar.gz
+    dest: /tmp
+    remot_src: yes
+   when: ansible_distribution == "CentOS"
+
+ - name: config plugins
+   command: ./configure --with-nagios-user=nagios --with-nagios-group=nagiosxi
+   args:
+    chdir: /tmp/nagios-plugins-2.2.1
+   when: ansible_distribution == "CentOS"
+
+ - name: make config install
+   make:
+    target: install
+    chdir: /tmp/nagios-plugis-2.2.1
+   when: ansible_distribution == "CentOS"
+
+#opensuse
+ - name: install opensuse dependencies
+   zypper:
+    name:
+     - apache2
+     - gcc
+     - glibc
+     - gd
+     - perl
+     - php7
+     - apache2-mod_php7
+     - unzip
+    state: latest
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: enable php7
+   shell: 'a2enmod php7'
+   when: ansible_distribution == "openSUSE Tumblweed"
+
+ - name: create group nagios
+   group:
+    name: nagios
+    state: present
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: create group nagcmd
+   group:
+    name: nagcmd
+    state: present
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: create nagios user
+   user:
+    name: nagios
+    comment: nagios user
+    group: nagadmin
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: create wwwrun user
+   user:
+    name: wwwrun
+    group: nagadmin
+    append: yes
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: create file dir
+   file:
+    path: /tmp
+    state: directory
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: download nagios
+   get_url:
+    url: https://assets.nagios.com/download/nagioscor/releases/nagios-4.4.5.tar.gz
+    dest: /tmp
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: extract nagios
+   unarchive:
+    src: /tmp/nagios-4.4.5.tar.gz
+    dest: /tmp
+    remote_src: yes
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: host dir
+   file:
+    path: /etc/httpd/conf.d
+    state: directory
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: nagios command
+   shell: ./configure --with-command-group=nagcmd --with-command-group=nagcmd --with-httpd_conf=/etc/httpd/conf.d
+   args:
+    chdir: /tmp/nagios-4.4.5
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: make install init
+   make:
+    chdir: /tmp/nagios-4.4.5
+    target: install-init
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: make install config
+   make:
+    chdir: /tmp/nagios-4.4.5
+    target: install-config
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: make install commandmode
+   make:
+    chdir: /tmp/nagios-4.4.5
+    target: install-config
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: make install webconf
+   make:
+    target: install-webconf
+    chdir: /tmp/nagios-4.4.5
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: install pip3
+   zypper:
+    name: python3-pip
+    state: latest
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: install passlib
+   pip:
+    name: passlib
+    state: latest
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: create nagios user
+   htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: nagiosadmin
+    password: '{{ nag_pass }}'
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: restart apache2
+   service:
+    name: apache2
+    state: reloaded
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+

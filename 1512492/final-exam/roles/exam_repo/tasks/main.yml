@@ -1,0 +1,31 @@
+---
+# tasks file for roles/exam_repo
+ - name: install git, debian
+   apt:
+    name: git
+    state: latest
+   when: ansible_distribution == "Debian"
+
+ - name: install git, centos
+   yum:
+    name: git
+    state: latest
+   when: ansible_distribution == "CentOS"
+
+ - name: install git, opensuse
+   zypper:
+    name: git
+    state: latest
+   when: ansible_distribution == "openSUSE Tumbleweed"
+
+ - name: prelim-exam repo
+   git:
+    repo: '{{ prelim-exam }}'
+    dest: ./prelim-exam
+    version: prelim-exam
+
+
+
+
+
+

@@ -1,0 +1,57 @@
+---
+# tasks file for es2
+- name: Install vsftpd
+  yum:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: stop firewall
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: Create ftp user
+  user:
+    name: ajbindoy-tip100
+    password: $5$ndXFwgGAbGhjGU0V$94YmzWnu1v3VTXP1cHxI9CU0qFP5grHmqwN2ifzS041
+    comment: "ftp user"
+
+- name: add denyuser in etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers ajbindoy-tip100"
+  register: sshd_config
+
+- name: Restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Create ftp directory
+  file:
+    path: /home/ajbindoy-tip100/ftp
+    state: directory
+    owner: ajbindoy-tip100
+    group: ajbindoy-tip100
+
+- name: Create file directory
+  file:
+    path: /home/ajbindoy-tip100/ftp/files
+    state: directory
+    owner: ajbindoy-tip100
+    group: ajbindoy-tip100
+
+- name: copy vsftpd.conf
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_config
+
+- name: restart vsftpd.conf
+  service:
+    name: vsftpd
+    state: restarted
+  when: vsftpd_config.changed

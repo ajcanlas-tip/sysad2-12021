@@ -1,0 +1,15 @@
+---
+# tasks file for git2
+- name: Create a directory
+  file:
+    path: /home/cantero/repo
+    state: directory
+    mode: '777'
+
+- name: Clone the prelim repository
+  git:
+    repo: 'https://github.com/ivccantero-tip/sysad2-12021.git'
+    dest: /home/cantero/repo
+    version: prelim-exam
+    clone: yes
+    update: yes

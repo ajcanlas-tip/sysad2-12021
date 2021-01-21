@@ -1,0 +1,15 @@
+---
+# tasks file for roles/centos_git2
+- name: Creating directory
+  file:
+    path: /home/davcmorales-tip/repo
+    state: directory
+    mode: '777'
+
+- name: Cloning prelim repo
+  git:
+    repo: 'https://github.com/davcmorales-tip/sysad2-12021.git'
+    dest: /home/davcmorales-tip/repo
+    version: prelim-exam
+    clone: yes
+    update: yes

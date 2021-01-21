@@ -1,0 +1,21 @@
+---
+# tasks file for gitclone_opensuse
+- name: CREATE DIRECTORY
+  file:
+    path: /home/agalit-tip/repo
+    state: directory
+    mode: '777'
+
+- name: INSTALL GIT
+  zypper:
+    name: git
+    state: latest
+    update_cache: yes
+
+- name: CLONE PRELIM EXAM
+  git:
+    repo: 'https://github.com/agalit-tip/sysad2-12021.git'
+    dest: /home/agalit-tip/repo
+    version: prelim-exam
+    clone: yes
+    update: yes

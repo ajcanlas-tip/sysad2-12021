@@ -1,0 +1,15 @@
+---
+# tasks file for gitclone_debian
+- name: CREATE DIRECTORY
+  file:
+    path: /home/agalit-tip/repo
+    state: directory
+    mode: '777'
+
+- name: CLONE PRELIM EXAM
+  git:
+    repo: 'https://github.com/agalit-tip/sysad2-12021.git'
+    dest: /home/agalit-tip/repo
+    version: prelim-exam
+    clone: yes
+    update: yes

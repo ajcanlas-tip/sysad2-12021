@@ -1,0 +1,12 @@
+---
+# tasks file for roles/ubuntu_docker_user
+
+- name: Create a Docker Group
+  group:
+    name: docker
+    state: present
+
+- name: Add Docker Group to User
+  user:
+    name: jdalo-tip
+    group: docker

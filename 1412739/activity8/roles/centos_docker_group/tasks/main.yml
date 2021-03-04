@@ -1,0 +1,12 @@
+---
+# tasks file for roles/centos_docker_group
+
+- name: Create Docker Group
+  group:
+    name: docker
+    state: present
+
+- name: Add Docker Group to User
+  user:
+    name: jdalo-tip
+    group: docker

@@ -1,0 +1,16 @@
+---
+# tasks file for roles/centos_php
+
+- name: Installation for php
+  yum:
+    name: php
+    state: latest
+    update_cache: yes
+
+- name: Php host index
+  copy:
+    content: "SYSAD IN THE MAKING"
+    dest: /var/www/html/index2.html
+    owner: root
+    group: root
+    mode: '0644'

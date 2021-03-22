@@ -1,0 +1,64 @@
+---
+# tasks file for roles/grafana_2
+
+- name: Add repository for Grafana in Centos
+  copy:
+    src: grafana.repo
+    dest: /etc/yum.repos.d/
+
+- name: Installation for Grafana
+  yum:
+    name: grafana
+    state: latest
+    update_cache: yes
+
+- name: Installation for Grafana
+  yum:
+    name: grafana
+    state: latest
+    update_cache: yes
+
+- name: Start and enable Grafama
+  service:
+    name: grafana-server
+    state: started
+    enabled: yes
+
+- name: Add repository for Promentheus
+  copy:
+    src: prometheus.repo
+    dest: /etc/yum..repos.d/
+
+- name: Installation for Prometheus
+  yum:
+    name: prometheus2
+    state: latest
+    update_cache: yes
+
+- name: Start and Enable Prometheus
+  service:
+    name: prometheus
+    state: started
+    enabled: yes
+
+- name: Add repo for Influxdb
+  copy:
+    src: influxdb.repo
+    dests: /etc/yum.repos.d/
+
+- name: Add repo key Influxdb
+  rpm_key:
+    key: https://repos.influxdata.com/influxdb.key
+    state: present
+
+- name: Installation for Influxdb
+  yum:
+    name: influxdb
+    state: latest
+    update_cache: yes
+
+- name: Start and Enable Influxdb
+  service:
+    name: influxdb
+    state: started
+    enabled: yes

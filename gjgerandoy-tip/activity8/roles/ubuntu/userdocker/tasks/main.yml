@@ -1,0 +1,14 @@
+---
+# tasks file for roles/ubuntu/userdocker
+
+- name: Create docker group
+  become: yes
+  group:
+    name: docker
+    state: present
+
+- name: Add the docker group to current user
+  become: yes
+  user:
+    name: gjgerandoy-tip
+    group: docker

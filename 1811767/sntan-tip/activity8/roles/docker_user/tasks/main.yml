@@ -1,0 +1,12 @@
+---
+- name: Making Docker Group
+  group:
+    name: docker
+    state: present
+
+- name: Adding docker group to a user
+  user:
+    name: sntan
+    group: docker
+
+# tasks file for roles/docker_user

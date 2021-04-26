@@ -1,0 +1,22 @@
+---
+- name: pre-req Installation
+  apt:
+    name:
+      - python3
+      - python3-pip
+    state: present
+
+- name: Docker File Installation
+  apt:
+    name: docker.io
+    state: latest
+    update_cache: yes
+  register: docker
+
+- name: Docker.py Installation
+  pip:
+    name: docker.py
+    state: latest
+  when: docker.changed
+
+# tasks file for roles/docker_ubuntu

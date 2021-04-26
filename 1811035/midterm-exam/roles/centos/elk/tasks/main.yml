@@ -1,0 +1,89 @@
+---
+# tasks file for roles/centos/elk
+- name: install java
+  yum:
+    name: java-1.8.0-openjdk
+    state: present
+
+- name: add gpg key
+  command: sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+- name: add elasticsearch rpm repo
+  copy:
+    src: ~/sysad2-12021/1811035/midterm-exam/elasticsearch.repo
+    dest: /etc/yum.repos.d/
+
+- name: update centos
+  dnf:
+    update_cache:
+
+- name: install elasticsearch
+  dnf:
+    name: elasticsearch
+    state: present
+
+- name: add network in elasticsearch
+  lineinfile:
+    path: /etc/elasticsearch/elasticsearch.yml
+    regexp: '#http.port: 9200'
+    line: 'http.port: 9200'
+
+- name: start service
+  service:
+    name: elasticsearch
+    state: started
+    enabled: yes
+
+- name: install kibana
+  dnf:
+    name: kibana
+    state: present
+
+- name: add port in kibana
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: '#server.port: 5601'
+    line: 'server.port: 5601'
+
+- name: add network in kibana
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: '#server.host: "localhost" '
+    line: 'server.host: "localhost" '
+
+- name: add elastic in kibana
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: '#elasticsearch.host: ["http://localhost:9200"]'
+    line: 'elasticsearch.host: ["http://localhost:9200"]'
+
+- name: start service
+  service:
+    name: kibana
+    state: started
+    enabled: yes
+
+- name: allow traffic port 5601
+  firewalld:
+    port: 5601/tcp
+    permanent: yes
+    state: enabled
+
+- name: reload service
+  command: firewall-cmd --reload
+
+- name: install logstash
+  dnf:
+    name: logstash
+    state: present
+
+- name: configure logstash
+  copy:
+    src: ~/sysad2-12021/1811035/midterm-exam/logstash.conf
+    dest: /etc/logstash/conf.d/
+
+- name: start service
+  service:
+    name: logstash
+    state: started
+    enabled: yes

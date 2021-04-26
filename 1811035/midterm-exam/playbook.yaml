@@ -1,0 +1,26 @@
+---
+- name: midterm examination
+  hosts: centos
+
+  tasks:
+    - name: include config.yaml
+      include_vars:
+        file: config.yaml
+
+- name: install monitoring service in ubuntu
+  hosts: ubuntu
+
+  roles:
+    - ubuntu/elk
+    - ubuntu/gpi
+    - ubuntu/lamp
+
+- name: install monitoring service in centos
+  hosts: centos
+
+  roles:
+    - centos/elk
+    - centos/nagios
+    - centos/gpi
+    - centos/lamp
+

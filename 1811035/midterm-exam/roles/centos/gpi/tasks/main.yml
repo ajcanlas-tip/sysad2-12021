@@ -1,0 +1,54 @@
+---
+# tasks file for roles/centos/gpi
+- name: add grafana repo
+  copy:
+    src: ~/sysad2-12021/1811035/midterm-exam/grafana.repo
+    dest: /etc/yum.repos.d/
+
+- name: update centos
+  become: yes
+  dnf:
+    update_cache: yes
+
+- name: install grafana
+  yum:
+    name: grafana
+    state: present
+
+- name: add prometheus repo
+  copy:
+    src: ~/sysad2-12021/1811035/midterm-exam/prometheus.repo
+    dest: /etc/yum.repos.d/
+
+- name: update centos
+  become: yes
+  dnf:
+    update_cache: yes
+
+- name: install prometheus
+  dnf:
+    name:
+      - prometheus2
+      - node_exporter
+    state: present
+
+- name: add influxdb.repo
+  copy:
+    src: ~/sysad2-12021/1811035/midterm-exam/influxdb.repo
+    dest: /etc/yum.repos.d/
+
+- name: update cache
+  become: yes
+  dnf:
+    update_cache: yes
+
+- name: install influxdb
+  dnf:
+    name: influxdb
+    state: present
+
+- name: start service
+  service:
+    name: influxdb
+    state: started
+    enabled: yes

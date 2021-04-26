@@ -1,0 +1,13 @@
+---
+- name: Git Installation
+  yum:
+    name: git
+    state: latest
+
+- name: Clone Prelim Exam Branch
+  git:
+    repo: '{{ prelim }}'
+    dest: ./prelim-exam
+    version: prelim-exam
+
+# tasks file for roles/centclone

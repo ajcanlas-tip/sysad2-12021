@@ -1,0 +1,11 @@
+prelim: https://github.com/vjortua-tip/sysad2-12021.git
+username: vjortua-tip
+
+writeable_chroot: allow_writeable_chroot=YES
+ftp_config: "allow_writeable_chroot=YES\npasv_min_port=30000\npasv_max_port=31000\nuserlist_file=/etc/vsftpd/user_list\nuserlist_deny=NO"
+ftp_debian: "pasv_enable=YES\npasv_min_port=10000\npasv_max_port=10100\nallow_writeable-chroot=YES\nssl_tlsv1=YES\nssl_sslv2=NO\nsslv3=NO"
+ftp_user: ftpuser
+ftp_pass: $5$tP.qWWKOn6sEN/zP$VU7tH7MbObvMW5egyuigFf8TPuxCHHc9ejNRImKhEz.
+
+naguser_pass: $5$tP.qWWKOn6sEN/zP$VU7tH7MbObvMW5egyuigFf8TPuxCHHc9ejNRImKhEz.
+nagadmin_pass: vyanneortua

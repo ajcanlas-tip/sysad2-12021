@@ -1,0 +1,18 @@
+---
+# tasks file for roles/php_ubuntu
+- name: Install Php
+  apt:
+    name:
+      - php
+      - php-mysql
+      - libapache2-mod-php
+    state: latest
+    update_cache: yes
+
+- name: PHP host index
+  copy:
+    content: "sup dawg"
+    dest: /var/www/html/index2.html
+    owner: root
+    group: root
+    mode: '0644'

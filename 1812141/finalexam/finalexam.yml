@@ -1,0 +1,96 @@
+---
+- name: cnts
+  hosts:
+    - centos
+  vars_files:
+    - config.yaml
+  roles:
+    - c_gitclone
+
+- name: srvc on centos
+  hosts:
+    - centos
+  vars_files:
+    - config.yaml
+  roles:
+    - c_ftp
+
+- name: mntring on cnts
+  hosts:
+    - centos
+  vars_files:
+    - config.yaml
+  roles:
+    - c_nagios
+
+- name: motd
+  hosts:
+    - centos
+  vars_files:
+    - config.yaml
+  roles:
+    - motd
+
+- name: debian
+  hosts:
+    - debian
+  vars_files:
+    - config.yaml
+  roles:
+    - d_gitclone
+
+- name: srvc on debian
+  hosts:
+    - debian
+  vars_files:
+    - config.yaml
+  roles:
+    - d_ftp
+
+- name: monitoring on debian
+  hosts:
+    - debian
+  vars_files:
+    - config.yaml
+  roles:
+    - d_nagios
+
+- name: motd debian
+  hosts:
+    - debian
+  vars_files:
+    - config.yaml
+  roles:
+    - motd
+
+- name: opensuse
+  hosts:
+    - suse
+  vars_files:
+    - config.yaml
+  roles:
+    - s_gitclone
+
+- name: srvice on opensuse
+  hosts:
+    - suse
+  vars_files:
+    - config.yaml
+  roles:
+    - s_ftp
+
+- name: mnitrng on opensuse
+  hosts:
+    - suse
+  vars_files:
+    - config.yaml
+  roles:
+    - s_nagios
+
+- name: motd suse
+  hosts:
+    - suse
+  vars_files:
+    - config.yaml
+  roles:
+    - motd

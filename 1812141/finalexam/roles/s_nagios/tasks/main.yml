@@ -1,0 +1,125 @@
+---
+- name: Dependencies on opensuse
+  zypper:
+    name:
+      - apache2
+      - gcc
+      - glibc
+      - gd
+      - perl
+      - php7
+      - apache2-mod_php7
+      - unzip
+    state: latest
+
+- name: php7
+  shell: 'a2enmod php7'
+
+- name: nag group
+  group:
+    name: nagios
+    state: present
+
+- name: nag group
+  group:
+    name: nagcmd
+    state: present
+
+- name: nag group
+  group:
+    name: nagadmin
+    state: present
+
+- name: nag user
+  user:
+    name: nagios
+    commment: nagios user
+    group: nagadmin
+
+- name: wwwrun
+  user:
+    name: wwwrun
+    group: nagadmin
+    append: yes
+
+- name: downloads directory
+  file:
+    path: /downloads
+    state: directory
+
+- name: Download nagios
+  get_url:
+    url: http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-4.2.1.tar.gz
+    dest: /downloads
+
+- name: Nagios Core
+  unarchive:
+    src: /downloads/nagios-4.2.1.tar.gz
+    dest: /downloads
+    remote_src: yes
+
+- name: Virtual Host Directory
+  file:
+    path: /etc/httpd/conf.d
+    state: directory
+
+- name: Nagios Script
+  shell: ./configure --with-command-group=nagcmd --with-command-group=nagcmd --with-httpd_conf=/etc/httpd/conf.d
+  args:
+    chdir: /downloads/nagios-4.2.1
+
+- name: Compiling nagios core
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: all
+
+- name: Binaries
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install
+
+- name: Init script
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install-init
+
+- name: Sample config files
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install-config
+
+- name: set permission
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install-commandmode
+
+- name: Nagios web interface
+  make:
+    chdir: /downloads/nagios-4.2.1
+    target: install-webconf
+
+- name: pip for htpasswd
+  zypper:
+    name: python3-pip
+    state: latest
+
+- name: htpasswd module
+  pip:
+    name: passlib
+    state: latest
+
+- name: NagiosAdmin account
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: nagiosadmin
+    password: '{{ nagadmin_pass }}'
+
+- name: Restarting Apache
+  service:
+    name: apache2
+    state: reloaded
+
+- name: Start Nagios Service
+  shell: '/etc/init.d/nagios start'
+
+# tasks file for roles/s_nagios

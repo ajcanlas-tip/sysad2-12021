@@ -1,0 +1,10 @@
+---
+ - name: Installing ELK stack in containerized form on Ubuntu
+   hosts: ubuntu
+   roles:
+     - ubuntu/elk
+
+ - name: Installing ELK stack in containerized form on CentOS
+   hosts: centos
+   roles:
+     - centos/elk

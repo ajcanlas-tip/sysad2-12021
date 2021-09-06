@@ -1,0 +1,13 @@
+---
+- name: installation of docker
+  hosts: ubuntu
+  roles:
+    - docker_on_ubuntu
+    - userd_on_ubuntu
+    - filed_on_ubuntu
+
+- name: Installation of docker
+  hosts: centos
+  roles:
+    - docker_on_centos
+    - userd_on_centos

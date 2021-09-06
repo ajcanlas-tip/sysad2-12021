@@ -1,0 +1,14 @@
+---
+# tasks file for roles/userd_on_centos
+
+- name: Docker Group Installation 
+  become: yes
+  group:
+    name: docker
+    state: present
+
+- name: Docker group for centos
+  become: yes
+  user:
+    name: pamela
+    group: docker

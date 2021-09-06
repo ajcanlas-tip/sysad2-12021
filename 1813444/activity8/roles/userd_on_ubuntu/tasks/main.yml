@@ -1,0 +1,14 @@
+---
+# tasks file for roles/userd_on_ubuntu
+
+- name: Creating Docker Group
+  become: yes
+  group:
+    name: docker
+    state: present
+
+- name: Group for Docker 
+  become: yes
+  user:
+    name: pamela
+    group: docker

@@ -1,0 +1,22 @@
+---
+# tasks file for roles/filed_on_ubuntu
+- name: Enabling service for docker 
+  become: yes
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Docker Web Server 
+  become: yes
+  docker_image:
+    name: romeoz/docker-apache-php
+    state: present
+    source: pull
+
+- name: Docker DB server 
+  become: yes
+  docker_image:
+    name: mysql/mysql-server:latest
+    state: present
+    source: pull

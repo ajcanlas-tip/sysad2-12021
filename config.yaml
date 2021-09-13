@@ -1,0 +1,14 @@
+---
+- hosts: ubuntu
+  roles:
+    - python
+    - java
+    - role: change-motd
+      vars:
+        motd: "Ansible Managed node by inbguzman"
+    - role: create-user
+      vars:
+        username: "tipqc1911508"
+        name: "Ivan Norvy Guzman"
+
+

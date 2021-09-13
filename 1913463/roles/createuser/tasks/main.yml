@@ -1,0 +1,6 @@
+---
+- name: Create user
+  user:
+    name: sysad
+    comment: System Administration
+    shell: /bin/bash

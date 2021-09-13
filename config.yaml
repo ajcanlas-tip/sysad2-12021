@@ -1,0 +1,16 @@
+-
+- name: install python3 and pip3
+    hosts: sysad2-12021
+  
+roles:
+  - name: install python3
+    apt: sudo install python3
+
+roles:
+  - name: install pip3
+    apt: sudo install pip3
+
+roles: 
+  - name: install java open-jdk
+    apt: sudo install default-jdk
+

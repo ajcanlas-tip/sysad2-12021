@@ -1,0 +1,16 @@
+---
+- name: python3 and pip3 installing
+  connection: alpine
+  hosts:
+
+  roles:
+  - name: add python3
+    apt: sudo install python3
+    state: latest
+    
+  roles:
+  - name: add java open-jdk
+    apt: sudo install default-jdk
+    state: latest
+  # "Ansible Managed node by qmffetalino"
+

@@ -1,0 +1,12 @@
+hosts: sysad2-12021
+
+roles:
+  - name: Installer of python3
+  apt: sudo install python3
+
+  - name: Installer of pip3
+    apt: sudo instal pip3
+  
+  roles:
+  - name: Installer of java open-jdk
+    apt: sudo install default-jk

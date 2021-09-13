@@ -1,0 +1,6 @@
+---
+# tasks file for role2 (Java)
+- name: Install Java open-jdk
+  apt:
+    name: openjdk-8-jre-headless
+    state: latest

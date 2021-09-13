@@ -1,0 +1,34 @@
+---
+# Running the role for python and pip installation
+- name: Installing the python3 and pip3
+  hosts: ubuntu
+
+  roles:
+   - python
+
+# Running the role for java installation
+- name: Installing Open Java Development Kit
+  hosts: ubuntu
+
+  roles:
+   - java
+
+# Running the role for changing the motd
+- name: MOTD
+  hosts: ubuntu
+
+  vars_files:
+   - variables/vars
+
+  roles:
+   - motd
+
+# Running the role for creating a new user
+- name: NEW USER
+  hosts: ubuntu
+
+  vars_files:
+   - variables/vars
+
+  roles:
+   - user

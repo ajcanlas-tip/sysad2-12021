@@ -1,0 +1,15 @@
+---
+- host: all
+  become: true
+  tasks:
+  
+  - name: install python3 package
+  apt:
+    name: python3
+    state: latest
+    
+  - name: install java-1.6.0-openjdk
+  apt:
+    name: java
+    state: latest
+# "Ansible Managed node by qjpjosafat"

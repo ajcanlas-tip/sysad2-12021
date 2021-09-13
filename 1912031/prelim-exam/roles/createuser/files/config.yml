@@ -1,0 +1,4 @@
+---
+# Ansible Variable
+motd: "Welcome to Server1"
+user: "qaiiasapelino-tip"

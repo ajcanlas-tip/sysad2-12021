@@ -1,0 +1,8 @@
+---
+# Install OpenJDK in Ubuntu
+- name: Installing OpenJDK in Ubuntu
+  apt:
+    name:
+      - default-jre
+    state: present
+    update_cache: yes

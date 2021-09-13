@@ -12,7 +12,7 @@ roles:
   apt: sudo install pip3
 
 roles:
-- name: installl java open-jdk
+- name: install java open-jdk
   apt: sudo install default-jdk
 
 roles:

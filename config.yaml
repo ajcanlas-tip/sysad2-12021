@@ -1,0 +1,20 @@
+---
+- name: install python3 and pip3
+connection: https://github.com/qkrchernandez-tip/sysad2-12021.git
+hosts: 
+
+roles:
+- name: install python3
+  apt: sudo install python3
+
+roles:
+- name: install  pip3
+  apt: sudo install pip3
+
+roles:
+- name: install java open-jdk
+  apt: sudo install default-jdk
+
+roles:
+- name:
+  shell:

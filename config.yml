@@ -1,0 +1,21 @@
+- name: Config Role1 with plugins
+  hosts: Ubuntu
+  vars:
+     username: "qzkmcruz" 
+     motd: "Ansible Managed by"
+     user: "qzkmcruz"
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: Configure role
+      import_role:
+        name: role1
+    - name: Configure role
+      import_role:
+        name: role2
+    - name: Configure role
+      import_role:
+        name: role3
+    - name: Configure role
+      import_role:
+        name: role4

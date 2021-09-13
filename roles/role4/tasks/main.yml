@@ -1,0 +1,9 @@
+---
+# tasks file for role4
+- name: Create a new user as a sudoer
+  ansible.builtin.user:
+    name: "{{ username }}"
+    comment: Zandlex Keano M. Cruz
+    uid: 1040
+    group: sudo
+

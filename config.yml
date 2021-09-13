@@ -1,0 +1,12 @@
+---
+- hosts: Ubuntu
+  roles:
+    - role1
+    - role2
+    - role: role3
+      vars:
+        motd: "Ansible managed node by qepdelasoledad"
+        user: "qepdelasoledad"
+    - role: role4
+      vars:
+        name: "Erickson"

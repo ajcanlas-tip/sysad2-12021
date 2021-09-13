@@ -1,0 +1,16 @@
+---
+# tasks file for role1 (install phyton3 and pip3)
+- name: install phyton3
+  apt:
+    name: python3
+    state: latest
+ 
+- name: install pip3
+  apt:
+    name: python3-pip
+    state: latest
+
+- name: Set python default
+  apt:
+   name: python-is-python3
+   state: latest

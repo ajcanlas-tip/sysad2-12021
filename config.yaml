@@ -1,0 +1,20 @@
+---
+- name: Installing python3 and pip3
+   hosts: sysad2-12021
+
+  roles:
+  - name: Installing python3
+    apt: sudo install python3
+
+  roles:
+  - name: Installing pip3
+    apt: sudo install pip3
+ 
+  roles:
+  - name: Installing java open-jdk
+    apt: sudo install default-jdk
+
+  roles:
+  - name: Change of motd
+    shell: motd Ansible Managed node by atagongtong-tip
+

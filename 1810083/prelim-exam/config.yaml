@@ -1,0 +1,14 @@
+---
+   - name: Installation of the latest Python3 with pip3 and Java open-jdk. Change the motd and create a user.
+     hosts: all 
+     vars:
+       user: Xenzi
+       username: rmsenar-tip
+
+     roles:
+       - Installation_of_Python
+       - Installation_of_Java
+       - Change_Motd
+       - Create_User
+
+

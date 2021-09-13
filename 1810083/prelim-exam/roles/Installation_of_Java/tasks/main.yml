@@ -1,0 +1,9 @@
+---
+# tasks file for roles/Installation_of_Java
+
+- name: Installation of Java
+  apt:
+    name: openjdk-8-jdk
+    state: latest
+    update_cache: yes
+

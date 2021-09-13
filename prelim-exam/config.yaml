@@ -1,0 +1,13 @@
+---
+  - name: Installation of Python, Java, Change MOTD, Create User
+    hosts: all
+    vars:
+      user: qtsbautista-tip
+      username: qtsbautista
+
+    roles:
+      - Installation_of_python
+      - Installation_of_java
+      - Change_MOTD
+      - Create_User
+  

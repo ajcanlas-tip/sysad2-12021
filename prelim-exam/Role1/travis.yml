@@ -1,0 +1,16 @@
+---
+  language: python
+  python ver: "2.7"
+
+  #install ansible
+  addons:
+    apt:
+      packages:
+      - py3-pip
+
+  install:
+    #installation of ansible
+    - apk add ansible
+    #Ansible Ver
+    - ansible -ver
+

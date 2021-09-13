@@ -1,0 +1,15 @@
+# Install Java Open-jdk
+- name: Role 2 - Install Java Open-jdk
+  apt:
+    name:
+      - default-jre
+      state: present
+      update_cache: yes
+#End of Java Open-j# Install Java Open-jdk
+- name: Role 2 - Install Java Open-jdk
+  apt:
+    name:
+      - default-jre
+      state: present
+      update_cache: yes
+#End of Java Open-jdk

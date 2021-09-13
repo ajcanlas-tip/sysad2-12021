@@ -1,0 +1,19 @@
+#Change MOTD, restart is needed to changes take effect
+- name: Role 3 - Change Message of the Day (MOTD)
+  copy:
+    content: "\n"
+    dest: /etc/motd
+
+- name: Disable#Change MOTD, restart is needed to changes take effect
+- name: Role 3 - Change Message of the Day (MOTD)
+  copy:
+    content: "\n"
+    dest: /etc/motd
+
+- name: Disable default motd
+  file:
+    dest: "/etc/upgdate-motd.d/"
+    mode: "u-x,g-x,o-x"
+    state: directory
+    recurse: yes
+#End of MOTD

@@ -1,0 +1,13 @@
+motd: "Hello World"
+user: "rcasamparo"---
+- name: Prelim-Exam
+  hosts: ubuntu
+  vars:
+    user: rcasamparo
+    username: rcasamparo
+
+  roles:
+    - python
+    - java
+    - changemotd
+    - create_user

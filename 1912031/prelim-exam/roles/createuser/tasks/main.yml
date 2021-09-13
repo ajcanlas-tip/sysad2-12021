@@ -1,0 +1,11 @@
+---
+# Creating A User role
+- name: Include config.yml variable
+  include_vars:
+    file: ../files/config.yml
+
+- name: Create a user
+  user:
+    name: qaiiasapelino
+    comment: Arman Ian Isaac A. Sapelino
+    shell: /bin/bash

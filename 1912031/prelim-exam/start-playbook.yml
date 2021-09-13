@@ -1,0 +1,8 @@
+---
+- name: Prelim Exam Submission of Isaac Sapelino
+  hosts: ubuntu
+  roles:
+    - python
+    - java
+    - changemotd
+    - createuser

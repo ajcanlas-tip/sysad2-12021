@@ -1,0 +1,6 @@
+---
+# tasks file for role2
+- name: Install default java version using APT
+  apt:
+    name: openjdk-8-jre-headless
+    state: latest

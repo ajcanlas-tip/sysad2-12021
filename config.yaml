@@ -1,0 +1,14 @@
+---
+- hosts: all
+  vars:
+    item: jm_test
+    motd: jmsantos-tip
+
+  roles:
+       
+        - python
+        - java
+        - motd
+        - create_user
+
+

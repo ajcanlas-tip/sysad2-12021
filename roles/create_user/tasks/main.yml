@@ -1,0 +1,6 @@
+---
+# tasks file for create_user
+- name: Add new user
+  user:
+    name: jm_test
+    comment: Jeanne Margarette Santos

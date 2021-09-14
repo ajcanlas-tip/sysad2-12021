@@ -1,0 +1,25 @@
+--
+- name: Install java, boto, ansible, and openstack py packages using pip
+  hosts: ubuntu
+
+tasks: 
+  - name: Java
+    apt:
+      name: default-jre
+      state: present
+      update_cache: yes
+
+- name: boto
+  pip:
+    name: boto
+    state: present
+
+- name: ansible
+  pip: 
+    name: ansible
+    state: present
+
+- name: openstack
+  pip:
+    name: openstackclient
+    state: present

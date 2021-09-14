@@ -1,0 +1,26 @@
+---
+- name: Activity 4 by Rhyss Ivan Legaspi
+  host: all
+
+  tasks:
+    - name: Install java (Ubuntu)
+      apt:
+        name: default-jre
+        state: present
+        update_cache: yes
+      when: ansible_facts['distribution'] == "Ubuntu"
+
+      name: Install Java (Cent0s)
+      dnf:
+        name: java-11-opendjk-deve1
+        state: present
+        update_cache: yes
+      when: ansible_facts['distribution'] == "Cent0s"
+
+    - name: Pip Install for All
+      pip:
+        name:
+          - ansible
+          - boto
+          - python-openstackclient
+

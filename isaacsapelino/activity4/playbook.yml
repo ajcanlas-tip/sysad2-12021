@@ -1,0 +1,26 @@
+---
+- name: Activity 4 by Isaac Sapelino
+  hosts: all
+
+  tasks:
+    - name: Install java (Ubuntu)
+      apt:
+        name: default-jre
+        state: present
+        update_cache: yes
+      when: ansible_facts['distribution'] == "Ubuntu"
+
+    - name: Install Java (CentOS)
+      dnf:
+        name: java-11-openjdk-devel
+        state: present
+        update_cache: yes
+      when: ansible_facts['distribution'] == "CentOS"
+
+    - name: Pip Install for All
+      pip:
+        name:
+          - ansible
+          - boto
+          - python-openstackclient
+

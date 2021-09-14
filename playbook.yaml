@@ -1,0 +1,26 @@
+---
+- name: Installing Java of Ubuntu and Centos and openstack
+  hosts: ubuntu
+ 
+  tasks:
+  - name: Installing Java
+    apt:
+       name: default-jre
+       state: present
+       update_cache: yes
+
+  - name: Installing Phyton and Pip
+    dnf:
+       name: java-11-openjdk-devel
+       state: present
+       update_cache: yes
+
+  - name: Installing Openstack
+    pip:
+       name: openstack
+       state: present
+
+  - name: Installing boto
+    pip:
+       name: Boto installing
+       state: present

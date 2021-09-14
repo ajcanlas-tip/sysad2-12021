@@ -1,0 +1,24 @@
+---
+  name: Activity 4 : Ansible Playbook Written by Trisha Bautista
+  hosts: all
+
+  tasks:
+    name: Install Java (Alpine)
+    apt: 
+     name: default-jre
+     state: present
+     update_cache: yes
+    when: ansible_facts['distribution'] == "Alpine"
+
+    name: Install Java (Ubuntu)
+    dnf:
+      name: java-11-openjdk-devel
+      state: present
+      update_cache: yes
+     when: ansible_facts['distribution'] == "Ubuntu"
+
+    name: Pip Install for All
+    pip:
+      name:
+        - ansible
+        - python-openstackclient

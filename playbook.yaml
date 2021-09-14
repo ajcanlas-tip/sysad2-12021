@@ -1,5 +1,4 @@
-motd: "Hello World"
-user: "rcasamparo"---
+---
 - name: Prelim-Exam
   hosts: ubuntu
   vars:

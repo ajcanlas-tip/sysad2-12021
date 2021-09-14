@@ -1,0 +1,28 @@
+---
+- name: Install Package for Centos
+  hosts: Centos
+  tasks:
+    - name: Install Java
+      become: yes
+      yum:
+        name: java-1.8.0-openjdk
+        state: present
+        update_ cache: yes
+    - name: Install Python and Pip
+      become: yes
+      yum:
+        name:
+          - python3
+          - python3-pip
+        state: present
+        update_cache: yes
+   - name: Install Boto using Pip
+     become: yes
+     pip:
+       name: boto
+       state: present
+   - name: Install Ansible using Pip
+     become: yes
+     pip:
+       name: ansible
+       state: latest

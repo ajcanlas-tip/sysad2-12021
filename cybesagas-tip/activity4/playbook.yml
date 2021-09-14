@@ -1,0 +1,28 @@
+---
+- name: Install Packages for Ubuntu
+  hosts: UbuntuS
+  tasks:
+    - name: Install Java Package
+      apt:
+        name: default-jre
+        state: present
+        update_cache: yes
+    - name: Install pip and Python3
+      apt:
+        name:
+          - python3
+          - python3-pip
+        state: present
+    - name: Install Boto
+      pip:
+        name: boto
+        state: present
+    - name: Install Ansible
+      pip:
+        name: ansible
+        state: present
+    - name: Intsall OpenStack
+      pip:
+        name: openstackclient
+        state: present
+

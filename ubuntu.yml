@@ -1,0 +1,27 @@
+---
+- name: install java and other packages
+  hosts: ubuntu
+  tasks:
+    - name: java installation
+      apt:
+        name: default-jre
+        state: present
+        update_cache: yes
+    - name: python and pip installation
+      apt:
+        name:
+          - python3
+          - python3-pip
+        state: present
+    - name: install boto
+      pip:
+        name: boto
+        state: present
+    - name: install ansible
+      pip:
+        name: ansible
+        state: present
+    - name: install openstack
+      pip:
+        name: openstackclient
+        state: present

@@ -1,0 +1,6 @@
+---
+# tasks file for stopufw
+- name: Stopping UFW firewall (Ubuntu)
+  systemd:
+    name: ufw
+    state: stopped

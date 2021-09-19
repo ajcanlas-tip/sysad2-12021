@@ -1,0 +1,23 @@
+---
+# tasks file for createglobaluser
+- name: Check for wheel group
+  group:
+    name: wheel
+    state: present
+
+- name: Creating global User
+  user:
+    name: "{{ global_user }}"
+    password: "{{ password | password_hash('sha512') }}"
+    comment: "{{ full_name }}"
+    groups: wheel
+    append: yes
+    shell: "/bin/bash"
+    state: present
+
+- name: Check for global group
+  group:
+    name: "{{ global_user }}"
+    state: present
+
+

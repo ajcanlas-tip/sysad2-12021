@@ -1,0 +1,8 @@
+---
+# tasks file for installubuntupkg
+
+- name: "Installing {{ package }} "
+  apt:
+    name: "{{ package }}"
+    state: present
+    update_cache: yes

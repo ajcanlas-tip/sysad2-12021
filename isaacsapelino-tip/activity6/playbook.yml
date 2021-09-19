@@ -1,0 +1,225 @@
+---
+- name: Playbook for Activity 6 by Isaac Sapelino
+  hosts: webservers
+  tasks:
+    - name: Include global variables (config.yml)
+      include_vars:
+        file: config.yml
+
+    - name: Initializing Global
+      include_role:
+        name: createglobaluser
+      vars:
+        global_user: global_user
+        password: password
+        full_name: full_name
+
+    - name: Installing apache2 (Ubuntu)
+      include_role:
+        name: installubuntupkg
+      vars:
+        package: apache2
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: Installing httpd (CentOS)
+      include_role:
+        name: installcentospkg
+      vars:
+        package: httpd
+      when: ansible_facts['distribution'] == 'CentOS'
+
+    - name: Configuring Apache2 (Ubuntu)
+      include_role:
+        name: configubuntuapache
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: Configuring Httpd (CentOS)
+      include_role:
+        name: configcentoshttpd
+      when: ansible_facts['distribution'] == 'CentOS'
+
+- name: Install and Setup VSFTPD
+  hosts: ftpservers
+  tasks:
+    - name: Include global variables (config.yml)
+      include_vars:
+        file: config.yml
+
+    - name: Install VSFTPD (Ubuntu)
+      include_role:
+        name: installubuntupkg
+      vars:
+        package: vsftpd
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: Configure VSFTPD (Ubuntu)
+      include_role:
+        name: configubuntuvsftpd
+      vars:
+        ftp_user: name
+        ftp_comment: user_comment
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: Allow port VSFTPD (Ubuntu)
+      include_role:
+        name: ufwallowports
+      vars:
+        port: "{{ item }}"
+      with_items:
+        - "{{ vsftpd_port1 }}"
+        - "{{ vsftpd_port2 }}"
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: Install VSFTPD (CentOS)
+      include_role:
+        name: installcentospkg
+      vars:
+        package: vsftpd
+      when: ansible_facts['distribution'] == 'CentOS'
+
+    - name: Configure VSFTPD (CentOS)
+      include_role:
+        name: configcentosvsftpd
+      vars:
+        ftp_user: name
+        ftp_comment: user_comment
+      when: ansible_facts['distribution'] == 'CentOS'
+
+    - name: Allowing port VSFTPD (CentOS)
+      include_role:
+        name: firewalldallowports
+      vars:
+        port: "{{ item }}"
+      with_items:
+        - "{{ vsftpd_port1 }}/tcp"
+        - "{{ vsftpd_port2 }}/tcp"
+        - "3000-31000/tcp"
+      when: ansible_facts['distribution'] == 'CentOS'
+
+- name: Install and Setup DHCP Server
+  hosts: dhcpservers
+  tasks:
+    - name: Install isc-dhcp-server (Ubuntu)
+      include_role:
+        name: installubuntupkg
+      vars:
+        package: isc-dhcp-server
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: Install dhcp-server (CentOS)
+      include_role:
+        name: installcentospkg
+      vars:
+        package: dhcp-server
+      when: ansible_facts['distribution'] == 'CentOS'
+
+    - name: Stop firewall (Ubuntu)
+      include_role:
+        name: stopufw
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: Stop firewall (CentOS)
+      include_role:
+        name: stopfirewalld
+      when: ansible_facts['distribution'] == 'CentOS'
+
+- name: Install and Setup MariaDB
+  hosts: dbservers
+  tasks:
+    - name: Install MariaDB (Ubuntu)
+      include_role:
+        name: installubuntupkg
+      vars:
+        package: mariadb-server
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: Install MariaDB (CentOS)
+      include_role:
+        name: installcentospkg
+      vars:
+        package: mariadb-server
+      when: ansible_facts['distribution'] == 'CentOS'
+
+    - name: Stop firewall (Ubuntu)
+      include_role:
+        name: stopufw
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: Stop firewall (CentOS)
+      include_role:
+        name: stopfirewalld
+      when: ansible_facts['distribution'] == 'CentOS'
+
+    - name: Start MariaDB
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+
+- name: Install and Setup Bind9
+  hosts: dnsservers
+  tasks:
+    - name: Install Bind9 (Ubuntu)
+      include_role:
+        name: installubuntupkg
+      vars:
+        package: bind9
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: Install Bind9 (CentOS)
+      include_role:
+        name: installcentospkg
+      vars:
+        package:
+          - bind
+          - bind-utils
+      when: ansible_facts['distribution'] == 'CentOS'
+
+    - name: Start Bind9 (Ubuntu)
+      service:
+        name: bind9
+        state: started
+        enabled: yes
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: Start Bind9 (CentOS)
+      service:
+        name: named
+        state: started
+        enabled: yes
+      when: ansible_facts['distribution'] == 'CentOS'
+
+- name: Install and Setup Samba
+  hosts: sambashares
+
+  tasks:
+    - name: Install Samba (Ubuntu)
+      include_role:
+        name: installubuntupkg
+      vars:
+        package: samba
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: Install Samba (CentOS)
+      include_role:
+        name: installcentospkg
+      vars:
+        package:
+          - samba
+          - samba-common
+          - samba-client
+      when: ansible_facts['distribution'] == 'CentOS'
+
+    - name: Start Samba (Ubuntu)
+      service:
+        name: smbd
+        state: started
+        enabled: yes
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: Start Samba (CentOS)
+      service:
+        name: smb
+        state: started
+        enabled: yes
+      when: ansible_facts['distribution'] == 'CentOS'

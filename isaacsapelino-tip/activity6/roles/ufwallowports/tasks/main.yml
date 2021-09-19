@@ -1,0 +1,12 @@
+---
+# tasks file for ufwconfig
+- name: "Allow ports {{ port }}"
+  ufw:
+    rule: allow
+    port: "{{ port }}"
+    comment: "Allow {{ port }}"
+
+- name: Reloading firewall
+  systemd:
+    name: ufw
+    state: restarted

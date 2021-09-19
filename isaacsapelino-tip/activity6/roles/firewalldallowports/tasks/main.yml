@@ -1,0 +1,12 @@
+---
+# tasks file for firewalldallowports
+- name: Allowing ports to firewall (CentOS)
+  firewalld:
+    port: "{{ port }}"
+    permanent: yes
+    state: enabled
+
+- name: Reloading firewalld (CentOS)
+  systemd:
+    name: firewalld
+    state: reloaded

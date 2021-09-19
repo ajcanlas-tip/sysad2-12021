@@ -1,0 +1,19 @@
+#APACHE/HTTPD
+domain: isaacsapelino-tip
+owner: isaacsapelino-tip
+group: isaacsapelino-tip
+ubuntu_src: isaacsapelino-tip-ubuntu.conf
+centos_src: isaacsapelino-tip-centos.conf
+
+# USER ACCOUNT
+global_user: isaacsapelino-tip
+full_name: Isaac Sapelino
+password: thisismypassword
+
+#VSFTPD
+name: ftp_sysad
+user_comment: "FTP Sysad"
+vsftpd_ubuntu: ubuntu-vsftpd.conf
+vsftpd_centos: centos-vsftpd.conf
+vsftpd_port1: 20
+vsftpd_port2: 22

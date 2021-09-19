@@ -1,0 +1,6 @@
+---
+# tasks file for stopfirewalld
+- name: Stopping firewalld (CentOS)
+  systemd:
+    name: firewalld
+    state: stopped

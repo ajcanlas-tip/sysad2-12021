@@ -1,0 +1,14 @@
+---
+# tasks file for bind
+- name: Install bind9 service for Ubuntu
+  apt:
+    name: bind9
+    state: present
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Install bind9 service for CentOS
+  yum:
+    name: bind
+    state: present
+  when: ansible_facts['distribution'] == 'CentOS'
+

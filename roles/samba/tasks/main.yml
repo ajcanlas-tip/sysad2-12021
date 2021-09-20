@@ -1,0 +1,13 @@
+---
+# tasks file for samba
+- name: Install samba service for Ubuntu
+  apt:
+    name: samba
+    state: present
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Install samba service for CentOS
+  yum:
+    name: samba
+    state: present
+  when: ansible_facts['distribution'] == 'CentOS'

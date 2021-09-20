@@ -1,0 +1,17 @@
+[install_dhcph_package]
+192.168.100.97
+
+[install_bind9_package]
+192.168.100.97
+
+[install_vsftpd_package]
+192.168.100.97
+
+[install_samba_package]
+192.168.100.97
+
+[install_httpd_package]
+192.168.100.97
+
+[install_mariadb_package]
+192.168.100.97

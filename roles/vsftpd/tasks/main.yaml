@@ -1,0 +1,6 @@
+- name: Install vsftpd package
+  tags: vsftpd
+  apt:
+    name: vsftpd
+    state: latest
+  when: ansible_distribution == "Ubuntu"

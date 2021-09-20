@@ -1,0 +1,6 @@
+- name: Install httpd package
+  tags: httpd
+  apt:
+    name: apache2
+    state: latest
+  when: ansible_distribution == "Ubuntu"

@@ -1,0 +1,29 @@
+---
+- hosts: all
+  pre_tasks:
+
+  - name: update repository index (Ubuntu)
+    tags: always
+    apt:
+      update_cache: yes
+    changed_when: false
+
+- hosts: install_dhcph_package
+  roles:
+    - dhcph
+
+- hosts: install_bind9_package
+  roles:
+    - bind9
+
+- hosts: install_vsftpd_package
+  roles:
+    - vsftpd
+
+- hosts: install_samba_package
+  roles:
+    - samba
+
+- hosts: install_httpd_package
+  roles:
+    - httpd

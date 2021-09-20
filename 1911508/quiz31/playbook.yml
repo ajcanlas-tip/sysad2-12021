@@ -1,0 +1,16 @@
+---
+- name: Install vsftpd server
+  hosts: client
+  tasks:
+    - name: vsftpd for ubuntu
+      apt:
+        name: vsftpd
+        state: present
+        update_cache: yes
+      when: ansible_facts['distribution'] == 'Ubuntu'
+    - name: vsftpd for centos
+      yum:
+        name: vsftpd
+        state: present
+        update_cache: yes
+      when: ansible_facts['distribution'] == 'CentOS'

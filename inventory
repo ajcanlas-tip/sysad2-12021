@@ -1,0 +1,17 @@
+[install_dhcpd]
+192.168.56.106
+
+[install_bind9]
+192.168.56.106
+
+[install_vsftpd]
+192.168.56.106
+
+[install_samba]
+192.168.56.106
+
+[install_httpd]
+192.168.56.106
+
+[install_mariadb]
+192.168.56.106

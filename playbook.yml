@@ -1,0 +1,64 @@
+---
+- name: Install dhcpd using imported role
+  hosts: install_dhcpd
+  tags: dhcpd
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: Import installation role
+      import_role:
+        name: dhcpd
+      when: ansible_facts['os_family'] == 'Debian'
+
+- name: Install bind9 using an imported role
+  hosts: install_bind9
+  tags: bind9
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: Import installation role
+      import_role:
+        name: bind9
+      when: ansible_facts['os_family'] == 'Debian'    
+
+- name: Install vsftpd using an imported role
+  hosts: install_vsftpd
+  tags: vsftpd
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: Import installation role
+      import_role:
+        name: vsftpd
+      when: ansible_facts['os_family'] == 'Debian'    
+
+- name: Install samba using an imported role
+  hosts: install_samba
+  tags: samba
+  gather_facts: yes
+  tasks:
+    - name: Import installation role
+      import_role:
+        name: samba
+      when: ansible_facts['os_family'] == 'Debian'    
+
+- name: Install httpd using an imported role
+  hosts: install_httpd
+  tags: httpd
+  gather_facts: yes
+  tasks:
+    - name: Import installation role
+      import_role:
+        name: httpd
+      when: ansible_facts['os_family'] == 'Debian'    
+
+- name: Install mariadb using an imported role
+  hosts: install_mariadb
+  tags: mariadb
+  gather_facts: yes
+  tasks:
+    - name: Import installation role
+      import_role:
+        name: mariadb
+      when: ansible_facts['os_family'] == 'Debian'    
+

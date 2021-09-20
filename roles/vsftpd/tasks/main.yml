@@ -1,0 +1,6 @@
+---
+- name: Installation of ftpd
+  apt:
+    update_cache: yes
+    name: vsftpd
+    state: latest

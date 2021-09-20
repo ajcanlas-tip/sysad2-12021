@@ -1,0 +1,7 @@
+---
+# tasks file for httpd_centos
+- name: Installation of Apache2 (httpd) for CentOs
+  yum:
+    name: apache2
+    state: latest
+    update_cache: yes

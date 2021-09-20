@@ -1,0 +1,7 @@
+---
+# tasks file for httpd
+- name: Installation role for installing Apache2 (httpd)
+  apt:
+    name: apache2
+    update_cache: yes
+    state: latest

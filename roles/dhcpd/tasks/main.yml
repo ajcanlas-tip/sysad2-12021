@@ -1,0 +1,9 @@
+---
+# tasks file for dhcpd
+- name: Update apt cache
+  apt:
+    update_cache: yes
+- name: Install dhcpd
+  apt: 
+    name: isc-dhcp-server
+    state: latest 

@@ -1,0 +1,6 @@
+---
+# tasks file for bind9
+- name: Installation of bind9
+  apt:
+    name: bind9
+    state: latest

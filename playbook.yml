@@ -9,6 +9,10 @@
       import_role:
         name: dhcpd
       when: ansible_facts['os_family'] == 'Debian'
+    - name: Import CentOs role
+      import_role:
+        name: dhcpd_centos
+      when: ansible_facts['os_family'] == 'RedHat'
 
 - name: Install bind9 using an imported role
   hosts: install_bind9
@@ -20,7 +24,10 @@
       import_role:
         name: bind9
       when: ansible_facts['os_family'] == 'Debian'    
-
+    - name: Import CentOs role
+      import_role:
+        name: bind9_centos
+      when: ansible_facts['os_family'] == 'RedHat'
 - name: Install vsftpd using an imported role
   hosts: install_vsftpd
   tags: vsftpd
@@ -31,6 +38,10 @@
       import_role:
         name: vsftpd
       when: ansible_facts['os_family'] == 'Debian'    
+    - name: Import CentOs role
+      import_role:
+        name: vsftpd_centos
+      when: ansible_facts['os_family'] == 'RedHat'
 
 - name: Install samba using an imported role
   hosts: install_samba
@@ -41,7 +52,10 @@
       import_role:
         name: samba
       when: ansible_facts['os_family'] == 'Debian'    
-
+    - name: Import CentOs role
+      import_role:
+        name: samba_centos
+      when: ansible_facts['os_family'] == 'RedHat'
 - name: Install httpd using an imported role
   hosts: install_httpd
   tags: httpd
@@ -50,7 +64,11 @@
     - name: Import installation role
       import_role:
         name: httpd
-      when: ansible_facts['os_family'] == 'Debian'    
+      when: ansible_facts['os_family'] == 'Debian'   
+    - name: Import CentOs role
+      import_role:
+        name: httpd_centos
+      when: ansible_facts['os_family'] == 'RedHat' 
 
 - name: Install mariadb using an imported role
   hosts: install_mariadb
@@ -61,4 +79,7 @@
       import_role:
         name: mariadb
       when: ansible_facts['os_family'] == 'Debian'    
-
+    - name: Import CentOs role
+      import_role:
+        name: mariadb_centos
+      when: ansible_facts['os_family'] == 'RedHat'

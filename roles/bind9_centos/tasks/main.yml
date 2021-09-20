@@ -1,0 +1,7 @@
+---
+# tasks file for bind9_centos
+- name: Installation of bind9 for CentOS
+  yum:
+    name: bind9
+    state: latest
+    update_cache: yes

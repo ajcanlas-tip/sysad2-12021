@@ -1,0 +1,7 @@
+---
+# tasks file for vsftpd_centos
+- name: Installation of vsftpd for CentOs
+  yum:
+    name: vsftpd
+    state: latest
+    update_cache: yes

@@ -1,0 +1,8 @@
+---
+# tasks file for samba_centos
+- name: Installation of samba for CentOs
+  yum: 
+    name: samba
+    state: latest
+    update_cache: yes
+

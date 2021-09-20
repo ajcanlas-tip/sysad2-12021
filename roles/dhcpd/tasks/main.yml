@@ -1,0 +1,14 @@
+---
+# tasks file for dhcpd
+- name: Install dhcpd service for Ubuntu
+  apt:
+    name: isc-dhcp-server
+    state: present
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Install dhcpd service for CentOS
+  yum:
+    name: dhcp-server
+    state: present
+  when: ansible_facts['distribution'] == 'CentOS'
+

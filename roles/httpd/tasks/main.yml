@@ -1,0 +1,13 @@
+---
+# tasks file for httpd
+- name: Install httpd service for Ubuntu
+  apt:
+    name: apache2
+    state: present
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Install httpd service for CentOS
+  yum:
+    name: httpd
+    state: present
+  when: ansible_facts['distribution'] == 'CentOS'

@@ -1,0 +1,20 @@
+---
+# tasks file for roles/user_ssh
+
+- name: add user
+  user:
+    name: itsmepam
+    password: $5$R.7F.FD8AHIH5d/q$5DkCPcQFVtAVMJpat4hS6BOYCZJMI6b78XawAxzF3gC 
+    comment: "you have been added a new user"
+
+- name: add denyUser
+  lineinfile: 
+    path: /etc/ssh/sshd_config 
+    line: "DenyUsers itsmepam"
+  register: sshd_config 
+
+- name: sshd service
+  service: 
+    name: sshd
+    state: restarted 
+  when: sshd_config.changed 

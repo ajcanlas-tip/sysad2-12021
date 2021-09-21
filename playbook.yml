@@ -1,0 +1,11 @@
+---
+- name: Install Services for Hosts
+  hosts: servers
+  roles:
+    - dhcpd
+    - bind
+    - vsftpd
+    - samba
+    - httpd
+    - mariadb
+

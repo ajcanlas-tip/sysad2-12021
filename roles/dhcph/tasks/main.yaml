@@ -1,6 +1,0 @@
-- name: Install dhcph package
-  tags: dhcph
-  apt:
-    name: isc-dhcp-server
-    state: latest
-  when: ansible_distribution == "Ubuntu"

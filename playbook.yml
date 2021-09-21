@@ -1,0 +1,78 @@
+---
+- name: Installing packages
+   hosts: ubuntu
+   become: true
+   tasks:
+
+   - name: updates in CentOS
+     yum:
+       update_only: yes
+       update_cache: yes
+     when: ansible_distribution == "CentOS"
+
+   - name: updates in Ubuntu
+     apt:
+        upgrade: dist
+        upgrade_cache: always
+     when: ansible_distribution == "Ubuntu"
+
+   - name: dhcpd
+     apt:
+           name: isc-dhcp-server
+           state: latest
+           update_cache: yes
+     when: ansible_distribution == "Ubuntu"
+   - name: bind9
+     apt:
+           name: bind9
+           state: latest
+           update_cache: yes
+     when: ansible_distribution == "Ubuntu"
+   - name: samba
+     apt:
+           name: samba
+           state: latest
+           update_cache: yes
+     when: ansible_distribution == "Ubuntu"
+   - name: httpd
+     apt:
+           name: apache2
+           state: latest
+           update_cache: yes
+     when: ansible_distribution == "Ubuntu"
+   - name: mariaDB
+     apt:
+           name: mariadb-server-10.3
+           state: latest
+           update_cache: yes
+     when: ansible_distribution == "Ubuntu"
+   - name: dhcpd
+     yum:
+           name: isc-dhcp-server
+           state: latest
+           update_cache: yes
+     when: ansible_distribution == "CentOS"
+   - name: bind9
+     yum:
+           name: bind9
+           state: latest
+           update_cache: yes
+     when: ansible_distribution == "CentOS"
+   - name: samba
+     yum:
+           name: samba
+           state: latest
+           update_cache: yes
+     when: ansible_distribution == "CentOS"
+   - name: httpd
+     yum:
+           name: apache2
+           state: latest
+           update_cache: yes
+     when: ansible_distribution == "CentOS"
+   - name: mariaDB
+     yum:
+           name: mariadb-server-10.3
+           state: latest
+           update_cache: yes
+     when: ansible_distribution == "CentOS"

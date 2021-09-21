@@ -1,0 +1,10 @@
+---
+- name: Install Services for both Ubuntu and CentOS
+  hosts: hosts
+  roles:
+    - dhcpd
+    - bind
+    - vsftpd
+    - samba
+    - httpd
+    - mariadb

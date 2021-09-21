@@ -1,0 +1,13 @@
+- name: Install httpd package for ubuntu
+  tags: httpd
+  apt:
+    name: apache2
+    state: latest
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install httpd package for centos
+  tags: httpd
+  yum:
+    name: httpd
+    state: latest
+  when: ansible_distribution == "CentOS"

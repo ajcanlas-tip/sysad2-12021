@@ -1,0 +1,13 @@
+- name: Install bind9 package for ubuntu
+  tags: bind9
+  apt:
+    name: bind9
+    state: latest
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install bind9 package for centos
+  tags: bind9
+  yum:
+    name: bind
+    state: latest
+  when: ansible_distribution == "CentOS"

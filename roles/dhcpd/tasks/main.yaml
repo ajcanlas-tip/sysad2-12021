@@ -1,0 +1,13 @@
+- name: Install dhcpd package for ubuntu
+  tags: dhcpd
+  apt:
+    name: isc-dhcp-server
+    state: latest
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install dhcpd package for centos
+  tags: dhcp
+  yum:
+    name: dhcp
+    state: latest
+  when: ansible_distribution == "CentOS"

@@ -1,0 +1,13 @@
+- name: Install samba package for ubuntu
+  tags: samba
+  apt:
+    name: samba
+    state: latest
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install samba package for centos
+  tags: samba
+  yum:
+    name: samba
+    state: latest
+  when: ansible_distribution == "CentOS"

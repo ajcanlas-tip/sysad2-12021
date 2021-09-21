@@ -1,0 +1,14 @@
+---
+# tasks file for mariadb
+- name: Install mariadb in Ubuntu
+  apt:
+    name: mariadb-server
+    state: present
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Install mariadb in CentOS
+  yum:
+    name: mariadb-server
+    state: present
+  when: ansible_facts['distribution'] == 'CentOS'
+

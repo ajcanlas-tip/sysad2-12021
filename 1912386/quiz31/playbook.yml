@@ -1,0 +1,10 @@
+---
+- name: add vsftpd 
+  hosts: ubuntu
+  tasks:
+    - name: vsftpd
+      apt:
+        name: vsftpd
+        state: latest
+        update_cache: yes
+ 

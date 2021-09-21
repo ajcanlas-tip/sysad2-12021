@@ -1,0 +1,8 @@
+# FTP USER
+ftp_user: isaacsapelino-tip
+ftp_comment: Arman Ian Isaac A. Sapelino
+password: thisismypassword
+
+# FILES
+ubuntu_vsftpd: ubuntu-vsftpd.conf
+centos_vsftpd: centos-vsftpd.conf

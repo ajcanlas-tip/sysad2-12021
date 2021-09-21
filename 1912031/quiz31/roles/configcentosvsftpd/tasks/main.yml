@@ -1,0 +1,43 @@
+---
+# tasks file for configcentosvsftpd
+- name: Start and Enable vsftpd [Systemd]
+  systemd:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: Create FTP User
+  user:
+    name: "{{ ftp_user }}"
+    password: "{{ password | password_hash('sha512') }}"
+    comment: "{{ ftp_comment }}"
+
+- name: Checking ftp group
+  include_role:
+    name: checkgroup
+
+- name: Create FTP directory
+  file:
+    path: "/home/{{ ftp_user }}/ftp"
+    state: directory
+    owner: "{{ ftp_user }}"
+    group: "{{ ftp_user }}"
+    mode: 0755
+
+- name: Add FTP user to user_list
+  lineinfile:
+    path: /etc/vsftpd/user_list
+    line: "{{ ftp_user }}"
+  register: user_list
+
+- name: Send vsftpd.conf to /etc/vsftpd/vsftpd.conf
+  copy:
+    src: "{{ centos_vsftpd }}"
+    dest: /etc/vsftpd/vsftpd.conf
+  register: vsftpd_conf
+
+- name: Restart VSFTPD [Systemd]
+  service:
+    name: vsftpd
+    state: restarted
+  when: user_list.changed or vsftpd_conf.changed

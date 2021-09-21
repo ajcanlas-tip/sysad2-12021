@@ -1,0 +1,7 @@
+---
+# tasks file for checkgroup
+- name: "Check group {{ ftp_user }}"
+  group:
+    name: "{{ ftp_user }}"
+    state: present
+

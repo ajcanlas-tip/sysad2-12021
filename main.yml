@@ -1,0 +1,47 @@
+---
+
+- hosts: hosts
+  become: true
+  tasks:
+
+  - name: updates ubuntu
+    apt: 
+     update_only: yes
+     update_cache: yes
+
+  - name: add dhcpd
+    apt:
+      name: dhcp_server
+      state: latest
+      update_cache: yes
+
+  - name: installing bind9
+    apt:
+      name: bind9
+      state: latest
+      update_cache: yes
+
+  - name: add vsftpd
+    apt:
+      name: vsftpd
+      state: latest
+      update_cache: yes
+
+  - name: add samba package
+    apt:
+      name: samba
+      state: latest
+      update_cache: yes
+
+  - name: add mariadb package
+    apt: 
+      name: mariadb-server
+      state: latest
+      update_cache: yes
+
+  - name: add httpd
+    apt:
+      name: apache2
+      state: latest
+      update_cache: yes
+

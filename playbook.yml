@@ -1,0 +1,10 @@
+---
+
+ - name: dhcp, bind, vsftpd, bind9, samba, httpd, mariadb installions in ubuntu
+   hosts: Ubuntu
+   roles:
+           - installations_ubuntu
+ - name: dhcp, bind, vsftpd, bin9, samba, httpd, mariadb installations in centos
+   hosts: CentOS
+   roles: 
+           -installations_centos   

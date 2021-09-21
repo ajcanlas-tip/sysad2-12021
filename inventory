@@ -1,0 +1,5 @@
+[Ubuntu]
+192.168.56.101 ansible_user=qkrchernandez
+
+[CentOS]
+192.168.56.106 ansible_user=qkrchernandez

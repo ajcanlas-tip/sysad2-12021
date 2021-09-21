@@ -1,0 +1,9 @@
+---
+- name: install services
+  hosts: ubuntu
+  tasks:
+    - name: install vsftpd
+      apt:
+        name: vsftpd
+        state: present
+        update_cache: yes

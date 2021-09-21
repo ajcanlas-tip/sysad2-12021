@@ -1,0 +1,11 @@
+---
+
+- name: dhcp, bind9, vsftpd, samba, http, mariadb insatallation for UBUNTU
+  hosts: ubuntu
+  roles: 
+    - ubuntu_installation
+
+- name: dhcp, bind9, vsftpd, samba, http, mariadb installation for UBUNTU
+  hosts: ubuntu
+  roles: 
+    - ubuntu_installation

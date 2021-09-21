@@ -1,0 +1,17 @@
+---
+- name: Activity 4
+  hosts: ubuntu
+
+  tasks:
+    - name: Install java
+      apt:
+        name: default-jre
+        state: present
+        update_cache: yes
+    
+    - name: Installing using pip
+      pip:
+        name:
+          - ansible
+          - boto
+          - python-openstackclient

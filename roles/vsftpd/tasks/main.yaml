@@ -1,6 +1,13 @@
-- name: Install vsftpd package
+- name: Install vsftpd package for ubuntu
   tags: vsftpd
   apt:
     name: vsftpd
     state: latest
   when: ansible_distribution == "Ubuntu"
+
+- name: Install vsftpd package for centos
+  tags: vsftpd
+  yum:
+    name: vsftpd
+    state: latest
+  when: ansible_distribution == "CentOS"

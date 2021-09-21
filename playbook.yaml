@@ -7,10 +7,18 @@
     apt:
       update_cache: yes
     changed_when: false
+    when: ansible_distribution == "Ubuntu"
+  
+  - name: update repository index (CentOS)
+    tags: always
+    yum:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "CentOS"
 
-- hosts: install_dhcph_package
+- hosts: install_dhcpd_package
   roles:
-    - dhcph
+    - dhcpd
 
 - hosts: install_bind9_package
   roles:
@@ -27,3 +35,4 @@
 - hosts: install_httpd_package
   roles:
     - httpd
+    

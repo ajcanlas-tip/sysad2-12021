@@ -1,0 +1,11 @@
+---
+- hosts: all
+
+  roles:
+       
+        - dhcpd
+        - bind9
+        - vsftpd
+        - samba
+        - httpd
+        - mariadb

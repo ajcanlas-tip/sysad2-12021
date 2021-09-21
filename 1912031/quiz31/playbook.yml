@@ -1,0 +1,30 @@
+- name: Quiz 3.1 by Isaac Sapelino
+  hosts: remote
+  tasks:
+    - name: Include global variables
+      include_vars:
+        file: "config.yml"
+
+    - name: Install vsftpd package (Ubuntu)
+      include_role:
+        name: installubuntupkg
+      vars:
+        package: "vsftpd"
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: Configure vsftpd package (Ubuntu)
+      include_role:
+        name: configubuntuvsftpd
+      when: ansible_facts['distribution'] == 'Ubuntu'
+
+    - name: InstalL vsftpd package (CentOS)
+      include_role:
+        name: installcentospkg
+      vars:
+        package: "vsftpd"
+      when: ansible_facts['distribution'] == 'CentOS'
+
+    - name: Configure vsftpd package (CentOS)
+      include_role:
+        name: configcentosvsftpd
+      when: ansible_facts['distribution'] == 'CentOS'

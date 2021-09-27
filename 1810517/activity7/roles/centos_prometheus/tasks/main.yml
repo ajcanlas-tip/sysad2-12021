@@ -1,0 +1,18 @@
+---
+# tasks file for roles/centos_prometheus
+- name: add prometheus repo
+  copy:
+    src: prometheus.repo
+    dest: /etc/yum.repos.d/
+
+- name: update centos
+  yum:
+    update_cache: yes
+
+- name: install prometheus
+  become: yes
+  dnf:
+    name:
+      - prometheus2
+      - node_exporter
+

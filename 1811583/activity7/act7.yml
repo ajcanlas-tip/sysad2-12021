@@ -1,0 +1,14 @@
+---
+- name: Installing in ubuntu
+ hosts: ubuntu
+ vars_files:
+  - config.yaml
+ roles:
+  - ubuntu
+
+- name: Installing in centos
+  hosts: centos
+  vars_files:
+   - config.yaml
+  roles:
+   - centos

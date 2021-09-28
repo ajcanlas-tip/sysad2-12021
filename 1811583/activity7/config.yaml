@@ -1,0 +1,16 @@
+#Elastic Search Variables
+elastic_source: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+elastic_network: 'network.host: localhost'
+elastic_timeout: "[Service]\nTimeoutStartSec=300"
+
+
+#Kibana Variables
+kibana_pass: strongpassword
+kibana_source: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+
+#Logstash Variable
+logstash_source: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+
+#Nagios Variables
+naguser_pass: passwordoftheday
+nagadmin_pass: strongestpass

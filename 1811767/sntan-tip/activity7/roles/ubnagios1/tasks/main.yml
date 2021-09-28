@@ -1,0 +1,33 @@
+---
+- name: Installing Packages for Nagios
+  apt:
+    name:
+      - apache2
+      - apache2-utils
+      - build-essential
+      - daemon
+      - libapache2-mod-php
+      - libgd-dev
+      - libperl-dev
+      - libssl-dev
+      - make
+      - openssl
+      - perl
+      - php
+      - php-gd
+      - unzip
+      - wget
+    state: latest
+    update_cache: yes
+
+- name: Nagcmd Group
+  group:
+    name: nagcmdgrp
+    state: present
+
+- name: Nagios User
+  user:
+    name: nagiosusr
+    group: nagcmdgrp
+
+# tasks file for roles/ubnagios1

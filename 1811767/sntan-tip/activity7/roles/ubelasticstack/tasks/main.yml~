@@ -1,0 +1,98 @@
+---
+- name: Pre-req in Elasticccc Search
+  apt:
+    name:
+      - openjdk-8-jdk
+      - nginx
+    state: latest
+    update_cache: yes
+
+- name: Elastic Packages
+  apt_key:
+    url: "https://packages.elastic.co/GPG-KEY-elasticsearch"
+    state: present
+
+- name: APT
+  apt:
+    name: apt-transport-https
+    state: present
+
+- name: APT Repository
+  apt_repository:
+    filename: elastic-7.x
+    repo: "deb https://artifacts.elastic.co/packages/7.x/apt stable main"
+    state: present
+
+- name: Installing Elastic Search
+  apt:
+    name: elasticsearch
+    state: present
+    update_cache: yes
+
+- name: Network Host
+  lineinfile:
+    dest: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'network.host:'
+    line: 'network.host: localhost'
+
+- name: HTTP Port
+  lineinfile:
+    dest: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'http.port'
+    line: 'http.port: 9200'
+
+- name: Discovery Type
+  lineinfile:
+    dest: /etc/elasticsearch/elasticsearch.yml
+    line: 'discovery.type: "single-node"'
+
+- name: Reload
+  systemd:
+    daemon_reload: yes
+
+- name: Elastic Search Start
+  service:
+    name: elasticsearch
+    state: started
+
+- name: Installing Kibana
+  apt:
+    name: kibana
+    state: present
+    update_cache: yes
+
+- name: Server Host
+  lineinfile:
+    dest: /etc/kibana/kibana.yml
+    regexp: 'server.host'
+    line: 'server.host: localhost'
+
+- name: Server Port
+  lineinfile:
+    dest: /etc/kibana/kibana.yml
+    regexp: 'server.port:'
+    line: 'server.port: 5601'
+
+- name: Hosts
+  lineinfile:
+    dest: /etc/kibana/kibana.yml
+    regexp: 'elasticsearch.hosts:'
+    line: 'elasticsearch.hosts: ["https://localhost:9200"]'
+
+- name: Kibana Start
+  service:
+    name: kibana
+    state: started
+
+- name: Installing Logstash
+  apt:
+    name: logstash
+    state: latest
+    update_cache: yes
+
+- name: Logstash Start
+  service:
+    name: logstash
+    state: started
+
+# tasks file for roles/ubelasticstack

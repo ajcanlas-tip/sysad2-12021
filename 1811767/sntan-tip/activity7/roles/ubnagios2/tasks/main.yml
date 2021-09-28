@@ -1,0 +1,62 @@
+---
+- name: Nagios Download and Extraction
+  unarchive:
+    src: https://sourceforge.net/projects/nagios/files/nagios-4.x/nagios-4.4.6/nagios-4.4.6.tar.gz
+    dest: /tmp
+    copy: no
+
+- name: Nagios Config
+  command: ./configure --with-nagios-group=nagcmdgrp --with-httpd_conf=/etc/apache2/sites-enabled
+  args:
+    chdir: /tmp/nagios-4.4.6
+
+- name: Nagios All
+  make:
+    chdir: /tmp/nagios-4.4.6
+    target: all
+
+- name: Installing Nagios
+  make:
+    chdir: /tmp/nagios-4.4.6
+    target: install
+
+- name: Installing Init
+  make:
+    chdir: /tmp/nagios-4.4.6
+    target: install-init
+
+- name: Installing Config
+  make:
+    chdir: /tmp/nagios-4.4.6
+    target: install-config
+
+- name: Installing Command mode
+  make:
+    chdir: /tmp/nagios-4.4.6
+    target: install-commandmode
+
+- name: Installing Webconf
+  make:
+    chdir: /tmp/nagios-4.4.6
+    target: install-webconf
+
+- name: Nagios User acc
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: "{{ username }}"
+    password: "{{ password }}"
+
+- name: CGI Command
+  command: a2enmod cgi
+
+- name: Reload
+  systemd:
+    daemon_reload: yes
+
+- name: Restarting Apache2
+  service:
+    name: apache2
+    state: restarted
+    update_cache: yes
+
+# tasks file for roles/ubnagios2

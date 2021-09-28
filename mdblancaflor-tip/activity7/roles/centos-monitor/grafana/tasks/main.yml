@@ -1,0 +1,19 @@
+---
+# tasks file for roles/centos-monitor/grafana
+- name: Adding grafana.repo
+  become: yes
+  copy:
+    src: grafana.repo
+    dest: /etc/yum.repos.d/
+
+- name: Updating centos
+  become: yes
+  yum: 
+    update_cache: yes 
+
+- name: Installing grafana
+  become: yes
+  yum:
+    name: grafana
+    state: present
+

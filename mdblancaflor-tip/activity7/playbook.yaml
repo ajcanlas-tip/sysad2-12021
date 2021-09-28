@@ -1,0 +1,17 @@
+---
+- name: Instalingl Elk,Nagios, Grafana + Promotheus for ubuntu
+  hosts: ubuntu
+
+  roles: 
+   - ubuntu-monitor/elk
+   - ubuntu-monitor/nagios
+   - ubuntu-monitor/grafana
+   - ubuntu-monitor/prometheus
+
+- name: Installing Elk,Nagios, Grafana + Promotheus for centos
+  hosts: centos
+  roles:
+    - centos-monitor/elk
+    - centos-monitor/nagios
+    - centos-monitor/grafana
+    - centos-monitor/prometheus

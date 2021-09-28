@@ -1,0 +1,93 @@
+---
+# tasks file for roles/centos_nagios
+
+- name: installing centos packages
+  dnf:
+    name:
+      - gcc
+      - glibc
+      - glibc-common
+      - gd
+      - gd-devel
+      - perl
+      - postfix
+      - wget
+    state: present
+
+- name: adding group nagiosxi
+  group:
+    name: nagiosxi
+    state: present
+
+- name: adding user nagios
+  user:
+    name: nagios
+    group: nagiosxi
+
+- name: downloading and extracting nagios packages
+  unarchive:
+       src: https://assets.nagios.com/downloads/nagioscore/release/nagios-4.4.5.tar.gz
+       dest: /tmp
+       remote_src: yes
+
+- name: configurng nagios in centos
+  command: ./configure --with-command-group=nagiosxi
+  args:
+    chdir: /tmp/nagios-4.4.5
+
+- name: configuring make clean
+  make:
+    target: clean
+    chdir: /tmp/nagios-4.4.5
+
+- name: configuring make all
+  make:
+    target: install
+    chdir: /tmp/nagios-4.4.5
+
+- name: configuring make install
+  make:
+    target: install
+    chdir: /tmp/nagios-4.4.5
+
+- name: configuring make install init
+  make:
+    target: install-init
+    chdir: /tmp/nagios-4.4.5
+
+- name: configuring make install daemoninit
+  make:
+    target: install-daemoninit
+    chdir: /tmp/nagios-4.4.5
+
+- name: configuring make install config
+  make:
+    target: install-config
+    chdir: /tmp/nagios-4.4.5
+
+- name: configuring make install commandmode
+  make:
+    target: install-commandmode
+    chdir: /tmp/nagios-4.4.5
+
+- name: configuring make install exfoliation
+  make:
+    target: install-exfoliation
+    chdir: /tmp/nagios-4.4.5
+
+- name: installing passlib
+  pip:
+    name: passlib
+
+- name: user authentication
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: acelindro2
+    password: acelindro2
+
+- name: restarting httpd
+  service:
+    name: httpd
+    enabled: yes
+    state: restarted
+

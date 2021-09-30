@@ -1,0 +1,19 @@
+---
+- name: Installing monitor services in ubuntu
+  hosts: ubuntu
+
+
+  roles:
+    - ubuntu_elk
+    - ubuntu_nagios
+    - ubuntu_grafana
+    - ubuntu_prometheus
+
+- name: Installing monitor services in centos
+  hosts: centos
+
+  roles:
+    - centos_prometheus
+    - centos_nagios
+    - centos_grafana
+    - centos_elk

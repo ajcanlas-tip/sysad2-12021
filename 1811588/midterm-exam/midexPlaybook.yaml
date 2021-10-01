@@ -1,0 +1,21 @@
+---
+- name: Installation in Ubuntu
+  hosts: ubuntu
+  vars_files:
+    - ./config.yaml
+
+  roles:
+    - elasticstack1ins
+    - nagios1ins
+    - nagios2ins
+    - nagios3ins
+    - grafana1ins
+    - lamp1ins
+
+- name: Installation in Centos
+  hosts: centos
+
+  roles:
+    - elasticstack2ins
+    - grafana2ins
+    - lamp2ins

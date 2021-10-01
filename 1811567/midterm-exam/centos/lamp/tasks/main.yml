@@ -1,0 +1,40 @@
+---
+- name: apache web server installation
+  dnf:
+    name: httpd
+    state: present
+
+- name: Starting httpd service
+  service:
+    name: httpd
+    state: started
+
+- name: Enabling firewalld
+  firewalld:
+    service: http
+    permanent: yes
+    state: enabled
+
+- name: mariadb installation
+  dnf:
+    name: mariadb-server
+    state: present
+
+- name: Starting mariadb service
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+
+- name: Installing php
+  dnf:
+    name:
+      - php
+      - php-mysqlnd
+    state: present
+
+- name: Restarting httpd service
+  service:
+    name: httpd
+    state: restarted
+# tasks file for centos/lamp

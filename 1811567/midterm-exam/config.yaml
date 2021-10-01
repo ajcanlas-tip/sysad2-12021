@@ -1,0 +1,5 @@
+---
+user1: nagios
+user2: apache
+group: nagiosxi
+elastic_timeout: "[Service]\nTimeoutStartSec=300"

@@ -1,0 +1,27 @@
+---
+# tasks file for roles/u_plugin
+- name: installing nagios plugins in ubuntu
+  unarchive:
+    src: https://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: configuring nagios plugins
+  command: ./configure --with-nagios-user=nagios --with-nagios-group=nagcmd
+  args:
+    chdir: /tmp/nagios-plugins-2.3.3
+
+- name: configuring make
+  make:
+    chdir: /tmp/nagios-plugins-2.3.3
+
+- name: configuring make install
+  make:
+    target: install
+    chdir: /tmp/nagios-plugins-2.3.3
+
+- name: enbaling and starting nagios services
+  service:
+    name: nagios
+    enabled: yes
+    state: started

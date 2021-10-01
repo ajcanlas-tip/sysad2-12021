@@ -1,0 +1,15 @@
+---
+# tasks file for roles/php-centos
+- name: install php
+  yum:
+    name: php
+    state: latest
+    update_cache: yes
+
+- name: php index host
+  copy:
+    content: "reme"
+    dest: /var/www/html/index2.html
+    owner: root
+    group: root
+    mode: '0644'

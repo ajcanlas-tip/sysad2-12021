@@ -1,0 +1,29 @@
+---
+# tasks file for roles/apache2-centos
+- name: install apache2 centos
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: apache host index
+  copy:
+    content: "emerson"
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: apache_index
+
+- name: start and enable apache2 centos
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+  when: apache_index.changed
+
+- name: disable firewall
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no

@@ -1,0 +1,55 @@
+---
+- name: Install Grafana Packages
+  apt:
+    name: apt-transport-https
+    state: present
+    update_cache: yes
+
+- name: Add Grafana GPG Key
+  shell: curl https://packages.grafana.com/gpg.key | sudo apt-key add -
+
+- name: Add Grafana Repository
+  apt_repository:
+    repo: deb https://packages.grafana.com/oss/deb stable main
+    state: present
+    filename: grafana
+
+- name: Install Grafana
+  apt:
+    name: grafana
+    state: latest
+    update_cache: yes
+
+- name: Start Grafana
+  service:
+    name: grafana-server
+    state: started
+    enabled: yes
+
+- name: Install Prometheus
+  apt:
+    name: prometheus
+    state: latest
+    update_cache: yes
+
+- name: Start Prometheus
+  service:
+    name: prometheus
+    state: started
+
+- name: Add Influxdata Key
+  apt_key:
+    url: https://repos.influxdata.com/influxdb.key
+    state: present
+
+- name: Install Influxdb
+  apt:
+    name: influxdb
+    state: latest
+    update_cache: yes
+
+- name: Start influxdb
+  service:
+    name: influxdb
+    state: started
+# tasks file for roles/ubuntu/Grafana

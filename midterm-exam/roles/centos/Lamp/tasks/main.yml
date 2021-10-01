@@ -1,0 +1,71 @@
+---
+- name: Install httpd
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: Add httpd HTML File
+  copy:
+    content: "Welcome to Apache"
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: httpd
+
+- name: Start httpd
+  service:
+    name: httpd
+    state: started
+  when: httpd.changed
+
+- name: Stop firewall
+  service:
+    name: firewalld
+    state: stopped
+
+- name: Install MariaDB
+  yum:
+    name: mariadb-server
+    state: latest
+    update_cache: yes
+
+- name: Add MySQL HTML File
+  copy:
+    content: "Welcome to MySQL"
+    dest: /var/www/html/index1.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: mysql
+
+- name: Start MariaDB
+  service:
+    name: mariadb
+    state: started
+  when: mysql.changed
+
+- name: Install PHP
+  yum:
+    name:
+      - php
+      - php-mysqlnd
+    state: latest
+    update_cache: yes
+
+- name: Add PHP HTML File
+  copy:
+    content: "Welcome to PHP"
+    dest: /var/www/html/index2.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: php
+
+- name: Restart httpd
+  service:
+    name: httpd
+    state: restarted
+  when: php.changed
+# tasks file for roles/centos/Lamp

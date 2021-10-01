@@ -1,0 +1,49 @@
+---
+- name: Add Grafana Repository
+  copy:
+    src: grafana.repo
+    dest: /etc/yum.repos.d/
+
+- name: Install Grafana
+  yum:
+    name: grafana
+    state: latest
+    update_cache: yes
+
+- name: Start Grafana
+  service:
+    name: grafana-server
+    state: started
+
+- name: Add Prometheus Repository
+  copy:
+    src: prometheus.repo
+    dest: /etc/yum.repos.d
+
+- name: Install Prometheus
+  yum:
+    name: prometheus2
+    state: latest
+    update_cache: yes
+
+- name: Start Prometheus
+  service:
+    name: prometheus
+    state: started
+
+- name: Add Influxdb Repository
+  copy:
+    src: influxdb.repo
+    dest: /etc/yum.repos.d/
+
+- name: Install Influxdb
+  yum:
+    name: influxdb
+    state: latest
+    update_cache: yes
+
+- name: Start Influxdb
+  service:
+    name: influxdb
+    state: started
+# tasks file for roles/centos/Grafana

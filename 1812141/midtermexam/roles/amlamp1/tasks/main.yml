@@ -1,0 +1,68 @@
+---
+# tasks file for roles/amlamp1
+- name: apache
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: apache_index
+  copy:
+    content: "Hello world"
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
+    register: apache_index
+
+- name: apache2
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes
+    when: apache_index.changed
+
+- name: ufw
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+
+- name: myqsql server
+  apt:
+    name: mysql-server
+    state: latest
+    update_cache: yes
+
+- name: mysql index
+  copy:
+    content: "Hi world"
+    dest: /var/www/html/index1.html
+    owner: root
+    group: root
+    mode: '0644'
+    register: mysql_index
+
+- name: start mysql
+  service:
+    name: mysql
+    state: restarted
+    enabled: yes
+  when: mysql_index.changed
+
+- name: php
+  apt:
+    name:
+      - php
+      - php-mysql
+      - libapache2-mod-php
+    state: latest
+    update_cache: yes
+
+- name: add php_index
+  copy:
+    content: "Hi guys"
+    dest: /var/www/html/index2.html
+    owner: root
+    group: root
+    mode: '0644'

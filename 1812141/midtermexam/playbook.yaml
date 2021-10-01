@@ -1,0 +1,17 @@
+
+- hosts: ubuntu
+  vars_files:
+    - ./config.yaml
+  roles:
+    - amelastic
+    - amnagios1
+    - amnagios2
+    - amnagios3
+    - amgrafana
+    - amlamp1
+
+- hosts: centos
+  roles:
+    - amelastic2
+    - amgrafana2
+    - amlamp2

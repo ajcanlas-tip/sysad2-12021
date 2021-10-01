@@ -1,0 +1,32 @@
+---
+# tasks file for nagios1
+- name: install nagios core dependencies
+  apt:
+    name:
+      - build-essential
+      - apache2
+      - openssl
+      - php
+      - perl
+      - make
+      - php-gd
+      - libgd-dev
+      - libapache2-mod-php
+      - libperl-dev
+      - libssl-dev
+      - daemon
+      - wget
+      - apache2-utils
+      - unzip
+    state: latest
+    update_cache: yes
+
+- name: add group nagcmd
+  group:
+    name: nagcmd
+    state: present
+
+- name: add user nagios
+  user:
+    name: nagios
+    group: nagcmd

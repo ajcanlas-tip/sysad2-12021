@@ -1,0 +1,19 @@
+---
+- name: Docker service startup
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Installing web server with docker
+  docker_image:
+    name: romeoz/docker-apache-php
+    state: present
+    source: pull
+
+- name: Innstall db server with docker
+  docker_image: 
+    name: mysql/mysql-server:latest
+    state: present 
+    source: pull
+# tasks file for roles/file

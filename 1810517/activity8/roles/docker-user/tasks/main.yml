@@ -1,0 +1,11 @@
+---
+# tasks file for roles/docker-user
+- name: create docker group
+  group:
+    name: docker
+    state: present
+
+- name: add docker group for current user
+  user:
+    name: emerson
+    group: docker

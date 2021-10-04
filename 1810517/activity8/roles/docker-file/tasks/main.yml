@@ -1,0 +1,19 @@
+---
+# tasks file for roles/docker-file
+- name: start docker services
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: use docker in installing web server
+  docker_image:
+    name: romeoz/docker-apache-php
+    state: present
+    source: pull
+
+- name: using docker in installing db server
+  docker_image:
+    name: mysql/mysql-server:latest
+    state: present
+    source: pull

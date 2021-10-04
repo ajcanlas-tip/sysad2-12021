@@ -1,0 +1,15 @@
+---
+- name: Install docker in ubuntu
+  hosts: ubuntu
+
+  roles:
+    - ubuntu-docker
+    - user-docker
+    - file-docker
+
+- name: Install docker in centos
+  hosts: centos
+
+  roles:
+    - centos-docker
+    - group-docker

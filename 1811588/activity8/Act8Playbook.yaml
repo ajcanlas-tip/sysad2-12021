@@ -1,0 +1,7 @@
+---
+- name: Docker Installation in Ubuntu
+  hosts: ubuntu
+  roles:
+    - dockerins
+    - dockerusr
+    - dockerfile

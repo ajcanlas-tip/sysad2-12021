@@ -1,0 +1,20 @@
+---
+- name: Docker Start
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Docker Apache
+  docker_image:
+    name: romeoz/docker-apache-php
+    state: present
+    source: pull
+
+- name: Docker MySQL
+  docker_image:
+    name: mysql/mysql-server:latest
+    state: present
+    source: pull
+
+# tasks file for roles/dockerfile

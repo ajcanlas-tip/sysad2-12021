@@ -1,0 +1,12 @@
+---
+- name: Docker Group
+  group:
+    name: dockergrp
+    state: present
+
+- name: Docker User
+  user:
+    name: dockerusr
+    group: dockergrp
+
+# tasks file for roles/dockerusr

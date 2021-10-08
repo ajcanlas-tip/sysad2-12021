@@ -1,0 +1,59 @@
+---
+# tasks file for roles/jes3
+
+- name: Install vsftpd
+  zypper:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: Stop Firewall
+  service:
+    name: firewalld
+    state: stopped
+
+- name: Create ftp user
+  user:
+    name: jdalo
+    password: $5$auFaF7D.8xEQ2Itu$VX72WUY.PDHvgjfyQHu9vcaSdY6DFeqcmH.z1DTK/S2
+    comment: "New Ftp User"
+
+- name: Create group for user
+  group:
+    name: jdalo
+
+- name: Add DenyUser in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers jdalo"
+  register: sshd_config
+
+- name: restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Create Ftp directory
+  file:
+    path: /home/jdalo/ftp
+    state: directory
+    owner: jdalo
+    group: jdalo
+
+- name: copy vsftpd.conf
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_config
+
+- name: Delete secure root in csftpd.conf
+  lineinfile:
+    path: /etc/vsftpd.conf
+    regexp: 'secure_chroot'
+    line: ' '
+
+- name: restart
+  service:
+    name: vsftpd
+    state: restarted

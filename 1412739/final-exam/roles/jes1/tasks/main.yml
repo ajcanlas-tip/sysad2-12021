@@ -1,0 +1,50 @@
+---
+# tasks file for roles/jes1
+
+- name: Install FTP for ubuntu
+  apt:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: Stop UFirewall
+  service:
+    name: ufw
+    state: stopped
+
+- name: Create FTP user
+  user:
+    name: jdalo
+    password: $5$sVROl7iD.hRE2t2w$zkodn88T5wF0.IwXPyUd1zVjVlYX/sfGJRYmfPwGL73
+    comment: "New Ftp User"
+
+- name: add DenyUsers in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers jdalo"
+  register: sshd_config
+
+- name: Restart ssh service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Create FTP directory
+  file:
+    path: /home/jdalo/ftp/files
+    state: directory
+    owner: jdalo
+    group: jdalo
+
+- name: copy vsftpd.conf in /etc/vsftpd.conf
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_conf
+
+- name: Restart vsftpd.conf
+  service:
+    name: vsftpd
+    state: restarted
+  when: vsftpd_conf.changed

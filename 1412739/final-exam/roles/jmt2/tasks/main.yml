@@ -1,0 +1,19 @@
+---
+# tasks file for roles/jmt2
+
+- name: Add repo for Prometheus
+  copy:
+    src: prometheus.repo
+    dest: /etc/yum.repos.d/
+
+- name: Install Prometheus
+  yum:
+    name: prometheus2
+    state: latest
+    update_cache: yes
+
+- name: Start Prometheus
+  service:
+    name: prometheus
+    state: started
+    enabled: yes

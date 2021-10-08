@@ -1,0 +1,16 @@
+---
+# tasks file for roles/jgit2
+
+- name: Install github
+  yum:
+    name: git
+    state: latest
+    update_cache: yes
+
+- name: git clone prelim-exam repository
+  git:
+    repo: 'https://github.com/jdalo-tip/sysad2-12021.git'
+    dest: /home/jdalo-tip/test
+    version: prelim-exam
+    clone: yes
+    update: yes

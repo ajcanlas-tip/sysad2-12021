@@ -1,0 +1,11 @@
+---
+# tasks file for roles/jgit1
+
+- name: Clone the Prelim Repository
+  git:
+    repo: 'https://github.com/jdalo-tip/sysad2-12021.git'
+    dest: /home/jdalo-tip/test
+    version: prelim-exam
+    clone: yes
+    update: yes
+

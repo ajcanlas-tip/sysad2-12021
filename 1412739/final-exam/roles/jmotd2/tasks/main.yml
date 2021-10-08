@@ -1,0 +1,8 @@
+---
+# tasks file for roles/jmotd2
+
+- name: Create MOTD for centos
+  lineinfile:
+    path: /etc/motd
+    line: "Ansible managed by {{ user }}"
+    create: yes

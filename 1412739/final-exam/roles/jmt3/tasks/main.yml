@@ -1,0 +1,13 @@
+---
+# tasks file for roles/jmt3
+
+- name: Add prometheus repo
+  zypper:
+    name: golang-github-prometheus-prometheus
+    state: latest
+    update_cache: yes
+
+- name: Start prometheus
+  service:
+    name: prometheus
+    state: started

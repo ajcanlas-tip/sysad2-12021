@@ -1,0 +1,57 @@
+---
+# tasks file for roles/jes2
+
+- name: Install vsftpd
+  yum:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: Install FTP
+  yum:
+    name: ftp
+    state: latest
+    update_cache: yes
+
+- name: Stop firewall
+  service:
+    name: firewalld
+    state: stopped
+
+- name: FTP user
+  user:
+    name: jdalo
+    password: $5$M2jPM/Mg3xDExPse$IiL5AdM9DZb8Ot3AWxaHO51.kswj.4YGWRZ2pfoAR8D
+    comment: "New Ftp User"
+
+- name: Add Deny User in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers jdalo"
+  register: sshd_config
+
+- name: REstart service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Create FTP Directory
+  file:
+    path: /home/jdalo/ftp
+    state: directory
+    owner: jdalo
+    group: jdalo
+    mode: '550'
+
+- name: copy vsftpd.conf
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_config
+
+- name: restart 
+  service:
+    name: vsftpd
+    state: restarted
+  when: vsftpd_config.changed

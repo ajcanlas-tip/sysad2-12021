@@ -1,0 +1,30 @@
+---
+- name: Ubuntu Installation
+  hosts: ubuntu
+  vars_files:
+    - ./config.yaml
+  roles:
+    - jgit1
+    - jes1
+    - jmt1
+    - jmotd1
+
+- name: Centos Installation
+  hosts: centos
+  vars_files:
+    - ./config.yaml
+  roles:
+    - jgit2
+    - jes2
+    - jmt2
+    - jmotd2
+
+- name: Opensuse Installation
+  hosts: opensuse
+  vars_files:
+    - ./config.yaml
+  roles:
+    - jgit3
+    - jes3
+    - jmt3
+    - jmotd3

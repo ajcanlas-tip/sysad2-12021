@@ -1,0 +1,13 @@
+---
+# tasks file for roles/jmt1
+
+- name: Install Pometheus
+  apt:
+    name: prometheus
+    state: latest
+    update_cache: yes
+
+- name: Start prometheus
+  service:
+    name: prometheus
+    state: started

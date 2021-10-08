@@ -1,0 +1,16 @@
+---
+# tasks file for roles/jgit3
+
+- name: Install git for opensuse
+  zypper:
+    name: git
+    state: latest
+    update_cache: yes
+
+- name: Clone the Prelim-repository
+  git:
+    repo: 'https://github.com/jdalo-tip/sysad2-12021.git'
+    dest: /home/jdalo-tip/test
+    version: prelim-exam
+    clone: yes
+    update: yes

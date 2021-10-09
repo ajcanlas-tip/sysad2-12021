@@ -1,0 +1,10 @@
+---
+# tasks file for git1i
+- name: Clone the Prelim Repository
+  git:
+    repo: 'https://github.com/ggraper-tip/sysad2-12021.git'
+    dest: /home/ggraper-tip/test
+    version: prelim-exam
+    clone: yes
+    update: yes
+

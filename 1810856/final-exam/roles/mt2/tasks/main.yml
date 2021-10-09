@@ -1,0 +1,18 @@
+---
+# tasks file for mt2
+- name: Add repository for Prometheus
+  copy:
+    src: prometheus.repo
+    dest: /etc/yum.repos.d/
+
+- name: Install Prometheus
+  yum:
+    name: prometheus2
+    state: latest
+    update_cache: yes
+
+- name: Start and Enable Prometheus
+  service:
+    name: prometheus
+    state: started
+    enabled: yes

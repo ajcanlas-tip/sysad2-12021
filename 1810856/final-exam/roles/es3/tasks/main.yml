@@ -1,0 +1,58 @@
+---
+# tasks file for es3
+- name: Install vsftpd
+  zypper:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: Stop Uncomplicated Firewall
+  service:
+    name: firewalld
+    state: stopped
+
+- name: Create ftp user
+  user:
+    name: giosus
+    password: $5$n6M48naLkgeApXQe$17spstbnD2me3WWDRyztdUDIpPrYQ4XuQtDDW3Lurl
+    comment: "New Ftp User"
+
+- name: Create group for user
+  group:
+    name: giosus
+
+- name: Add denyuser in /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers giosus"
+  register: sshd_config
+
+- name: Restart sshd service
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: Create ftp directory
+  file:
+    path: /home/giosus/ftp
+    state: directory
+    owner: giosus
+    group: giosus
+
+- name: Copy vsftpd.conf
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_config
+
+- name: Delete secure root in vsftpd.conf
+  lineinfile:
+    path: /etc/vsftpd.conf
+    regexp: 'secure_chroot'
+    line: ' '
+
+- name: Restart vsftpd
+  service:
+    name: vsftpd
+    state: restarted

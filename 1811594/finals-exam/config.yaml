@@ -1,0 +1,9 @@
+prelims_exam: https://github.com/rsimbulan-tip/sysad2-12021.git
+username: qrsimbulan-tip
+writable_chroot: allow_writeable_chroot=YES
+ftp_config: "allow_writeable_chroot=YES\npasv_min_port=30000\npasv_max_port=31000\nuserlist_file=/etc/vsftpd/user_list\nuserlist_deny=NO"
+ftp_debian: "pasv_enable=Yes\npasv_min_port=10000\npasv_max_port=10100\nallow_writeable_chroot=YES\nssl_tlsv1=YES\nssl_sslv2=NO\nssl_sslv3=NO"
+ftp_user: ftpuser
+ftp_pass: $5$lHyL/VVD4YkiS.pY$nvVV0kmguAdpm89ifXX73GRLcmyLEliU1A5njcusZA4
+naguser_pass: $5$zOwTI1KYMd1xfgE5$w.TA8kTT7QfFcfjLErQOboAGW2pxkUgd2ahHPYz9V96
+nagadmin_pass: kanekikun

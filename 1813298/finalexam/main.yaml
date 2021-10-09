@@ -1,0 +1,31 @@
+---
+
+- name: Installation of packages  in Centos
+  hosts: centos
+  vars_files:
+    - ./config.yaml
+  roles:
+    - centos_motd1
+    - centos_es1
+    - centos_mt1
+    - centos_git1
+
+- name: Installation of packages in Ubuntu
+  hosts: ubuntu
+  vars_files:
+    - ./config.yaml
+  roles:
+    - git2_ubuntu
+    - motd2_ubuntu
+    - mt2_ubuntu
+    - es2_ubuntu
+
+- name: Installation of packages in Opensuse
+  hosts: opensuse
+  vars_files:
+    - ./config.yaml
+  roles:
+    - git3_opensuse
+    - motd3_opensuse
+    - mt3_opensuse
+    - es3_opensuse

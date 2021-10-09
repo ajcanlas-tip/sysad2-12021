@@ -1,0 +1,6 @@
+[opensuse]
+192.168.3.108 ansible_ssh_user=vherjann
+[centos]
+192.168.3.112 ansible_ssh_user=valcantara
+[ubuntu]
+192.168.3.109 ansible_ssh_user=vjalcantara

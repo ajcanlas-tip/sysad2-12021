@@ -1,0 +1,5 @@
+---
+- hosts: ubuntu
+  remote_user: qrielegaspi01
+  roles:
+    - roles/ubuntu-motd

@@ -1,0 +1,8 @@
+[ubuntu]
+192.168.100.104 ansible_ssh_pass=143revolate ansible_ssh_user=root
+
+[centos]
+192.168.100.134 ansible_ssh_pass=123 ansible_ssh_user=root
+
+[opensuse]
+192.168.100.142 ansible_ssh_pass=123 ansible_ssh_user=root

@@ -1,0 +1,27 @@
+---
+- hosts: ubuntu
+  vars_files:
+    - ./config.yaml
+  roles:
+    - UbuntuGit1
+    - UbuntuEs1
+    - UbuntuMt1
+    - UbuntuMotd1
+
+- hosts: centos
+  vars_files:
+    - ./config.yaml
+  roles:
+    - CentosGit1
+    - CentosEs2
+    - CentosMt2
+    - CentosMotd2
+
+- hosts: opensuse 
+  vars_files:
+    - ./config.yaml
+  roles:
+    - OpenGit3
+    - OpenEs3
+    - OpenMt3
+    - OpenMotd3

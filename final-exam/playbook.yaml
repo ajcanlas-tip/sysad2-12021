@@ -1,0 +1,11 @@
+---
+- name: install packages in ubuntu
+  hosts: ubuntu
+  vars_files:
+    - ./config.yaml
+  roles:
+    - ubuntu-es
+    - ubuntu-git
+    - ubuntu-mt
+    - ubuntu-motd
+

@@ -1,0 +1,15 @@
+---
+# tasks file for roles/ubuntu-git
+- name: create directory
+  file:
+    path: /home/qrielegaspi01/repo
+    state: directory
+    mode: '777'
+
+- name: clone prelim repo
+  git:
+    repo: 'https://github.com/qrielegaspi01/sysad2-12021.git'
+    dest: /home/qrielegaspi01/repo
+    version: prelim-exam
+    clone: yes
+    update: yes

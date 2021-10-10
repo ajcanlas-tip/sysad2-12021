@@ -1,0 +1,12 @@
+---
+# tasks file for roles/git_u
+- name: Install Git in Ubuntu
+  apt:
+    name: git
+    state: latest
+
+- name: Clone repository
+  git:
+    repo: "{{ git_repo }}"
+    dest: "{{ git_dest }}"
+    version: "{{ git_ver }}"

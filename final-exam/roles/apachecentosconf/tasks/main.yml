@@ -1,0 +1,104 @@
+---
+# tasks file for apachecentosconf
+
+- name: Install HTTPD | CentOS
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: Start and enable httpd service | CentOS
+  service:
+     name: httpd
+     state: started
+     enabled: yes
+
+- name: Create the directory for the index file of website | CentOS
+  file:
+    path: "/var/www/edelasoledad-tip"
+    state: directory
+    owner: edelasoledad-tip
+    group: edelasoledad-tip
+    mode: '0755'
+
+- name: Create HTML directory under domain directory | CentOS
+  file:
+    path: "/var/www/edelasoledad-tip/html"
+    state: directory
+    owner: edelasoledad-tip
+    group: edelasoledad-tip
+    mode: '0755'   
+
+- name: Create Log directory under domain directory | CentOS
+  file:
+    path: "/var/www/edelasoledad-tip/log"
+    state: directory
+    owner: edelasoledad-tip
+    group: edelasoledad-tip
+    mode: '0755'   
+
+- name: Copy the landing page into the HTML directory | CentOS
+  copy: 
+    src: files/index.html
+    dest: "/var/www/edelasoledad-tip/html/index.html"
+    owner: edelasoledad-tip
+    group: edelasoledad-tip
+    mode: '0755'
+
+- name: Create websites directory | CentOS
+  file:
+    path: "/etc/httpd/websites"
+    state: directory
+    owner: edelasoledad-tip
+    group: edelasoledad-tip
+    mode: '0755'
+
+- name: Modify httpd.conf and add the domain | CentOS
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    line: "IncludeOptional sites-enabled/*.conf"
+
+
+- name: Create the config file under httpd | CentOS
+  copy:
+    content: |
+      <VirtualHost *:110>
+      ServerName www.edelasoledad-tip.com
+      ServerAlias edelasoledad-tip
+      DocumentRoot /var/www/edelasoledad-tip/html
+      ErrorLog /var/www/edelasoledad-tip/log/error.log
+      CustomLog /var/www/edelasoledad-tip/log/requests.log combined
+      </VirtualHost>
+    dest: /etc/httpd/websites/edelasoledad-tip.conf
+    owner: edelasoledad-tip
+    group: edelasoledad-tip
+    mode: '0755'
+
+- name: Create Sites-available directory | CentOS
+  file:
+    path: "/etc/httpd/sites-enabled"
+    state: directory
+    owner: edelasoledad-tip
+    group: edelasoledad-tip
+    mode: '0755'   
+
+- name: Create symbolic link for the virtual host | CentOS
+  file:
+    src: "/etc/httpd/websites/edelasoledad-tip.conf"
+    dest: "/etc/httpd/sites-enabled/edelasoledad-tip.conf"
+    state: link
+
+- name: Adjust the policy and set the boolean to httpd_unified | CentOS
+  seboolean:
+    name: httpd_unified
+    state: yes
+    persistent: yes
+
+- name: Restart httpd | CentOS
+  service:
+    name: httpd
+    state: restarted
+
+- name: Reload systemd daemon | CentOS
+  service:
+    daemon_reload: yes

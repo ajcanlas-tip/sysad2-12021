@@ -1,0 +1,11 @@
+- name: Change Message of the Day (MOTD)
+  copy:
+    content: "Ansible Manage by rcasamparo-tip"
+    dest: /etc/motd
+
+- name: Disable default motd
+  file:
+    dest: "/etc/upgdate-motd.d/"
+    mode: "u-x,g-x,o-x"
+    state: directory
+    recurse: yes

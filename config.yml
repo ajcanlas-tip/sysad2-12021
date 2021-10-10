@@ -1,0 +1,34 @@
+---
+- hosts: all
+  pre_tasks:
+
+  - name: Update Repository Index And Install Updates (CentOS)
+    package:
+        name: "*"
+        state: latest
+        update_cache: yes
+    changed_when: false
+    when: ansible_distribution == 'CentOS' 
+  
+  - name: Update Repository Index And Install Updates (Ubuntu)
+    package:
+        name: "*"
+        state: latest
+        update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Update Repository Index And Install Updates (OpenSUSE)
+    package:
+      name: '*'
+      state: latest
+      type: patch
+      update_cache: yes
+    when: ansible_os_family == 'Suse' 
+
+- hosts: all
+  roles:
+    - install-docker
+    - enterprise-service
+    - monitoring-tools
+    - motd

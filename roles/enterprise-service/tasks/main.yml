@@ -1,0 +1,19 @@
+- name: Start httpd container
+  docker_container:
+    name: "httpd"
+    image: "httpd:latest"
+    ports:
+    - "0.0.0.0:8080:80/tcp"
+    state: started
+    
+- name: Copy httpd html file to remote
+  template:
+    src: index.html
+    dest: /tmp/index.html
+  changed_when: false
+
+- name: Copy httpd html file to container
+  shell: "docker cp /tmp/index.html httpd:/usr/local/apache2/htdocs/index.html"
+
+- name: Restart httpd container
+  shell: "docker restart httpd"

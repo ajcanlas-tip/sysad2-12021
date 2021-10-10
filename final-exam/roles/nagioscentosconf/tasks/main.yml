@@ -1,0 +1,141 @@
+---
+# tasks file for nagioscentosconf
+
+- name: Install Nagios dependencies | CentOS
+  yum:
+    name:
+      - gcc
+      - glibc
+      - glibc-common
+      - make
+      - gettext
+      - automake
+      - autoconf
+      - perl
+      - httpd
+      - php
+      - wget
+      - openssl-devel
+      - net-snmp
+      - net-snmp-utils
+      - gd
+      - gd-devel
+      - python3
+      - python3-pip
+
+- name: Install passlib using pip | CentOS
+  pip:
+    name: passlib
+    state: present
+
+- name: Download and uncompress nagios into /tmp/ | CentOS
+  unarchive:
+    src: https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.5.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Create Make file within /tmp | CentOS
+  shell: cd /tmp/nagioscore-nagios-4.4.5; sh /tmp/nagioscore-nagios-4.4.5/configure
+
+- name: Compile all files for nagios  | CentOS
+  make:
+    chdir: /tmp/nagioscore-nagios-4.4.5/
+    target: all
+
+- name: Create user and group for nagios | CentOS
+  make:
+    chdir: /tmp/nagioscore-nagios-4.4.5/
+    target: install-groups-users
+
+- name: Append nagios into apache | CentOS
+  user:
+    name: apache
+    groups: nagios
+    append: yes
+
+- name: Install binaries within nagios core | CentOS
+  make:
+    chdir: /tmp/nagioscore-nagios-4.4.5/
+    target: install
+
+- name: Initialize the daemon for nagios | CentOS
+  make:
+    chdir: /tmp/nagioscore-nagios-4.4.5/
+    target: install-daemoninit
+
+- name: Enable HTTPD service | CentOS
+  service:
+    name: httpd
+    enabled: yes
+
+- name: Install command mode | CentOS
+  make:
+    chdir: /tmp/nagioscore-nagios-4.4.5/
+    target: install-commandmode
+
+- name: Install configuration files | CentOS
+  make:
+    chdir: /tmp/nagioscore-nagios-4.4.5/
+    target: install-config
+
+- name: Install Apache config files | CentOS
+  make:
+    chdir: /tmp/nagioscore-nagios-4.4.5/
+    target: install-webconf
+  
+- name: Create a user with password within nagios | CentOS
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: admin12345
+    password: admin12345
+
+- name: Create nagios service config | CentOS
+  copy:
+    content: |
+      [Unit]
+      Description=Nagios
+      BindTo=network.target
+      [Install]
+      WantedBy=multi-user.target
+      [Service]
+      User=nagios
+      Group=nagios
+      Type=simple
+      ExecStart=/usr/local/nagios/bin/nagios /usr/local/nagios/etc/nagios.cfg
+    dest: "/etc/systemd/system/nagios.service"
+
+- name: Start and enable Apache | CentOS
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+
+- name: Start and enable Nagios | CentOS
+  service:
+    name: nagios
+    state: started
+    enabled: yes
+
+- name: Restart Nagios | CentOS
+  service:
+    name: nagios
+    state: restarted
+
+- name: Download and unarchive Nagios Plugins | CentOS
+  unarchive:
+    src: https://github.com/nagios-plugins/nagios-plugins/archive/release-2.2.1.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Create Make file for Nagios Plugins | CentOS
+  shell: cd /tmp/nagios-plugins-release-2.2.1; sh /tmp/nagios-plugins-release-2.2.1/tools/setup; sh /tmp/nagios-plugins-release-2.2.1/configure
+
+- name: Compile the Nagios Plugin | CentOS
+  make:
+    chdir: /tmp/nagios-plugins-release-2.2.1/
+    target: install
+
+- name: Restart Nagios | CentOS
+  service:
+    name: nagios
+    state: restarted

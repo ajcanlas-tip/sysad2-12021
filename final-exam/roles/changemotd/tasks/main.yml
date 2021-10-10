@@ -1,0 +1,14 @@
+---
+# tasks file for changemotd
+
+- name: Change MOTD (Message of the day)
+  copy:
+    content: "Ansible Managed by edelasoledad-tip \n"
+    dest: /etc/motd
+
+- name: Disable default motd
+  file:
+    dest: "/etc/update-motd.d/"
+    mode: "u-x,g-x,o-x"
+    state: directory
+    recurse: yes

@@ -1,0 +1,19 @@
+---
+  - name: 4.2 Install and configure one Monitoring tool | Install and Configure Nagios
+    hosts: all
+
+    tasks:
+    - name: Install and Configure Nagios | Ubuntu
+      include_role:
+        name: nagiosubuntuconf
+      when: ansible_facts['os_family'] == 'Debian'
+
+    - name: Install and Configure Nagios | CentOS
+      include_role:
+        name: nagioscentosconf
+      when: ansible_facts['os_family'] == 'RedHat'
+
+    - name: Install and Configure Nagios | OpenSUSE
+      include_role:
+        name: nagiosoconf
+      when: ansible_facts['os_family'] == 'Suse'

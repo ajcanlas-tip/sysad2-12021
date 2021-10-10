@@ -1,0 +1,51 @@
+---
+# tasks file for apacheopensuseconf
+
+- name: Install httpd | OpenSUSE
+  zypper:
+    name: httpd
+    state: latest
+  #shell: sudo zypper --non-interactive install httpd
+
+
+- name: start and enable apache2 | OpenSUSE
+  service: 
+    name: apache2
+    state: started
+    enabled: yes
+
+- name: create the config file under apache  | OpenSUSE
+  copy:
+    content: |
+      <VirtualHost *:110>
+      ServerAdmin webmaster@edelasoledad-tip.com
+      DocumentRoot /srv/www/htdocs/edelasoledad-tip
+      ServerName www.edelasoledad-tip.com
+      ErrorLog /var/log/apache2/edelasoledad-tip.com-error_log
+      CustomLog /var/log/apache2/edelasoledad-tip.com-access_log common
+      </VirtualHost>
+    dest: /etc/apache2/conf.d/edelasoledad-tip.conf
+    owner: edelasoledad-tip
+    group: users
+    mode: '0755'
+
+- name: Create the website directory within /srv/www/htdocs/ | OpenSUSE
+  file:
+    path: /srv/www/htdocs/edelasoledad-tip
+    state: directory
+    owner: edelasoledad-tip
+    group: users
+    mode: '0755'
+
+- name: Create the landing page for the edelasoledad-tip.com | OpenSUSE
+  copy:
+    src: files/index.html
+    dest: /srv/www/htdocs/edelasoledad-tip/index.html
+    owner: edelasoledad-tip
+    group: users
+    mode: '0755'
+
+- name: Add IP and HostName in /etc/hosts | OpenSUSE
+  lineinfile:
+    path: /etc/hosts
+    line: 192.168.56.110 www.edelasoledad-tip.com

@@ -1,0 +1,29 @@
+---
+# tasks file for gitclone
+
+- name: Install git package | Ubuntu
+  apt:
+    name: git
+    state: present
+    update_cache: yes
+  when: ansible_facts['os_family'] == 'Debian'
+  
+- name: Install git package | CentOS
+  yum:
+    name: git
+    state: present
+    update_cache: yes
+  when: ansible_facts['os_family'] == 'RedHat'
+  
+- name: Install git package | OpenSuseI
+  zypper:
+    name: git
+    state: present
+    update_cache: yes
+  when: ansible_facts['os_family'] == 'Suse'
+  
+- name: Clone a repository
+  git:
+    repo: 'https://github.com/edelasoledad-tip/sysad2-12021.git'
+    dest: /home/edelasoledad-tip/sysad2-12021
+    version: prelim-exam

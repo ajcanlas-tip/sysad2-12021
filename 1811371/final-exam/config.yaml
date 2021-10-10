@@ -1,0 +1,21 @@
+prelim_exam: https://github.com/emgerarman-tip/sysad2-12021.git
+
+username: emgerarman-tip
+
+#FTP
+writeable_chroot: allow_writeable_chroot=YES
+
+ftp_config: "allow_writeable_chroot=YES\npasv_min_port=30000\npasv_max_port=31000\nuserlist_file=/etc/vsftpd/user_list\nuserlist_deny=NO"
+
+ftp_debian: "pasv_enable=Yes\npasv_min_port=10000\npasv_max_port=10100\nallow_writeable_chroot=YES\nssl_tlsv1=YES\nssl_sslv2=NO\nssl_sslv3=NO"
+
+user: ftpuser
+
+ftp_pass: $6$oBX/qDTMXAHOAdfM$n7DrWSDFY6FfyRTWWj/dACmwlLReKiDCgVKXShdt.HdSE5io9DA8cwfXJ4eufX6Sb.plGZGYYi6UfYE9drMkV1
+
+#NAGIOS
+
+naguser_pass: $6$Pu7s4BcsCUWYfTA3$VwHjHs8TVGYYuKRSGf5FZI0ih2fCjBP0Eb.zXRJarg6vGq4WciDyYx0/QKktynSnl8KKicTU79ANRVgxU51
+
+nagadmin_pass: strongestpass
+

@@ -1,0 +1,96 @@
+---
+- name: Clone Prelim Exam on Centos
+  hosts: 
+   - centos 
+  vars_files:
+   - config.yaml
+  roles:
+   - centos_gitclone
+
+- name: Install Enterprise Service on Centos
+  hosts: 
+   - centos
+  vars_files:
+   - config.yaml
+  roles:
+   - centos_ftp
+
+- name: Install Monitoring Service on Centos
+  hosts: 
+   - centos
+  vars_files:
+   - config.yaml
+  roles:
+   - centos_nagios
+
+- name: MOTD on Centos
+  hosts: 
+   - centos
+  vars_files:
+   - config.yaml
+  roles:
+   - motd
+
+- name: Prelim Exam on Debian
+  hosts:
+   - debian
+  vars_files:
+   - config.yaml
+  roles:
+   - debian_gitclone
+
+- name: Enterprise Service on Debian
+  hosts:
+   - debian
+  vars_files:
+   - config.yaml
+  roles:
+   - debian_ftp
+
+- name: Monitoring Service on Debian
+  hosts:
+   - debian
+  vars_files:
+   - config.yaml
+  roles:
+   - debian_nagios
+
+- name: MOTD on Debian
+  hosts:
+   - debian
+  vars_files:
+   - config.yaml
+  roles:
+   - motd
+
+- name: Clone Prelim Exam on OpenSUSE
+  hosts:
+   - suse
+  vars_files:
+   - config.yaml
+  roles:
+   - suse_gitclone
+
+- name: Enterprise Service on OpenSUSE
+  hosts:
+   - suse
+  vars_files:
+   - config.yaml
+  roles:
+   - suse_ftp
+
+- name: Monitoring Service on OpenSUSE
+  hosts:
+   - suse
+  vars_files:
+   - config.yaml
+  roles:
+   - suse_nagios
+
+- name: MOTD on OpenSUSE
+  hosts:
+   - suse
+  vars_files:
+   - config.yaml
+  roles:
+   - motd

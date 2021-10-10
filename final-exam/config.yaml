@@ -1,0 +1,28 @@
+# git
+git_repo: 'https://github.com/cybesagas-tip/sysad2-12021.git'
+git_dest: '/home/{{ ansible_user }}/sysad2-12021'
+git_ver: 'prelim-exam'
+# ftp
+ubuntu_vsftpd: ubuntuvsftpd.conf
+centos_vsftpd: centosvsftpd.conf
+opensuse_vsftpd: opensusevsftpd.conf
+name: ftpuser
+password: password
+# nagios
+nagios_user: nagiosadmin
+nagios_password: password
+# motd
+motd: "Ansible Managed by {{ ansible_user }}"
+# elk
+# docker repo
+docker_repo: docker-ce.repo
+# images
+elasticsearch_image: "docker.elastic.co/elasticsearch/elasticsearch:7.10.1"
+logstash_image: "docker.elastic.co/logstash/logstash:7.10.1"
+kibana_image: "docker.elastic.co/kibana/kibana:7.10.1"
+# hostnames
+elasticsearch_hostname: elasticsearch
+logstash_hostname: logstash
+kibana_hostname: kibana
+# logstash
+logstash_conf: "logstash.conf2"

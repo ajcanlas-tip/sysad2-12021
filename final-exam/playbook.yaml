@@ -1,0 +1,168 @@
+---
+  - name: Clone prelim exam repository
+    tasks:
+    - name: Include variables from config.yaml
+      include_vars:
+        file: config.yaml
+
+    - name: Install Git and Clone repository in Ubuntu
+      hosts: ubuntu
+      include_role:
+        name: git_u
+
+    - name: Install Git and Clone repository in Centos
+      hosts: centos
+      include_role:
+        name: git_c
+
+    - name: Install Git and Clone repository in OpenSuse
+      hosts: opensuse
+      include_role:
+        name: git_o
+
+  - name: Installing VSFTPD as enterprise service
+    tasks:
+    - name: Include variables from config.yaml
+      include_vars:
+        file: config.yaml
+
+    - name: Install and Configure VSFTPD on Ubuntu
+      hosts: ubuntu
+      include_role:
+        name: configvsftpdubuntu
+
+    - name: Install and Configure VSFTPD on CentOS
+      hosts: centos
+      include_role:
+        name: configvsftpcentos
+
+    - name: Install and Configure VSFTPD on OpenSuse
+      hosts: opensuse
+      include_role:
+        name: configvsftpdopensuse
+
+  - name:  Install Containerized ELK (Docker) for monitoring tool
+    tasks:
+    - name: Include variables from config.yaml
+      include_vars:
+        file: config.yaml
+
+    - name: Install Docker dependencies in Ubuntu
+      hosts: ubuntu
+      include_role:
+        name: installinubuntu
+      vars:
+        url: ""
+        repo: ""
+        filename: ""
+        package:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg-agent
+          - software-properties-common
+          - python3
+          - python3-pip
+        service: "" 
+    
+    - name: Install python in Ubuntu
+      include_role:
+        name: installinubuntu
+      vars:
+        url: ""
+        repo: ""
+        filename: ""
+        package:
+          - python
+          - python-pip
+        service: ""
+
+    - name: Install Docker in Ubuntu
+      hosts: ubuntu
+      include_role:
+        name: installinubuntu
+      vars:
+        url: "https://download.docker.com/linux/ubuntu/gpg"
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+        filename: "docker-ce"
+        package:
+          - python-docker
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        service: docker
+
+    - name: Install Docker in Centos
+      include_role:
+        name: installincentos
+      vars:
+        src: "{{ docker_repo }}"
+        dest: "/etc/yum.repos.d/docker-ce.repo"
+        package:
+          - docker-ce
+          - python3
+          - python3-pip
+        service: docker
+   
+    - name: Install Docker in OpenSuse
+      hosts: opensuse
+      include_role:
+        name: installinopensuse
+      vars:
+        package:
+          - docker
+          - python3
+          - python3-pip
+
+    - name: Stop firewall in Ubuntu
+      hosts: ubuntu
+      service:
+        name: ufw
+        state: stopped
+        enabled: no 
+
+    - name: Stop firewall in Centos
+      hosts: centos
+      service:
+        name: firewalld
+        state: stopped
+        enabled: no
+
+    - name: Stop firewall in OpenSuse
+      hosts: opensuse
+      service:
+        name: firewalld
+        state: stopped
+        enabled: no
+
+    - name: Pip install docker Python modules
+      pip:
+       name: docker      
+
+    - name: Pull ELK Images
+      include_role:
+        name: pullimage
+      vars:
+        image: "{{ item }}"
+      loop:
+        - "{{ elasticsearch_image }}"
+        - "{{ logstash_image }}"
+        - "{{ kibana_image }}"
+
+    - name: Setup and configure Elastic Stack
+      include_role:
+        name: elk_setup
+
+  - name: Change MOTD 
+    tasks:
+    - name: Include variables from config.yaml
+      include_vars:
+        file: config.yaml
+
+    - name: Change message
+      include_role:
+        name: changemotd
+
+
+
+

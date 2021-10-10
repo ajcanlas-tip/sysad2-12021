@@ -1,0 +1,96 @@
+---
+- name: Install Docker dependencies (Ubuntu)
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+      - software-properties-common
+      - python3
+      - python3-pip
+    state: latest
+  when: ansible_distribution == "Ubuntu"
+
+- name: Get PGP Key (Ubuntu)
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  when: ansible_distribution == "Ubuntu"
+- name: Add Docker repository into sources list (Ubuntu)
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Docker Dependency (CentOS)
+  yum:
+    name: 
+      - lvm2
+      - yum-utils
+      - python3
+      - python3-pip
+      - device-mapper-persistent-data
+    state: latest
+  when: ansible_distribution == "CentOS"
+
+- name: Add Docker Repository (CentOS)
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+  when: ansible_distribution == "CentOS"
+
+- name: Install Docker (CentOS)
+  package:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: latest
+    update_cache: yes
+  when: ansible_distribution == 'CentOS'
+
+- name: Install Docker (Ubuntu)
+  package:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: latest
+    update_cache: yes
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Docker (OpenSUSE)
+  zypper:
+    name: docker
+    state: latest
+    update_cache: yes
+  when: ansible_os_family == 'Suse' 
+
+- name: Install Docker Modules using pip 
+  pip:
+    name: docker
+
+- name: Run daemon-reload for Docker
+  systemd: daemon_reload=yes
+
+- name: Enable Docker service
+  systemd:
+    name: docker
+    enabled: yes
+    masked: no
+
+- name: ensure docker is running
+  systemd: state=started name=docker
+
+- name: Check Dockergroup if present
+  group:
+    name: docker
+    state: present
+
+- name: Add User to Dockergroup
+  user:
+    name: rcasamparo-tip
+    groups: docker
+    append: yes

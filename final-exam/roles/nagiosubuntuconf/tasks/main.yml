@@ -1,0 +1,131 @@
+---
+# tasks file for nagiosubuntuconf
+
+- name: Install dependencies | Ubuntu
+  apt:
+    name:
+      - autoconf
+      - gcc
+      - libc6
+      - make
+      - wget
+      - libssl-dev
+      - gawk
+      - dc
+      - build-essential
+      - snmp
+      - libnet-snmp-perl
+      - gettext
+      - unzip
+      - apache2
+      - php
+      - libapache2-mod-php7.4
+      - libgd-dev
+      - python3
+      - python3-pip
+    state: latest
+
+- name: Pip install passlib | Ubuntu
+  pip:
+    name: passlib
+    state: present
+
+- name: Download and uncompress Nagios files from web | Ubuntu
+  unarchive:
+    src: https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.5.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Create Make file in /tmp/nagioscore | Ubuntu
+  shell: cd /tmp/nagioscore-nagios-4.4.5; sh /tmp/nagioscore-nagios-4.4.5/configure --with-httpd-conf=/etc/apache2/sites-enabled
+
+- name: Compile files together | Ubuntu
+  make:
+    chdir: /tmp/nagioscore-nagios-4.4.5/
+    target: all
+
+- name: Create the user and group for nagios | Ubuntu
+  make:
+    chdir: /tmp/nagioscore-nagios-4.4.5
+    target: install-groups-users
+
+- name: Add www-data(Apache)  user to nagios group | Ubuntu
+  user:
+    name: www-data
+    groups: nagios
+    append: yes
+
+- name: Install binaries | Ubuntu
+  make:
+    chdir: /tmp/nagioscore-nagios-4.4.5
+    target: install
+
+- name: Install service/daemon | Ubuntu
+  make:
+    chdir: /tmp/nagioscore-nagios-4.4.5
+    target: install-daemoninit
+
+- name: Install command mode | Ubuntu
+  make:
+    chdir: /tmp/nagioscore-nagios-4.4.5
+    target: install-commandmode
+
+- name: Install configuration files | Ubuntu
+  make:
+    chdir: /tmp/nagioscore-nagios-4.4.5
+    target: install-config
+
+- name: Install Apache config files | Ubuntu
+  make:
+    chdir: /tmp/nagioscore-nagios-4.4.5
+    target: install-webconf
+
+- name: Enable the rewrite module using apache | Ubuntu
+  apache2_module:
+    state: present
+    name: rewrite
+
+- name: Enable the cgi module using apache | Ubuntu
+  apache2_module:
+    state: present
+    name: cgi
+
+- name: Create admin username and password for authentication | Ubuntu
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: admin12345
+    password: admin12345
+
+- name: Restart apache2 | Ubuntu
+  service:
+    name: apache2
+    state: restarted
+
+- name: Start and enable nagios | Ubuntu
+  service:
+    name: nagios
+    state: started
+    enabled: yes
+
+- name: Download and unarchive Nagios Plugins | Ubuntu
+  unarchive:
+    src: https://github.com/nagios-plugins/nagios-plugins/archive/release-2.2.1.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Create Make file | Ubuntu
+  shell: cd /tmp/nagios-plugins-release-2.2.1; sh /tmp/nagios-plugins-release-2.2.1/tools/setup; sh /tmp/nagios-plugins-release-2.2.1/configure
+
+- name: Compile from source | Ubuntu
+  make:
+    chdir: /tmp/nagios-plugins-release-2.2.1/
+
+- name: Compile from source | Ubuntu
+  make:
+    chdir: /tmp/nagios-plugins-release-2.2.1/
+    target: install
+
+- name: Restart Nagios | Ubuntu
+  service:
+    name: nagios
+    state: restarted

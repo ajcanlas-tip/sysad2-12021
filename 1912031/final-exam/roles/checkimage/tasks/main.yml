@@ -1,0 +1,24 @@
+---
+# tasks file for checkimage
+- name: Check docker is running
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Get a docker image
+  docker_image:
+    name: "{{ image }}"
+    source: pull
+  register: docker_img
+
+- name: Clear IP Tables
+  shell: "iptables -F; iptables -X"
+  register: iptables
+  when: docker_img.changed
+
+- name: Restart Docker
+  service:
+    name: docker
+    state: restarted
+  when: iptables.changed

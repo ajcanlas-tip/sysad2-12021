@@ -1,0 +1,15 @@
+---
+# File for changemotd
+# To take effect, a necessary reboot is needed.
+- name: Changing message of the day
+  copy:
+    content: "{{ motd }} \n"
+    dest: /etc/motd
+
+- name: Disable default motd
+  file:
+    dest: "/etc/update-motd.d/"
+    mode: 1666
+    state: directory
+    recurse: yes
+

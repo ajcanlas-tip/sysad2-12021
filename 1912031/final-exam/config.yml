@@ -1,0 +1,33 @@
+# Git Repository
+git_repo: "https://github.com/isaacsapelino-tip/sysad2-12021.git"
+git_dest: "/home/{{ ansible_user }}/sysad2-12021"
+git_ver: "prelim-exam"
+
+# MOTD Text
+motd: "Ansible Managed by {{ ansible_user }}"
+
+# FTP Vars
+vsftpd_ubuntu: vsftpd-ubuntu.conf
+vsftpd_centos: vsftpd-centos.conf
+vsftpd_opensuse: vsftpd-opensuse.conf
+ftp_user: ftpuser
+ftp_password: ftppass
+ftp_comment: "FTP User"
+
+# ELK Variables
+docker_repo: docker-ce.repo
+
+# Docker Images
+elasticsearch_img: "docker.elastic.co/elasticsearch/elasticsearch:7.10.1"
+logstash_img: "docker.elastic.co/logstash/logstash:7.10.1"
+kibana_img: "docker.elastic.co/kibana/kibana:7.10.1"
+
+# Hostnames
+elasticsearch_hostname: elasticsearch
+logstash_hostname: logstash
+kibana_hostname: kibana
+
+# Logstash Conf
+logstash_conf: "logstash.conf2"
+
+

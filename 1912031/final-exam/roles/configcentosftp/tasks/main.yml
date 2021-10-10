@@ -1,0 +1,44 @@
+---
+# tasks file for configcentosftp
+- name: Stop firewalld
+  service:
+    name: firewalld
+    state: stopped
+
+- name: Start and enable vsftpd
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: Create FTP User
+  user:
+    name: "{{ ftp_user }}"
+    password: "{{ ftp_password | password_hash('sha512') }}"
+    comment: "{{ ftp_comment }}"
+
+- name: Create FTP directory
+  file:
+    path: "/home/{{ ftp_user }}/ftp"
+    state: directory
+    owner: "{{ ftp_user }}"
+    group: "{{ ftp_user }}"
+    mode: '0755'
+
+- name: Add FTP user to user_list
+  lineinfile:
+    path: /etc/vsftpd/user_list
+    line: "{{ ftp_user }}"
+  register: user_list
+
+- name: Copy vsftpd.conf to /etc/vsftpd/vsftpd.conf
+  copy:
+    src: "{{ vsftpd_centos }}"
+    dest: /etc/vsftpd/vsftpd.conf
+  register: vsftpd_conf
+
+- name: Restart VSFTPD
+  service:
+    name: vsftpd
+    state: restarted
+  when: user_list.changed or vsftpd_conf.changed

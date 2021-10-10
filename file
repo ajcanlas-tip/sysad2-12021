@@ -1,0 +1,55 @@
+# final-exam
+---
+  - name: 4.1 Clone prelim exam repository | Install Git and clone repository
+    hosts: all
+    
+    tasks:
+    - name: Clone prelim-exam repository
+      include_role:
+        name: gitclone
+
+  - name: 4.2 Install and configure one interprice service | Install and Configure HTTPD (Apache2)
+    hosts: all
+    
+    tasks:
+    - name: Install and Configure Apache2 (httpd) | Ubuntu
+      include_role:
+        name: apacheubuntuconf
+      when: ansible_facts['os_family'] == 'Debian'
+ 
+    - name: Install and Configure Apache2 (httpd) | CentOS
+      include_role:
+        name: apachecentosconf
+      when: ansible_facts['os_family'] == 'RedHat'
+ 
+    - name: Install and Configure Apache2 (httpd) | OpenSUSE
+      include_role:
+        name: apacheopensuseconf
+      when: ansible_facts['os_family'] == 'Suse'
+
+  - name: 4.3 Install and configure one Monitoring tool | Install and Configure Nagios
+    hosts: all
+    
+    tasks:
+    - name: Install and Configure Nagios | Ubuntu
+      include_role:
+        name: nagiosubuntuconf
+      when: ansible_facts['os_family'] == 'Debian'
+ 
+    - name: Install and Configure Nagios | CentOS
+      include_role:
+        name: nagioscentosconf
+      when: ansible_facts['os_family'] == 'RedHat'
+ 
+    - name: Install and Configure Nagios | OpenSUSE
+      include_role:
+        name: nagiosopensuseconf
+      when: ansible_facts['os_family'] == 'Suse'
+  
+  - name: 4.4 Change MOTD | Change Message of the day
+    hosts: all
+
+    tasks:
+    - name: Change MOTD
+      include_role:
+        name: changemotd

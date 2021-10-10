@@ -1,0 +1,47 @@
+---
+# tasks file for apacheubuntuconf
+
+- name: Install apache2 using APT
+  apt:
+    name: apache2
+    state: present
+    update_cache: yes
+
+- name: Create /var/www/edelasoledad-tip directory for config
+  file:
+    path: /var/www/edelasoledad-tip
+    state: directory
+    owner: edelasoledad-tip
+    group: edelasoledad-tip
+    mode: '0755'
+
+- name: Inserting config in the created directory
+  copy:
+    content: |
+      <VirtualHost *:110>
+      ServerName edelasoledad-tip
+      ServerAlias www.edelasoledad-tip
+      DocumentRoot /var/www/edelasoledad-tip
+      ErrorLog ${APACHE_LOG_DIR}/error.log
+      CustomLog ${APACHE_LOG_DIR}/access.log combined
+      </VirtualHost>
+    dest: /etc/apache2/sites-available/edelasoledad-tip.conf
+    owner: edelasoledad-tip
+    group: edelasoledad-tip
+    mode: '0755'
+
+- name: Set the host on top of default
+  shell: sudo a2ensite edelasoledad-tip; a2dissite 000-default
+
+- name: Create the landing page under qzkmcurz directory
+  copy:
+    src: files/index.html
+    dest: /var/www/edelasoledad-tip/index.html
+    owner: edelasoledad-tip
+    group: edelasoledad-tip
+    mode: '0755'
+
+- name: Restart services
+  service:
+    name: apache2
+    state: restarted

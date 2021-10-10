@@ -1,0 +1,86 @@
+---
+- name: Install ELK stack using docker and configure it 
+  hosts: 192.168.56.109
+  become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+
+# INSTALLATION OF DOCKER
+    - name: Import role to install docker for Ubuntu
+      include_role: name=docker_ubuntu
+      when: ansible_facts['os_family'] == 'Debian'
+
+    - name: Import role to install docker for CentOS
+      include_role: name=docker_centos
+      when: ansible_facts['os_family'] == 'RedHat'
+
+    - name: Import role to install docker for OpenSUSE
+      include_role: name=docker_opensuse
+      when: ansible_facts['os_family'] == 'Suse'
+
+
+
+# PULLING IMAGES FOR ELK STACK
+    - name: Pull images for elasticsearch
+      docker_image:
+        name: "docker.elastic.co/elasticsearch/elasticsearch:7.10.0"
+        source: pull
+
+    - name: Pull images for logstash
+      docker_image:
+        name: "docker.elastic.co/logstash/logstash:7.14.0"
+        source: pull
+
+    - name: Pull images for kibana
+      docker_image:
+        name: "docker.elastic.co/kibana/kibana:7.14.0"
+        source: pull
+
+    - name: Purge IP tables for docker
+      shell: iptables -F; iptables -X
+
+    - name: Restart Docker services
+      service:
+        name: docker
+        state: restarted      
+
+
+# ELK CONTAINER INITALIZATION AND CONFIGURATION   
+    - name: Start the container of elasticsearch imported images
+      docker_container:
+        name: elasticsearch
+        image: "docker.elastic.co/elasticsearch/elasticsearch:7.14.0"
+        env:
+          discovery.type: "single-node"
+        published_ports:
+          - 4035:4035
+          - 4045:4045
+
+    - name: Start Kibana container and connect it to elasticsearch
+      docker_container:
+        name: kibana
+        image: "docker.elastic.co/kibana/kibana:7.14.0"
+        links: "elasticsearch:elasticsearch"
+        published_ports: 
+           - 6035:6035
+
+    - name: Create pipeline directory for Logstash
+      file:
+        path: /usr/share/logstash_pipeline
+        state: directory
+        
+    - name: Copy Logstash config
+      copy:
+        src: logstash.conf
+        dest: /usr/share/logstash_pipeline/logstash.conf
+
+    - name: Start the container of logstash from imported images
+      docker_container: 
+        name: logstash
+        image: "docker.elastic.co/logstash/logstash:7.14.0"
+        links: "elasticsearch:elasticsearch"
+        volumes: /usr/share/logstash_pipeline:/usr/share/logstash/pipeline
+        published_ports: 
+          - 7035:7035

@@ -1,0 +1,104 @@
+---
+# tasks file for httpd_centos
+- name: Install HTTPD for centos using YUM
+  yum:
+    name: httpd
+    state: present
+    update_cache: yes
+
+
+- name: Start and enable apache2 service
+  service:
+     name: httpd
+     state: started
+     enabled: yes
+
+- name: Create the directory for the index file of website
+  file:
+    path: "/var/www/qzkmcruz"
+    state: directory
+    owner: qzkmcruz
+    group: qzkmcruz
+    mode: '0755'
+
+- name: Create HTML directory under domain directory
+  file:
+    path: "/var/www/qzkmcruz/html"
+    state: directory
+    owner: qzkmcruz
+    group: qzkmcruz
+    mode: '0755'   
+
+- name: Create Log directory under domain directory
+  file:
+    path: "/var/www/qzkmcruz/log"
+    state: directory
+    owner: qzkmcruz
+    group: qzkmcruz
+    mode: '0755'   
+
+- name: Copy the landing page into the HTML directory
+  copy: 
+    src: landing.html
+    dest: "/var/www/qzkmcruz/html/index.html"
+    owner: qzkmcruz
+    group: qzkmcruz
+    mode: '0755'
+
+- name: Create Sites-avaialble directory
+  file:
+    path: "/etc/httpd/sites-available"
+    state: directory
+    owner: qzkmcruz
+    group: qzkmcruz
+    mode: '0755'
+
+- name: Modify httpd.conf and add the domain
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    line: "IncludeOptional sites-enabled/*.conf"
+
+
+- name: Create the config file under apache
+  copy:
+    content: |
+      <VirtualHost *:110>
+      ServerName www.qzkmcruz.com
+      ServerAlias qzkmcruz
+      DocumentRoot /var/www/qzkmcruz/html
+      ErrorLog /var/www/qzkmcruz/log/error.log
+      CustomLog /var/www/qzkmcruz/log/requests.log combined
+      </VirtualHost>
+    dest: /etc/httpd/sites-available/qzkmcruz.conf
+    owner: qzkmcruz
+    group: qzkmcruz
+    mode: '0755'
+
+- name: Create Sites-avaialble directory
+  file:
+    path: "/etc/httpd/sites-enabled"
+    state: directory
+    owner: qzkmcruz
+    group: qzkmcruz
+    mode: '0755'   
+
+- name: Create symbolic link for the virtual host
+  file:
+    src: "/etc/httpd/sites-available/qzkmcruz.conf"
+    dest: "/etc/httpd/sites-enabled/qzkmcruz.conf"
+    state: link
+
+- name: Adjust the policy and set the boolean to httpd_unified
+  seboolean:
+    name: httpd_unified
+    state: yes
+    persistent: yes
+
+- name: Restart services
+  service:
+    name: httpd
+    state: restarted
+
+- name: Reload systemd daemon
+  service:
+    daemon_reload: yes

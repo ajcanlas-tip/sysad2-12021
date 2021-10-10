@@ -1,0 +1,19 @@
+---
+# tasks file for docker_opensuse
+
+
+- name: Install Docker using Zypper
+  zypper:
+    name: 
+      - docker
+      - python3
+      - python3-pip
+    state: present
+
+- name: Start the services for the Docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+

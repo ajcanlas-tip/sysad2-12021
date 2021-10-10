@@ -1,0 +1,19 @@
+---
+# tasks file for git_centos
+- name: Install git using YUM
+  yum:
+    name: git
+    state: latest
+
+- name: Make sure that the sysad2-12021 is nonexistent
+  shell: sudo rm -r sysad2-12021/
+  ignore_errors: yes
+
+- name: Git Clone the repository
+  shell: git clone https://github.com/ajcanlas-tip/sysad2-12021.git
+
+- name: Get the branch for the prelim-skills which is pull 914
+  shell: cd sysad2-12021; git fetch origin pull/914/head:Prelim-skills
+
+- name: Switch branch to Prelim-skills
+  shell: sudo git checkout Prelim-skills; cd

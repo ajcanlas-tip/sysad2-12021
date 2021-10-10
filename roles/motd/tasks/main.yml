@@ -1,0 +1,14 @@
+---
+# tasks file for motd
+
+- name: Change MOTD in all distro
+  copy:
+    content: "Ansible Managed by {{ ansible_user }}"
+    dest: /etc/motd
+
+- name: Remove the previous motd
+  file:
+    dest: /etc/update-motd.d/
+    mode: "u-x,g-x,o-x"
+    state: directory
+    recurse: yes

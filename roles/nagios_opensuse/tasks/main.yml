@@ -1,0 +1,72 @@
+---
+# tasks file for nagios_opensuse
+#
+
+
+- name: Install dependencies
+  zypper:
+    name:
+      - apache2
+      - python3
+      - python3-pip
+      - nagios
+      - nagios-www
+    state: present
+    update_cache: yes
+- name: Pip install passlib
+  pip:
+    name: passlib
+    state: present
+
+- name: Stop Firewall
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: Start Apache2
+  service:
+    name: apache2
+    state: started
+    enabled: yes
+
+- name: Add www-data user to nagios group
+  user:
+    name: wwwrun
+    groups: nagios
+    append: yes
+
+- name: Enable rewrite module
+  shell: /usr/sbin/a2enmod rewrite
+
+- name: Enable cgi module
+  shell: /usr/sbin/a2enmod cgi
+
+- name: Enable version module
+  shell: /usr/sbin/a2enmod version
+
+- name: Enable php7 module
+  shell: /usr/sbin/a2enmod php7
+
+- name: Create admin username and password for authentication
+  htpasswd:
+    path: /etc/nagios/htpasswd.users
+    name: admin12345
+    password: admin12345
+  register: useradded
+
+- name: Restart apache2
+  service:
+    name: apache2
+    state: restarted
+
+- name: Start and enable nagios
+  service:
+    name: nagios
+    state: started
+    enabled: yes
+
+- name: Restart nagios
+  service:
+    name: nagios
+    state: restarted

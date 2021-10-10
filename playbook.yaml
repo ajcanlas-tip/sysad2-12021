@@ -1,0 +1,98 @@
+---
+- name: A playbook that clones a repo, installs and configures HTTPD + Nagios in Ubuntu, CentOS and OpenSUSE. As well as change banner motd
+  hosts: All
+  become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+
+
+
+# THIS IS WHERE ROLES ARE IMPORTED.
+#
+#
+    - name: Git clone a repository called "Prelim-exam" for Ubuntu
+      tags: git_ubuntu
+      include_role: name=git_ubuntu
+      when: ansible_facts['os_family'] == "Debian"
+
+
+    - name: Git clone a repository called "Prelim-exam" for CentOS
+      tags: git_centos
+      include_role: name=git_centos
+      when: ansible_facts['os_family'] == "RedHat"
+
+
+    - name: Git clone a repository called "Prelim-exam" for OpenSuse
+      tags: git_opensuse
+      include_role: name=git_opensuse
+      when: ansible_facts['os_family'] == 'Suse'
+
+
+
+# DISABLE FIREWALLS
+
+    - name: Stop firewall for Ubuntu
+      service: 
+        name: ufw
+        state: stopped
+        enabled: no
+      when: ansible_facts['os_family'] == 'Debian'
+
+    - name: Stop firewall for CentOS
+      service: 
+        name: firewalld
+        state: stopped
+        enabled: no
+      when: ansible_facts['os_family'] == 'CentOS'
+       
+    - name: Stop firewall for OpenSUSE
+      service:
+        name: firewalld
+        state: stopped
+        enabled: no
+      when: ansible_facts['os_family'] == 'Suse'
+
+# INSTALL THEN CONFIGURE HTTPD
+#
+    - name: Install and configure HTTPD for Ubuntu
+      tags: httpd_ubuntu
+      include_role: name=httpd_ubuntu
+      when: ansible_facts['os_family'] == 'Debian'
+
+    - name: Install and configure HTTPD for CentOS
+      tags: httpd_centos
+      include_role: name=httpd_centos
+      when: ansible_facts['os_family'] == 'RedHat'
+
+    - name: Install and configure HTTPD for OpenSUSE
+      tags: httpd_opensuse
+      include_role: name=httpd_opensuse
+      when: ansible_facts['os_family'] == 'Suse'
+     
+
+# INSTALL THEN CONFIGURE NAGIOS
+#
+    - name: Install and configure Nagios for Ubuntu
+      tags: nagios_ubuntu
+      include_role: name=nagios_ubuntu
+      when: ansible_facts['os_family'] == 'Debian'
+    - name: Install and configure Nagios for CentOS
+      tags: nagios_ubuntu
+      include_role: name=nagios_centos
+      when: ansible_facts['os_family'] == 'RedHat'
+    - name: Install and configure Nagios for OpenSUSE
+      tags: nagios_ubuntu
+      include_role: name=nagios_opensuse
+      when: ansible_facts['os_family'] == 'Suse'
+
+
+# CHANGE BANNER MOTD
+    - name: Change Message of the day in all host
+      tags: motd
+      include_role: name=motd
+
+
+
+
+

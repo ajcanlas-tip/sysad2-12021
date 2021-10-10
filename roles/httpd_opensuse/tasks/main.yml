@@ -1,0 +1,47 @@
+---
+# tasks file for httpd_opensuse
+- name: Install httpd using Zypper
+  shell: sudo zypper --non-interactive install httpd
+
+
+- name: start and enable apache2
+  service: 
+    name: apache2
+    state: started
+    enabled: yes
+
+- name: create the config file under apache
+  copy:
+    content: |
+      <VirtualHost *:110>
+      ServerAdmin webmaster@.qzkmcruz.com
+      DocumentRoot /srv/www/htdocs/qzkmcruz
+      ServerName www.qzkmcruz.com
+      ErrorLog /var/log/apache2/qzkmcruz.com-error_log
+      CustomLog /var/log/apache2/qzkmcruz.com-access_log common
+      </VirtualHost>
+    dest: /etc/apache2/conf.d/qzkmcruz.conf
+    owner: qzkmcruz
+    group: users
+    mode: '0755'
+
+- name: Create the website directory within /srv/www/htdocs/
+  file:
+    path: /srv/www/htdocs/qzkmcruz
+    state: directory
+    owner: qzkmcruz
+    group: users
+    mode: '0755'
+
+- name: Create the landing page for the qzkmcruz.com
+  copy:
+    src: landing.html
+    dest: /srv/www/htdocs/qzkmcruz/index.html
+    owner: qzkmcruz
+    group: users
+    mode: '0755'
+
+- name: Add IP and HostName in /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: 192.168.56.110 www.qzkmcruz.com

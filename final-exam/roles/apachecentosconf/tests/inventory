@@ -1,0 +1,13 @@
+seboolean:
+    name: httpd_unified
+    state: yes
+    persistent: yes
+
+- name: Restart httpd | CentOS
+  service:
+    name: httpd
+    state: restarted
+
+- name: Reload systemd daemon | CentOS
+  service:
+    daemon_reload: yes

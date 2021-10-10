@@ -1,0 +1,26 @@
+---
+- name: Add apt key (Ubuntu)
+  apt_key:
+    url: "{{ url }}"
+    state: present
+  when: url is defined
+
+- name: Add apt repository (Ubuntu)
+  apt_repository:
+    repo: "{{ repo }}"
+    filename: "{{ filename }}"
+    state: present
+  when: repo is defined and filename is defined
+
+- name: Install package (Ubuntu)
+  apt:
+    name: "{{ package }}"
+    state: latest
+    update_cache: yes
+
+- name: Start and Enable Service (Ubuntu)
+  service:
+    name: "{{ service }}"
+    state: started
+    enabled: yes
+  when: service is defined

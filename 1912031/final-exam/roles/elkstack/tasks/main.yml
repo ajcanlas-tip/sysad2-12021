@@ -1,0 +1,40 @@
+---
+# tasks file for elkstack
+- name: Start Elasticsearch Container
+  docker_container:
+    name: "{{ elasticsearch_hostname }}"
+    image: "{{ elasticsearch_img }}"
+    env:
+      discovery.type: "single-node"
+    published_ports:
+      - 9200:9200
+      - 9300:9300
+
+- name: Start Kibana Container and link to Elasticsearch Container
+  docker_container:
+    name: "{{ kibana_hostname }}"
+    image: "{{ kibana_img }}"
+    links: "{{ elasticsearch_hostname }}:{{ elasticsearch_hostname }}"
+    published_ports:
+      - 5601:5601
+
+- name: Create a pipiline for Logstash
+  file:
+    path: /usr/share/logstash_pipeline
+    state: directory
+
+- name: Copy logstash configuration file
+  copy:
+    src: "{{ logstash_conf }}"
+    dest: /usr/share/logstash_pipeline/logstash.conf
+
+- name: Start logstash container with configuration and link to ElasticSearch
+  docker_container:
+    name: "{{ logstash_hostname }}"
+    image: "{{ logstash_img }}"
+    links: "{{ elasticsearch_hostname }}:{{ elasticsearch_hostname }}"
+    volumes:
+      - /usr/share/logstash_pipeline:/usr/share/logstash/pipeline
+    published_ports:
+      - 5044:5044
+

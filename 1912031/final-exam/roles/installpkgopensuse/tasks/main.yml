@@ -1,0 +1,6 @@
+---
+- name: Install package
+  zypper:
+    name: "{{ package }}"
+    state: present
+    update_cache: yes

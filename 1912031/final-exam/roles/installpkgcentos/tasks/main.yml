@@ -1,0 +1,22 @@
+---
+- name: Add repository file (CentOS)
+  copy:
+    src: "{{ src }}"
+    dest: "{{ dest }}"
+    mode: 0755
+  when: src is defined
+
+- name: Install package using DNF (CentOS)
+  dnf:
+    name: "{{ package }}"
+    state: latest
+    update_cache: yes
+
+- name: Start and Enable Service (CentOS)
+  service:
+    name: "{{ service }}"
+    state: started
+    enabled: yes
+  when: service is defined
+
+

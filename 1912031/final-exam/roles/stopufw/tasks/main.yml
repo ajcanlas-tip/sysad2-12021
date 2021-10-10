@@ -1,0 +1,6 @@
+---
+# tasks file for stopufw
+- name: Stop UFW
+  service:
+    name: ufw
+    state: stopped

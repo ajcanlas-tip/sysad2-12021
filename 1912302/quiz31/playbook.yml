@@ -1,0 +1,12 @@
+---
+
+- name: Create a playbook that install a vsftpd server
+  hosts: ubuntu
+  tasks:
+          - name: vsftpd server
+            apt:
+                    name: vsftpd
+                    state: present
+                    update_cache: yes
+                    when: ansible_facts ['distribution'] == 'Ubuntu'
+         

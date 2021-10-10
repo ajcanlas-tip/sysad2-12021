@@ -1,0 +1,156 @@
+---
+  - name: install and clone git prelim
+    hosts: git
+    
+    tasks:
+    - name: Include variables from config.yaml
+      include_vars:
+        file: config.yaml
+
+    - name: Install Git using installpackageubuntu role
+      include_role:
+        name: installpackageubuntu
+      vars:
+        url: ""
+        repo: ""
+        package: git
+        service: ""
+      when: ansible_facts['os_family'] == 'Debian'
+
+
+    - name: Clone prelim-exam repository
+      include_role:
+       name: gitclone
+
+
+  - name: install ftp
+    hosts: ftp
+
+    tasks:
+    - name: Include variables from config.yaml
+      include_vars:
+        file: config.yaml
+
+    - name: Install ftp using installpackageubuntu role
+      include_role:
+        name: installpackageubuntu
+      vars:
+        url: ""
+        repo: ""
+        package: vsftpd
+        service: ""
+      when: ansible_facts['os_family'] == 'Debian'
+
+
+    - name: Configure vsftpd on Ubuntu using configurevsftpdubuntu
+      include_role:
+        name: configurevsftpdubuntu
+      when: ansible_facts['os_family'] == 'Debian'
+ 
+
+  - name: install and configure nagios
+    hosts: nagios
+
+    tasks:
+    - name: Include variables from config.yaml
+      include_vars:
+        file: config.yaml
+
+    - name: install nagios dependencies using installpackageubuntu role
+      include_role:
+        name: installpackageubuntu
+      vars:
+        url: ""
+        repo: ""
+        package:
+          - autoconf
+          - gcc
+          - libc6
+          - libmcrypt-dev
+          - make
+          - wget
+          - libssl-dev
+          - gawk
+          - dc
+          - build-essential
+          - snmp
+          - libnet-snmp-perl
+          - gettext
+          - unzip
+          - apache2
+          - php
+          - libapache2-mod-php7.4
+          - libgd-dev
+          - python3
+          - python3-pip
+        service: ""
+      when: ansible_distribution == "Ubuntu"
+  
+    - name: install nagios dependencies using installpackageubuntu role
+      include_role:
+        name: installpackageubuntu
+      vars:
+        url: ""
+        repo: ""
+        package:
+          - autoconf
+          - gcc
+          - libc6
+          - libmcrypt-dev
+          - make
+          - wget
+          - libssl-dev
+          - gawk
+          - dc
+          - build-essential
+          - snmp
+          - libnet-snmp-perl
+          - gettext
+          - unzip
+          - apache2
+          - php
+          - libgd-dev
+          - python3
+          - python3-pip
+          - python
+          - python-pip
+        service: ""
+      when: ansible_distribution == "Debian"
+    
+
+    - name: Configure Nagios using configurenagiosubuntu role
+      include_role:
+        name: configurenagiosubuntu
+      when: ansible_facts['os_family'] == 'Debian'
+
+
+  - name: install elk
+    hosts: elk
+    
+    tasks:
+    - name: Include variables from config.yaml
+      include_vars:
+        file: config.yaml
+
+   
+    - name: Stop firewall using stopfirewallubuntu role
+      include_role:
+        name: stopfirewallubuntu
+      when: ansible_distribution == 'Ubuntu'  
+
+
+    - name: Pull ELK Images
+      include_role:
+        name: pullimage
+      vars:
+        image: "{{ item }}"
+      loop:
+        - "{{ elasticsearch_image }}"
+        - "{{ logstash_image }}"
+        - "{{ kibana_image }}"
+
+    - name: Setup and configure Elastic Stack
+      include_role:
+        name: elk_setup
+
+

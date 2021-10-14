@@ -1,0 +1,15 @@
+---
+# tasks file for roles/bind9
+- name: Installation of bind9 on Ubuntu
+  apt:
+    name: bind9
+    state: latest
+    update_cache: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Installation of bind9 on CentOS
+  yum:
+    name: bind9
+    state: latest
+    update_cache: yes
+  when: ansible_facts['distribution'] == 'CentOS'

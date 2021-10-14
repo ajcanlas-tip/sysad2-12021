@@ -1,0 +1,15 @@
+---
+# tasks file for roles/httpd
+- name: Installation of httpd on Ubuntu
+  yum:
+    name: apache2
+    state: latest
+    update_cache: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Installation of htppd on CentOS
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+  when: ansible_facts['distribution'] == 'CentOS'

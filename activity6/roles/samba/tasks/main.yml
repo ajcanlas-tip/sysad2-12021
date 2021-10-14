@@ -1,0 +1,15 @@
+---
+# tasks file for roles/samba
+- name: Installation of samba on Ubuntu
+  apt:
+    name: samba
+    state: latest
+    update_cache: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Installation of samba on CentOS
+  yum:
+    name: samba
+    state: latest
+    update_cache: yes
+  when: ansible_facts['distribution'] == 'CentOS'

@@ -1,0 +1,32 @@
+playbook
+---
+- name: Installation of packages via pip
+  hosts: all
+
+  tasks:
+  - name: Installation of boto, ansible and openstack via pip
+    pip:
+      name:
+        - ansible
+        - boto
+        - python-openstackclient
+
+- name: Installation of packages for Centos
+  hosts: centos
+
+  tasks:
+  - name: Installation of Java
+    yum:
+      name: java-1.8.0-openjdk
+      state: present
+      update_cache: yes
+
+- name: Installation of packages for Ubuntu
+  hosts: ubuntu
+
+  tasks:
+    - name: Installation of Java
+      apt:
+        name: default-jre
+        state: present
+        update_cahce: yes

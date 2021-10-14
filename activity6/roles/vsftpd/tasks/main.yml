@@ -1,0 +1,15 @@
+---
+# tasks file for roles/vsftpd
+- name: Installation of vsftpd on Ubuntu
+  apt:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Installation of vsftpd on CentOS
+  yum:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+  when: ansible_facts['distribution'] == 'CentOS'

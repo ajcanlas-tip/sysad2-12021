@@ -1,0 +1,15 @@
+---
+# tasks file for roles/mariadb
+- name: Installation of mariadb on Ubuntu
+  apt: 
+    name: mariadb-server
+    state: latest
+    update_cache: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Installation of mariadb on CentOS
+  yum:
+    name: mariadb-server
+    state: latest
+    update_cache: yes
+  when: ansible_facts['distribution'] == 'CentOS'

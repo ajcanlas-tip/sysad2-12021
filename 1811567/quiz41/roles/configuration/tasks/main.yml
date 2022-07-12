@@ -1,0 +1,64 @@
+---
+- name: nagios extraction
+  unarchive:
+   src: /downloads/nagios-4.2.1.tar.gz
+   dest: /downloads
+   remote_src: yes
+
+- name: Creating nagios script
+  shell: ./configure --with-command-group=Ngrp --with-command-group=Ngrp --with-httpd_conf=/etc/apache2/sites-enabled/
+  args:
+   chdir: /downloads/nagios-4.2.1
+
+- name: Setting up nagios
+  make:
+   chdir: /downloads/nagios-4.2.1
+   target: all
+
+- name: Installing binaries
+  make:
+   chdir: /downloads/nagios-4.2.1
+   target: install
+
+- name: Init script
+  make:
+   chdir: /downloads/nagios-4.2.1
+   target: install-init
+
+- name: Config files
+  make:
+   chdir: /downloads/nagios-4.2.1
+   target: install-config
+
+- name: Permissions
+  make:
+   chdir: /downloads/nagios-4.2.1
+   target: install-commandmode
+
+- name: Web Interface
+  make:
+   chdir: /downloads/nagios-4.2.1
+   target: install-webconf
+
+- name: Pip
+  apt:
+   name: python3-pip
+   state: latest
+
+- name: Htpasswd module
+  pip: 
+   name: passlib
+   state: latest
+
+- name: Creating nagios admin account
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users 
+    name: nagioscarangan
+    password: "carangan"
+    crypt_scheme: md5_crypt
+
+- name: Restarting apache
+  service:
+   name: apache2
+   state: reloaded
+# tasks file for roles/configuration

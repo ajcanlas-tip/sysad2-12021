@@ -1,0 +1,12 @@
+---
+- name: Package for Ubuntu Installation
+  hosts: ubuntu
+
+  roles: 
+    - ubuntuins
+
+- name: Package for Centos Installation
+  hosts: centos
+
+  roles:
+    - centosins

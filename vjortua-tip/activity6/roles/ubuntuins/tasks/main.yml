@@ -1,0 +1,37 @@
+---
+- name: Dhcp Installation
+  apt:
+    name: isc-dhcp-server
+    state: latest
+    update_cache: yes
+
+- name: Bind9 Installation
+  apt:
+    name: bind9
+    state: latest
+    update_cache: yes
+
+- name: Vsftpd Installation
+  apt:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: Samba Installation
+  apt:
+    name: samba
+    state: latest
+    update_cache: yes
+
+- name: Httpd Installation
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: Mariadb Installation
+  apt:
+    name: mariadb-server
+    state: latest
+    update_cache: yes
+# tasks file for roles/ubuntuins

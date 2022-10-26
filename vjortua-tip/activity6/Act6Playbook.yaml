@@ -1,0 +1,12 @@
+---
+- name: Dhcp, Bind9, Vsftpd, Samba, Httpd, Mariadb Installation in Ubuntu
+  hosts: ubuntu
+
+  roles:
+    - ubuntuins
+
+- name: Dhcp, Bind9, Vsftpd, Samba, Httpd, Mariadb Installtion in Centos
+  hosts: centos
+
+  roles:
+    - centosins

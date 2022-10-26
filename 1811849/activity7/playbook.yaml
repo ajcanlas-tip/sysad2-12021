@@ -1,0 +1,16 @@
+---
+- hosts: ubuntu
+  vars_files:
+    - ./config.yaml
+  roles:
+    - uestack
+    - uinstall
+    - usetup
+    - uplugin
+    - ugrafana
+
+- hosts: centos
+  roles:
+    - cestack
+    - cgrafana
+    - cnagios

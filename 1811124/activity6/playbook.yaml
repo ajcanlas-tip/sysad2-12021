@@ -1,0 +1,12 @@
+---
+- name: Installing dhcp, bind9, vsftpd, samba, http, mariadb in ubuntu
+  hosts: ubuntu
+  
+  roles: 
+    - Installing-Ubuntu
+
+- name: Installing dhcp, bind9, vsftpd, samba, http, mariadb in centos 
+  hosts: centos
+
+  roles: 
+    - Installing-Centos

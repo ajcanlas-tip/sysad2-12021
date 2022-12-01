@@ -1,0 +1,15 @@
+---
+- name: Downloading plugins and nagios core
+  hosts: ubuntu
+  roles: 
+   - happy
+
+- name: Installing Nagios core
+  hosts: ubuntu
+  roles: 
+   - new
+
+- name: Installing Nagios plugin
+  hosts: ubuntu
+  roles: 
+   - year 

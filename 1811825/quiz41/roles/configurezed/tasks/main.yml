@@ -1,0 +1,66 @@
+---
+- name: extraction
+  unarchive:
+    src: /downloads/nagios-4.2.1.tar.gz
+    dest: /downloads
+    remote_src: yes
+
+- name: configuration
+  shell: ./configure --with-command-group=nagcmd --with-command-group=nagcmd --with-httpd_conf=/etc/apache2/sites-enabled/
+  args:
+    chdir: /downloads/nagios-4.2.1
+
+- name: making target
+  make:
+    target: all
+    chdir: /downloads/nagios-4.2.1
+
+- name: installation
+  make:
+    target: install
+    chdir: /downloads/nagios-4.2.1
+
+- name: installation-init
+  make:
+    target: install-init
+    chdir: /downloads/nagios-4.2.1
+
+- name: installation config
+  make:
+    target: install-config
+    chdir: /downloads/nagios-4.2.1
+
+- name: installation-commandmode
+  make:
+    taget: install-commandmode
+    chdir: /downloads/nagios-4.2.1
+
+- name: installation-webconf
+  make:
+    target: install-webconf
+    chdir: /downloads/nagios-4.2.1
+
+- name: installation pip
+  apt:
+    name: python3-pip
+    state: latest
+
+- name: installation passlib
+  pip:
+    name: passlib
+    state: latest
+
+- name: adding user
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: zed
+    password: zed
+    crpyt_scheme: md5_crypt
+
+- name: restart
+  service:
+    name: apache2
+    enabled: yes
+    state: restarted
+
+# tasks file for roles/configurezed

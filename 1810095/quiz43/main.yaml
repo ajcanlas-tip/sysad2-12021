@@ -1,0 +1,10 @@
+---
+- name: install elastic stack in ubuntu
+  hosts: Ubuntu
+  roles:
+    - u_elastic
+
+- name: install elastic stack in centos
+  hosts: Centos
+  roles:
+    - c_elastic

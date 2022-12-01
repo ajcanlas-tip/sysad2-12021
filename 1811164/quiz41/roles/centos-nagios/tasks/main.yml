@@ -1,0 +1,73 @@
+---
+# tasks file for centos-nagios
+- name: download and extract nagios
+  unarchive:
+    src: https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.5.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: conf nagios in centos
+  command: ./configure --with-command-group=nagiosxi
+  args:
+    chdir: /tmp/nagios-4.4.5
+
+- name: conf make clean
+  command: make clean
+  args:
+    chdir: /tmp/nagios-4.4.5
+
+- name: conf make all
+  command: make all
+  args:
+    chdir: /tmp/nagios-4.4.5
+
+- name: conf make install
+  command: make install
+  args:
+    chdir: /tmp/nagios-4.4.5
+
+- name: conf make install-init
+  command: make install-init
+  args:
+    chdir: /tmp/nagios-4.4.5
+
+- name: conf make install-daemoninit
+  command: make install-daemoninit
+  args:
+    chdir: /tmp/nagios-4.4.5
+
+- name: conf make install-config
+  command: make install-config
+  args:
+    chdir: /tmp/nagios-4.4.5
+
+- name: conf make install-commandmode
+  command: make install-commandmode
+  args:
+    chdir: /tmp/nagios-4.4.5
+
+- name: conf make install-exfoliation
+  command: make install-exfoliation
+  args:
+    chdir: /tmp/nagios-4.4.5
+
+- name: install webconf
+  command: make install-webconf
+  args:
+    chdir: /tmp/nagios-4.4.5
+
+- name: install passlib
+  pip:
+    name: passlib
+
+- name: create user to authenticate
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: user
+    password: password
+
+- name: restart httpd
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes

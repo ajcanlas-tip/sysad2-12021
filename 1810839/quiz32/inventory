@@ -1,0 +1,5 @@
+[Ubuntu]
+10.0.2.4 ansible_ssh_pass=leslie15 ansible_ssh_user=lesliemae ansible_sudo_pass=leslie15
+
+[CentOS]
+10.0.2.6 ansible_ssh_pass=leslie15 ansible_ssh_user=lesliemae ansible_sudo_pass=leslie15

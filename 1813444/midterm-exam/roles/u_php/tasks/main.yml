@@ -1,0 +1,20 @@
+---
+# tasks file for roles/u_php
+
+- name: installation of php
+  apt: 
+    name: 
+      - php
+      - php-mysql 
+      - libapache2-mod-php
+    state: latest
+    update_cache: yes 
+
+- name: host index 
+  copy:
+    content: "henloeveryone"
+    dest: /var/www/html/index2.html 
+    owner: root
+    group: root 
+    mode: '0644' 
+

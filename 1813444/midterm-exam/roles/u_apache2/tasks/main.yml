@@ -1,0 +1,34 @@
+---
+# tasks file for roles/u_apache2
+
+- name: ubuntu installation of apache2
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes 
+
+- name: host index of apache
+  copy: 
+    content: "itsme&mycodes"
+    dest: /var/www/html/index.html 
+    owner: root
+    group: root 
+    mode: '0644'
+  register: apache_index 
+
+- name: apache2 service
+  service: 
+    name: apache2
+    state: started 
+    enabled: yes 
+  when: apache_index.changed 
+
+- name: whitelist apache2 to ufw 
+  ufw: 
+    rule: allow
+    port: '80'
+    proto: tcp
+
+- name: disable ufw
+  ufw: 
+    state: disabled 

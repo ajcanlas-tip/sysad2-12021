@@ -1,0 +1,72 @@
+---
+- name: elastic for ubuntu 
+  hosts: ubuntu 
+  roles: 
+    - u_elastic 
+
+- name: elastic for centos 
+  hosts: centos 
+  roles:
+    - c_elastic 
+
+- name: nagios for ubuntu 
+  hosts: ubuntu 
+  vars_files:
+    - ./config.yaml 
+  roles: 
+    - u_configuration
+    - u_nagiosmain
+    - u_nagios_plugins 
+
+- name: nagios for centos 
+  hosts: centos 
+  roles: 
+    - c_configuration
+    - c_nagiosmain
+    - c_nagios_plugins 
+
+- name: ubuntu installaation of grafana + prometheus + influxdb
+  hosts: ubuntu
+  roles:
+    - u_GPI
+
+- name: centos installation of grafana + prometheus + influxdb 
+  hosts: centos 
+  roles:
+    - c_GPI
+
+- name: ubuntu installation of lamp 
+  hosts: ubuntu 
+  roles: 
+    - u_apache2
+    - u_mysql 
+    - u_php
+    - u_webservice 
+
+- name: centos installation of lamp 
+  hosts: centos 
+  roles:
+    - c_apache2
+    - c_mysql 
+    - c_php 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

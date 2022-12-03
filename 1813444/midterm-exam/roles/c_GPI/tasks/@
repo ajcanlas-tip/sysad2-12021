@@ -1,0 +1,104 @@
+---
+# tasks file for roles/c_GPI
+
+- name: Add repo for Grafana 
+  yum_repository: 
+    name: grafana-2 
+    description: garafana repo
+    baseurl: https://packages.grafana.com/enterprise/rpm 
+    gpgcheck: yes 
+    repo_gpgcheck: yes 
+    enabled: yes 
+    gpgkey: https://packages.grafana.com/gpg.key 
+    sslverify: yes
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+
+- name: installation of gpgkey on grafana 
+  rpm_key: 
+    key: https://packages.grafana.com/gpg.key 
+    state: present 
+
+- name: Installation of grafana 
+  yum: 
+    name: grafana
+    state: latest
+    update_cache: yes 
+
+- name: Enabling grafana 
+  service: 
+    name: grafana-server
+    state: started
+    enabled: yes
+
+- name: prometheus repository 
+  yum_repository:
+    name: prometheus 
+    description: prometheus repo 
+    baseurl: https://packagecloud.io/prometheus-rpm/release/el/$releasever/$basearch 
+    repo_gpgcheck: yes 
+    enabled: yes 
+    gpgkey: https://packagecloud.io/prometheus-rpm/relase/gpgkey https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm 
+    gpgcheck: yes 
+    metadata_expire: 300 
+
+- name: installation of prometheus 
+  yum: 
+    name: prometheus2
+    state: latest
+    update_cache: yes 
+
+- name: enabling prometheus 
+  service: 
+    name: prometheus 
+    state: started 
+    enabled: yes 
+
+- name: add repository for influxdb 
+  yum_repository: 
+    name: influxdb 
+    description: influxdb repo 
+    baseurl: https://repos.influxdata.com/rhel/7/x86_64/stable/
+    enabled: yes 
+    gpgcheck: yes 
+    ggpgkey: https://repos.influxdata.com/influxdb.key 
+
+- name: installation of telegraf
+  yum: 
+    name: telegraf 
+    state: latest
+    update_cache: yes 
+
+- name: enabling telegraf 
+  service: 
+    name: telegraf 
+    state: started 
+    enabled: yes 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

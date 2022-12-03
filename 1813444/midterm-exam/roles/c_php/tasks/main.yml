@@ -1,0 +1,18 @@
+---
+# tasks file for roles/c_php
+
+- name: installion of php
+  yum: 
+    name: php
+    state: latest
+    update_cache: yes 
+
+- name: host index 
+  copy:
+    content: "iamwhoiam"
+    dest: /var/www/html/index2.html 
+    owner: root
+    group: root 
+    mode: '0644' 
+
+

@@ -1,0 +1,27 @@
+---
+# tasks file for roles/c_mysql
+
+- name: installation of mysql-server 
+  yum: 
+    name: 
+      - mariadb-server 
+      - mariadb
+    state: latest
+    update_cache: yes 
+
+- name: host index 
+  copy: 
+    content: "grlpwr"
+    dest: /var/www/html/index1.html
+    owner: root
+    group: root
+    mode: '0664' 
+  register: mysql_index 
+
+- name: start mariadb 
+  service: 
+    name: mariadb
+    state: started
+    enabled: yes 
+  when: mysql_index.changed 
+

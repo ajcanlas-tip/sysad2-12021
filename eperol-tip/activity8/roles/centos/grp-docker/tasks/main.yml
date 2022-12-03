@@ -1,0 +1,11 @@
+---
+- name: Create Docker Group
+  group:
+    name: docker
+    state: present
+
+- name: Add Docker Group to current User
+  user:
+    name: elain
+    group: docker
+# tasks file for roles/centos/grp-docker

@@ -1,0 +1,6 @@
+- name: docker installation
+  hosts: ubuntu
+  roles:
+    - docker
+    - user_docker
+    - file_docker

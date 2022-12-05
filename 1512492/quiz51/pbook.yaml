@@ -1,0 +1,11 @@
+---
+ - name: installer for ubuntu
+   hosts: ubuntu
+   roles:
+    - elas_ubun
+
+ - name: installer for centos
+   hosts: centos
+   roles:
+    - elas_cent
+

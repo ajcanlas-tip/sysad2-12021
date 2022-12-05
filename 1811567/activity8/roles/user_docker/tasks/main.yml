@@ -1,0 +1,11 @@
+---
+- name: docker group
+  group:
+    name: docker
+    state: present 
+
+- name: add docker group
+  user:
+    name: md
+    group: docker
+# tasks file for roles/user_docker

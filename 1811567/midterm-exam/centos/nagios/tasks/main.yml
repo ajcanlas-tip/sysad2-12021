@@ -1,0 +1,86 @@
+---
+- name: dependencies installation
+  yum:
+    name:
+      - perl
+      - gcc
+      - glibc
+      - glibc-common
+      - unzip
+      - gd
+      - gd-devel
+      - postfix
+    state: present
+
+- name: Add group in nagios
+  group:
+    name: "{{ group }}"
+    state: present
+
+- name: Add user in nagios
+  user:
+    name: "{{ user1 }}"
+    group: "{{ group }}"
+
+- name: Add also user in nagios
+  user:
+    name: "{{ user2 }}"
+    group: "{{ group }}"
+
+- name: nagios installation
+  unarchive:
+    src: https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.5.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Configure nagios
+  command: ./configure --with-command-group=nagiosxi
+  args:
+    chdir: /tmp/nagios-4.4.5
+
+- name: Make clean
+  make:
+    target: clean
+    chdir: /tmp/nagios-4.4.5
+
+- name: Make all
+  make:
+    target: all
+    chdir: /tmp/nagios-4.4.5
+
+- name: install-init
+  make:
+    target: install-init
+    chdir: /tmp/nagios-4.4.5
+
+- name: install-daemoninit
+  make:
+    target: install-daemoninit
+    chdir: /tmp/nagios-4.4.5
+
+- name: install-commandmode
+  make:
+    target: install-commandmode
+    chdir: /tmp/nagios-4.4.5
+
+- name: install-webconf
+  make:
+    chdir: /tmp/nagios-4.4.5
+    target: install-webconf
+  become: yes
+
+- name: passlib installation
+  pip:
+    name: passlib
+
+- name: Create user in nagios
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: user
+    password: password
+
+- name: Restart httpd
+  service:
+    name: httpd
+    state: restarted
+# tasks file for centos/nagios

@@ -1,0 +1,52 @@
+# Installing pip3 and python 3 as default
+
+- hosts: all  
+  gather_facts: false
+  become: yes
+  - tasks:
+    - name: Download pip3 installer
+      get_url:
+        url: https://bootstrap.pypa.op/get-pip.py
+        dest: /tmp/get-pip.py
+  
+    - name: install pip for python3
+        shell: /usr/local/bin/python3.6 /tmp/get-pip.py
+        become: yes
+
+    - pip:
+        name: virtualenv
+        executable: /usr/local/bin/pip3.6
+      become: True
+
+# Installing java
+
+---
+- name: Install java
+  hosts: all
+  gather_facts: False
+  tasks:
+   - name: Installing OpenJDK
+     apt:
+       name: java-1.8.0-openjdk
+       update_cache: yes
+
+#change motd
+
+- name: Change motd
+  hosts: all
+  tasks:
+   - name: Creating Motd
+     set: var(user) $env(USER) && var(path) $env(PWD) && var(home) $env(HOME)
+
+#create user
+
+- name: User creation
+  hosts: all
+  - name: Creating user "{{ uusername }}" with admin access
+    user:
+      name: {{ uusername}}
+    when: assigned_role == "yes"
+
+
+     
+     

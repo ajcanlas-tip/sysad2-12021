@@ -1,0 +1,7 @@
+---
+ - name: Install docker for Ubuntu
+   hosts: Ubuntu
+   roles:
+     - Ubuntu/ubuntu_docker
+     - Ubuntu/user_docker
+     - Ubuntu/files_docker

@@ -1,0 +1,22 @@
+---
+# tasks file for roles/Ubuntu/files_docker
+
+ - name: Start docker service
+   service:
+     name: docker
+     state: started
+     enabled: yes
+
+ - name: Install webserver
+   docker_image:
+     name: romeoz/docker-apache-php
+     state: present
+     source: pull
+
+ - name: Install db server
+   docker_image:
+     name: mysql/mysql-server:latest
+     state: present
+     source: pull
+
+

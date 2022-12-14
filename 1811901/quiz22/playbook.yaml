@@ -1,0 +1,82 @@
+---
+- name: Installing Apache and Updating Firewall
+  hosts: all
+  tasks:
+    - name: Installing apache
+      apt:
+        name: apache2
+        state: latest
+        update_cache: yes
+    - name: Apache_index
+      copy:
+        content: "Marasigan"
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: '0644'
+      register: apache_index
+
+    - name: Start Apache2 Service
+      service:
+        name: apache2
+        state: restarted
+        enabled: yes
+      when: apache_index.changed
+
+    - name: whitelist apache2 in ufw
+      ufw:
+        rule: allow
+        port: '80'
+        proto: tcp
+
+- name: check web service if up
+  hosts: localhost
+  connection: local
+  become: no
+
+  tasks:
+    - name: check web service
+      uri:
+        url: http://www.example.com
+
+- name: Install MySql
+  hosts: all
+  tasks:
+    - name: Intalling MySql
+      apt:
+        name: mysql-server
+        state: latest
+        update_cache: yes
+    - name: mysql_index
+      copy:
+        content: "Marasigan"
+        dest: /var/www/html/index1.html
+        owner: root
+        group: root
+        mode: '0644'
+      register: mysql_index
+    - name: Start MySql
+      service:
+        name: mysql
+        state: restarted
+        enabled: yes
+      when: mysql_index.changed
+
+- name: Install PHP
+  hosts: all
+  tasks:
+    - name: Installing PHP
+      apt:
+        name:
+          - php
+          - php-mysql
+          - libapache2-mod-php
+        state: latest
+        update_cache: yes
+    - name: Php_index
+      copy:
+        content: "Marasigan"
+        dest: /var/www/html/index2.html
+        owner: root
+        group: root
+        mode: '0644'

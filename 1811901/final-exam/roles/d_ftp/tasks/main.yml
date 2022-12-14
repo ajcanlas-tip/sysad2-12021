@@ -1,0 +1,53 @@
+---
+# tasks file for roles/d_ftp
+- name: ftp
+  apt:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: ftp
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: ftp usr
+  user:
+    name: '{{ user }}'
+    password: '{{ ftp_pass }}'
+
+- name: deny
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers '{{ user }}'"
+  register: successfully_denied
+
+
+- name: restart
+  service:
+    name: sshd
+    state: restarted
+    when: successfully_denied.changed
+
+- name: copy
+  copy:
+    src: /etc/vsftpd.conf
+    dest: /etc/vsftpd.conf.orig
+    remote_src: True
+
+- name: ftp
+  replace:
+    path: /etc/vsftpd.conf
+    regexp: '#chroot_local_user=YES'
+    replace: 'chroot_local_user=YES'
+
+- name: conf
+  lineinfile:
+    path: /etc/vsftpd.conf
+    line: '{{ ftp_debian }}'
+
+- name: vsftpd
+  service:
+    name: vsftpd
+    state: restarted

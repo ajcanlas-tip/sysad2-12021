@@ -1,0 +1,12 @@
+---
+# tasks file for roles/ublanmt1
+- name: Install prometheus
+  apt:
+    name: prometheus
+    state: latest
+    update_cache: yes
+
+- name: start prometheus
+  service:
+    name: prometheus
+    state: started

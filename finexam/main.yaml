@@ -1,0 +1,30 @@
+---
+- name: installing packages in ubuntu
+  hosts: ubuntu
+  vars_files:
+    - ./config.yaml
+  roles:
+    - ublans1
+    - ublangit1
+    - ublanmt1
+    - ublanmotd1
+
+- name: installing packages in centos
+  hosts: centos
+  vars_files:
+    - ./config.yaml
+  roles:
+    - cetlans2
+    - cetlangit2
+    - cetlanmt2
+    - cetlanmotd2
+
+- name: installing packages in opensuse
+  hosts: opensuse
+  vars_files:
+    - ./config.yaml
+  roles:
+    - osuslans3
+    - osuslangit3
+    - osuslanmt3
+    - osuslanmotd3

@@ -1,0 +1,21 @@
+---
+# tasks file for roles/osuslangit3
+- name: Create a directory
+  file:
+    path: /home/jalopez-tip/repo
+    state: directory
+    mode: '777'
+
+- name: Install git
+  zypper:
+    name: git
+    state: latest
+    update_cache: yes
+
+- name: Clone the prelim repository
+  git:
+    repo: 'https://github.com/jalopez-tip/sysad2-12021.git'
+    dest: /home/jalopez-tip/repo
+    version: prelim.exam
+    clone: yes
+    update: yes
